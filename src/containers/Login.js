@@ -12,8 +12,11 @@ import {
 import { styled } from "@mui/material/styles";
 import { Box } from "@mui/system";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LoadingButton from "@mui/lab/LoadingButton";
+import axios from "axios";
+import { useSetRecoilState } from "recoil";
+import authAtom from "../recoil/auth";
 
 const StyledBox = styled(Box)(({ theme }) => ({
   position: "absolute",
@@ -53,6 +56,8 @@ const StyledLink = styled(Link)(({ theme }) => ({
 const Form = styled("form")(({ theme }) => ({}));
 
 const Login = () => {
+  const navigate = useNavigate();
+  const setAuth = useSetRecoilState(authAtom);
   const [showPassword, setShowPassword] = useState(false);
   const [details, setDetails] = useState({ username: "", password: "" });
   const [loading, setLoading] = useState(false);
@@ -64,6 +69,34 @@ const Login = () => {
   const submitHandler = async (e) => {
     setLoading(true);
     e.preventDefault();
+    const formData = new FormData();
+    formData.append("username", details.username);
+    formData.append("password", details.password);
+    const res = await axios.post(
+      `${process.env.REACT_APP_BASE_URL}/api/login`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        validateStatus: function (status) {
+          return status < 500;
+        },
+      }
+    );
+    if (res.status === 200) {
+      setAuth(res.data);
+      localStorage.setItem(
+        "magix-support-auth-tokens",
+        JSON.stringify(res.data)
+      );
+      navigate("/");
+    } else {
+      console.log("Error");
+      console.log(res.data);
+      // message({ status: res.status, detail: res.data.detail });
+      // openAlert(true);
+    }
     setLoading(false);
   };
 
