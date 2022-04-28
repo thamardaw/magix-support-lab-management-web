@@ -14,7 +14,7 @@ export const CustomSnackbar = ({ children }) => {
     if (reason === "clickaway") {
       return;
     }
-    setSnackbar({ isOpen: false, status: "", detail: "" });
+    setSnackbar({ ...snackbar, isOpen: false });
   };
 
   return (
