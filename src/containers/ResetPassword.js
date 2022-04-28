@@ -10,12 +10,10 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Box } from "@mui/system";
-import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
-import { SnackbarContext } from "../contexts";
 import LoadingButton from "@mui/lab/LoadingButton";
 
 const StyledBox = styled(Box)(({ theme }) => ({
@@ -56,8 +54,7 @@ const StyledLink = styled(Link)(({ theme }) => ({
 const Form = styled("form")(({ theme }) => ({}));
 
 const ResetPassword = () => {
-  const history = useHistory();
-  let { openAlert, message } = useContext(SnackbarContext);
+  const navigate = useNavigate();
   const [details, setDetails] = useState({
     username: "",
     oldPassword: "",
@@ -76,10 +73,9 @@ const ResetPassword = () => {
   const submitHandler = async (e) => {
     setLoading(true);
     e.preventDefault();
-    console.log(details);
     if (details.newPassword !== details.confirmNewPassword) {
-      message({ status: "error", detail: "Passwords do not match." });
-      openAlert(true);
+      //   message({ status: "error", detail: "Passwords do not match." });
+      //   openAlert(true);
       setLoading(false);
       return;
     }
@@ -97,12 +93,12 @@ const ResetPassword = () => {
       }
     );
     if (res.status === 200) {
-      message({ status: res.status, detail: res.data.detail });
-      openAlert(true);
-      history.goBack();
+      //   message({ status: res.status, detail: res.data.detail });
+      //   openAlert(true);
+      navigate(-1);
     } else {
-      message({ status: res.status, detail: res.data.detail });
-      openAlert(true);
+      //   message({ status: res.status, detail: res.data.detail });
+      //   openAlert(true);
     }
     setLoading(false);
   };

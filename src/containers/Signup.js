@@ -13,11 +13,9 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Box } from "@mui/system";
-import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
-import { SnackbarContext } from "../contexts";
 import LoadingButton from "@mui/lab/LoadingButton";
 
 // const Container = styled("div")(({ theme }) => ({
@@ -86,8 +84,7 @@ const StyledLink = styled(Link)(({ theme }) => ({
 const Form = styled("form")(({ theme }) => ({}));
 
 const Signup = () => {
-  const history = useHistory();
-  let { openAlert, message } = useContext(SnackbarContext);
+  const navigate = useNavigate();
   const [details, setDetails] = useState({
     username: "",
     password: "",
@@ -106,8 +103,8 @@ const Signup = () => {
     setLoading(true);
     e.preventDefault();
     if (details.password !== details.confirmPassword) {
-      message({ status: "error", detail: "Passwords do not match." });
-      openAlert(true);
+      //   message({ status: "error", detail: "Passwords do not match." });
+      //   openAlert(true);
       setLoading(false);
       return;
     }
@@ -125,12 +122,12 @@ const Signup = () => {
       }
     );
     if (res.status === 200) {
-      message({ status: res.status, detail: res.data.detail });
-      openAlert(true);
-      history.goBack();
+      //   message({ status: res.status, detail: res.data.detail });
+      //   openAlert(true);
+      navigate(-1);
     } else {
-      message({ status: res.status, detail: res.data.detail });
-      openAlert(true);
+      //   message({ status: res.status, detail: res.data.detail });
+      //   openAlert(true);
     }
     setLoading(false);
   };
