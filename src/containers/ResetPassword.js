@@ -15,6 +15,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import axios from "axios";
 import LoadingButton from "@mui/lab/LoadingButton";
+import { useSetRecoilState } from "recoil";
+import { withAlert } from "../recoil/snackbar";
 
 const StyledBox = styled(Box)(({ theme }) => ({
   position: "absolute",
@@ -55,6 +57,7 @@ const Form = styled("form")(({ theme }) => ({}));
 
 const ResetPassword = () => {
   const navigate = useNavigate();
+  const openAlert = useSetRecoilState(withAlert);
   const [details, setDetails] = useState({
     username: "",
     oldPassword: "",
@@ -74,8 +77,7 @@ const ResetPassword = () => {
     setLoading(true);
     e.preventDefault();
     if (details.newPassword !== details.confirmNewPassword) {
-      //   message({ status: "error", detail: "Passwords do not match." });
-      //   openAlert(true);
+      openAlert({ status: "error", detail: "Passwords do not match." });
       setLoading(false);
       return;
     }
@@ -93,12 +95,10 @@ const ResetPassword = () => {
       }
     );
     if (res.status === 200) {
-      //   message({ status: res.status, detail: res.data.detail });
-      //   openAlert(true);
+      openAlert({ status: res.status, detail: res.data.detail });
       navigate(-1);
     } else {
-      //   message({ status: res.status, detail: res.data.detail });
-      //   openAlert(true);
+      openAlert({ status: res.status, detail: res.data.detail });
     }
     setLoading(false);
   };

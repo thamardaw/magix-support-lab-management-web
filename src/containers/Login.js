@@ -17,6 +17,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import axios from "axios";
 import { useSetRecoilState } from "recoil";
 import authAtom from "../recoil/auth";
+import { withAlert } from "../recoil/snackbar";
 
 const StyledBox = styled(Box)(({ theme }) => ({
   position: "absolute",
@@ -58,6 +59,7 @@ const Form = styled("form")(({ theme }) => ({}));
 const Login = () => {
   const navigate = useNavigate();
   const setAuth = useSetRecoilState(authAtom);
+  const openAlert = useSetRecoilState(withAlert);
   const [showPassword, setShowPassword] = useState(false);
   const [details, setDetails] = useState({ username: "", password: "" });
   const [loading, setLoading] = useState(false);
@@ -92,10 +94,7 @@ const Login = () => {
       );
       navigate("/");
     } else {
-      console.log("Error");
-      console.log(res.data);
-      // message({ status: res.status, detail: res.data.detail });
-      // openAlert(true);
+      openAlert({ status: res.status, detail: res.data.detail });
     }
     setLoading(false);
   };
