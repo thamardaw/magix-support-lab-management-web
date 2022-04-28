@@ -1,23 +1,27 @@
 import {
   BrowserRouter as Router,
-  Switch,
+  Navigate,
   Route,
-  Redirect,
+  Routes,
 } from "react-router-dom";
 import { RecoilRoot } from "recoil";
-import { Login, ResetPassword, Signup } from "./containers";
+import { Dashboard, Login, ResetPassword, Signup } from "./containers";
+import PrivateRoute from "./hocs/PrivateRoute";
 
 function App() {
   return (
     <RecoilRoot>
       <Router>
-        <Switch>
-          {/* <Route path="/dashboard" component={Dashboard} /> */}
-          <Route path="/login" component={Login} />
-          <Route path="/signup" component={Signup} />
-          <Route path="/resetPassword" component={ResetPassword} />
-          <Redirect to="/login" />
-        </Switch>
+        <Routes>
+          <Route
+            path="/dashboard"
+            element={<PrivateRoute component={Dashboard} />}
+          />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/resetPassword" element={<ResetPassword />} />
+          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        </Routes>
       </Router>
     </RecoilRoot>
   );
