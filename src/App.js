@@ -16,7 +16,7 @@ function App() {
         <Router>
           <Routes>
             <Route
-              path="/dashboard"
+              path="/dashboard/*"
               element={<PrivateRoute component={Dashboard} />}
             />
             <Route path="/login" element={<Login />} />
