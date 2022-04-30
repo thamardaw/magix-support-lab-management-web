@@ -10,8 +10,7 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useState } from "react";
-import InboxIcon from "@mui/icons-material/Inbox";
-import DraftsIcon from "@mui/icons-material/Drafts";
+import PeopleIcon from "@mui/icons-material/People";
 import { useNavigate } from "react-router-dom";
 
 const ResponsiveDrawer = ({
@@ -22,15 +21,12 @@ const ResponsiveDrawer = ({
 }) => {
   const container =
     window !== undefined ? () => window().document.body : undefined;
-  const [selectedIndex, setSelectedIndex] = useState(1);
+  const [selectedPath, setSelectedPath] = useState("/patient");
   const navigate = useNavigate();
-
-  const handleListItemClick = (event, index) => {
-    setSelectedIndex(index);
-  };
 
   const handleClick = (path) => {
     return (e) => {
+      setSelectedPath(path);
       navigate(path);
     };
   };
@@ -45,22 +41,13 @@ const ResponsiveDrawer = ({
           </Typography>
         </ListItem>
         <ListItemButton
-          selected={selectedIndex === 0}
-          onClick={(event) => handleListItemClick(event, 0)}
+          selected={selectedPath.includes("/patient")}
+          onClick={handleClick("/dashboard/patient")}
         >
           <ListItemIcon>
-            <InboxIcon />
+            <PeopleIcon />
           </ListItemIcon>
-          <ListItemText primary="Inbox" />
-        </ListItemButton>
-        <ListItemButton
-          selected={selectedIndex === 1}
-          onClick={(event) => handleListItemClick(event, 1)}
-        >
-          <ListItemIcon>
-            <DraftsIcon />
-          </ListItemIcon>
-          <ListItemText primary="Drafts" />
+          <ListItemText primary="Patient" />
         </ListItemButton>
       </List>
     </>
