@@ -1,7 +1,8 @@
 import { Box, CssBaseline, Toolbar } from "@mui/material";
 import { useState } from "react";
-import { Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { Appbar, Footer, ResponsiveDrawer } from "../components";
+import { Patient } from "./Patient";
 
 const drawerWidth = 240;
 
@@ -32,7 +33,10 @@ const Dashboard = () => {
         }}
       >
         <Toolbar />
-        <Routes></Routes>
+        <Routes>
+          <Route path={`patient/*`} element={<Patient />} />
+          <Route path="*" element={<Navigate to="patient" replace />} />
+        </Routes>
         <Footer />
       </Box>
     </Box>
