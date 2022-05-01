@@ -12,17 +12,15 @@ import { Box } from "@mui/system";
 import React, { useState } from "react";
 import PeopleIcon from "@mui/icons-material/People";
 import { useNavigate } from "react-router-dom";
+import drawerAtom from "../recoil/drawer";
+import { useRecoilState } from "recoil";
 
-const ResponsiveDrawer = ({
-  window,
-  drawerWidth,
-  mobileOpen,
-  handleDrawerToggle,
-}) => {
+const ResponsiveDrawer = ({ window, drawerWidth }) => {
   const container =
     window !== undefined ? () => window().document.body : undefined;
   const [selectedPath, setSelectedPath] = useState("/patient");
   const navigate = useNavigate();
+  const [drawerOpen, setDrawerOpen] = useRecoilState(drawerAtom);
 
   const handleClick = (path) => {
     return (e) => {
@@ -61,8 +59,8 @@ const ResponsiveDrawer = ({
       <Drawer
         container={container}
         variant="temporary"
-        open={mobileOpen}
-        onClose={handleDrawerToggle}
+        open={drawerOpen}
+        onClose={() => setDrawerOpen((prev) => !prev)}
         ModalProps={{
           keepMounted: true,
         }}

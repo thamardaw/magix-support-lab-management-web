@@ -17,12 +17,15 @@ import PersonIcon from "@mui/icons-material/Person";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import authAtom, { withUser } from "../recoil/auth";
 import { useNavigate } from "react-router-dom";
+import drawerAtom from "../recoil/drawer";
 
-const Appbar = ({ drawerWidth, handleDrawerToggle }) => {
+const Appbar = ({ drawerWidth }) => {
   const navigate = useNavigate();
   const user = useRecoilValue(withUser);
+  const setDrawerOpen = useSetRecoilState(drawerAtom);
   const setAuth = useSetRecoilState(authAtom);
   const [anchorEl, setAnchorEl] = useState(null);
+
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
@@ -54,7 +57,7 @@ const Appbar = ({ drawerWidth, handleDrawerToggle }) => {
             color="inherit"
             aria-label="open drawer"
             edge="start"
-            onClick={handleDrawerToggle}
+            onClick={() => setDrawerOpen((prev) => !prev)}
             sx={{ mr: 2, display: { md: "none" } }}
           >
             <MenuIcon />
