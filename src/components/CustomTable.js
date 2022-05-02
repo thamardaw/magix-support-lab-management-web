@@ -15,9 +15,31 @@ import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
 import { visuallyHidden } from "@mui/utils";
 import { useEffect, useState } from "react";
-import { Button } from "@mui/material";
+import { Button, InputBase } from "@mui/material";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import { CSVLink } from "react-csv";
+import { styled } from "@mui/material/styles";
+import { Search } from "@mui/icons-material";
+
+const SearchContainer = styled("div")(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  backgroundColor: alpha(theme.palette.primary.light, 0.15),
+  "&:hover": {
+    backgroundColor: alpha(theme.palette.primary.light, 0.25),
+  },
+  borderRadius: theme.shape.borderRadius,
+  width: "30%",
+  [theme.breakpoints.down("sm")]: {
+    display: (props) => (props.open ? "flex" : "none"),
+    width: "40%",
+  },
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: "black",
+  marginLeft: theme.spacing(1),
+}));
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -164,21 +186,26 @@ const CustomTableToolbar = (props) => {
           )}
         </>
       ) : (
-        <>
-          <Typography
-            sx={{ flex: "1 1 100%" }}
-            variant="h6"
-            id="tableTitle"
-            component="div"
-          >
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            width:"100%"
+          }}
+        >
+          <Typography variant="h6" id="tableTitle" component="div">
             {tableName}
           </Typography>
+          <SearchContainer>
+            <Search />
+            <StyledInputBase placeholder="Search..." onChange={() => {}} />
+          </SearchContainer>
           {toolbarButtons.whenNoneSelected.map(
             ({ id, component: Component, callback }) => {
               return <Component key={id} onClick={() => callback(selected)} />;
             }
           )}
-        </>
+        </Box>
       )}
     </Toolbar>
   );
