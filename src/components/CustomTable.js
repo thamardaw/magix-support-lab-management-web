@@ -15,7 +15,7 @@ import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
 import { visuallyHidden } from "@mui/utils";
 import { startTransition, useEffect, useState } from "react";
-import { Button, InputBase } from "@mui/material";
+import { Button, InputBase, LinearProgress } from "@mui/material";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import { CSVLink } from "react-csv";
 import { styled } from "@mui/material/styles";
@@ -219,9 +219,14 @@ CustomTableToolbar.propTypes = {
   onSearch: PropTypes.func.isRequired,
 };
 
-export default function CustomTable({ tableConfig, data, toolbarButtons }) {
+export default function CustomTable({
+  tableConfig,
+  data,
+  toolbarButtons,
+  isLoading,
+}) {
   const [order, setOrder] = useState("asc");
-  const [orderBy, setOrderBy] = useState("calories");
+  const [orderBy, setOrderBy] = useState("id");
   const [dataRows, setDataRows] = useState([]);
   const [selected, setSelected] = useState([]);
   const [page, setPage] = useState(0);
@@ -340,6 +345,7 @@ export default function CustomTable({ tableConfig, data, toolbarButtons }) {
           toolbarButtons={toolbarButtons}
           onSearch={handleSearch}
         />
+        {isLoading && <LinearProgress />}
         <TableContainer sx={{ maxHeight: tableConfig.maxHeight }}>
           <Table
             stickyHeader
@@ -388,10 +394,13 @@ export default function CustomTable({ tableConfig, data, toolbarButtons }) {
                           key={headCell.id}
                           sx={{
                             maxWidth:
-                              headCell.maxWidht ||
+                              headCell.maxWidth ||
                               headCell.minWidth + 100 ||
                               200,
-                            wordWrap: "break-word",
+                            // wordWrap: "break-word",
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
                           }}
                         >
                           {row[headCell.id]}
