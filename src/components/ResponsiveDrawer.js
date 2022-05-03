@@ -11,6 +11,9 @@ import {
 import { Box } from "@mui/system";
 import React, { useState } from "react";
 import PeopleIcon from "@mui/icons-material/People";
+import CategoryIcon from "@mui/icons-material/Category";
+import BiotechIcon from "@mui/icons-material/Biotech";
+import SummarizeIcon from "@mui/icons-material/Summarize";
 import { useNavigate } from "react-router-dom";
 import drawerAtom from "../recoil/drawer";
 import { useRecoilState } from "recoil";
@@ -52,9 +55,27 @@ const ResponsiveDrawer = ({ window, drawerWidth }) => {
           onClick={handleClick("test_category")}
         >
           <ListItemIcon>
-            <PeopleIcon />
+            <CategoryIcon />
           </ListItemIcon>
           <ListItemText primary="Test Category" />
+        </ListItemButton>
+        <ListItemButton
+          selected={selectedPath.includes("test_category")}
+          onClick={handleClick("test_category")}
+        >
+          <ListItemIcon>
+            <BiotechIcon />
+          </ListItemIcon>
+          <ListItemText primary="Lab Test" />
+        </ListItemButton>
+        <ListItemButton
+          selected={selectedPath.includes("test_category")}
+          onClick={handleClick("test_category")}
+        >
+          <ListItemIcon>
+            <SummarizeIcon />
+          </ListItemIcon>
+          <ListItemText primary="Lab Report" />
         </ListItemButton>
       </List>
     </>
