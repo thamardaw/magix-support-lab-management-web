@@ -9,25 +9,24 @@ import {
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useState } from "react";
+import React from "react";
 import PeopleIcon from "@mui/icons-material/People";
 import CategoryIcon from "@mui/icons-material/Category";
 import BiotechIcon from "@mui/icons-material/Biotech";
 import SummarizeIcon from "@mui/icons-material/Summarize";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import drawerAtom from "../recoil/drawer";
 import { useRecoilState } from "recoil";
 
 const ResponsiveDrawer = ({ window, drawerWidth }) => {
   const container =
     window !== undefined ? () => window().document.body : undefined;
-  const [selectedPath, setSelectedPath] = useState("patient");
   const navigate = useNavigate();
+  const location = useLocation();
   const [drawerOpen, setDrawerOpen] = useRecoilState(drawerAtom);
 
   const handleClick = (path) => {
     return (e) => {
-      setSelectedPath(path);
       navigate(path);
     };
   };
@@ -42,7 +41,7 @@ const ResponsiveDrawer = ({ window, drawerWidth }) => {
           </Typography>
         </ListItem>
         <ListItemButton
-          selected={selectedPath.includes("patient")}
+          selected={location.pathname.includes("patient")}
           onClick={handleClick("patient")}
         >
           <ListItemIcon>
@@ -51,7 +50,7 @@ const ResponsiveDrawer = ({ window, drawerWidth }) => {
           <ListItemText primary="Patient" />
         </ListItemButton>
         <ListItemButton
-          selected={selectedPath.includes("test_category")}
+          selected={location.pathname.includes("test_category")}
           onClick={handleClick("test_category")}
         >
           <ListItemIcon>
@@ -60,8 +59,8 @@ const ResponsiveDrawer = ({ window, drawerWidth }) => {
           <ListItemText primary="Test Category" />
         </ListItemButton>
         <ListItemButton
-          selected={selectedPath.includes("test_category")}
-          onClick={handleClick("test_category")}
+          selected={location.pathname.includes("lab_test")}
+          onClick={handleClick("lab_test")}
         >
           <ListItemIcon>
             <BiotechIcon />
@@ -69,8 +68,8 @@ const ResponsiveDrawer = ({ window, drawerWidth }) => {
           <ListItemText primary="Lab Test" />
         </ListItemButton>
         <ListItemButton
-          selected={selectedPath.includes("test_category")}
-          onClick={handleClick("test_category")}
+          selected={location.pathname.includes("lab_report")}
+          onClick={handleClick("lab_report")}
         >
           <ListItemIcon>
             <SummarizeIcon />
