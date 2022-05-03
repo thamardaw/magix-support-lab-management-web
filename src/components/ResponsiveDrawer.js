@@ -18,7 +18,7 @@ import { useRecoilState } from "recoil";
 const ResponsiveDrawer = ({ window, drawerWidth }) => {
   const container =
     window !== undefined ? () => window().document.body : undefined;
-  const [selectedPath, setSelectedPath] = useState("/patient");
+  const [selectedPath, setSelectedPath] = useState("patient");
   const navigate = useNavigate();
   const [drawerOpen, setDrawerOpen] = useRecoilState(drawerAtom);
 
@@ -39,13 +39,22 @@ const ResponsiveDrawer = ({ window, drawerWidth }) => {
           </Typography>
         </ListItem>
         <ListItemButton
-          selected={selectedPath.includes("/patient")}
-          onClick={handleClick("/dashboard/patient")}
+          selected={selectedPath.includes("patient")}
+          onClick={handleClick("patient")}
         >
           <ListItemIcon>
             <PeopleIcon />
           </ListItemIcon>
           <ListItemText primary="Patient" />
+        </ListItemButton>
+        <ListItemButton
+          selected={selectedPath.includes("test_category")}
+          onClick={handleClick("test_category")}
+        >
+          <ListItemIcon>
+            <PeopleIcon />
+          </ListItemIcon>
+          <ListItemText primary="Test Category" />
         </ListItemButton>
       </List>
     </>
