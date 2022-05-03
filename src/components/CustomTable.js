@@ -14,7 +14,7 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
 import { visuallyHidden } from "@mui/utils";
-import { useEffect, useState } from "react";
+import { startTransition, useEffect, useState } from "react";
 import { Button, InputBase } from "@mui/material";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import { CSVLink } from "react-csv";
@@ -137,7 +137,7 @@ CustomTableHead.propTypes = {
 };
 
 const CustomTableToolbar = (props) => {
-  const { selected, numSelected, tableName, toolbarButtons } = props;
+  const { selected, numSelected, tableName, toolbarButtons, onSearch } = props;
 
   return (
     <Toolbar
@@ -190,7 +190,7 @@ const CustomTableToolbar = (props) => {
           sx={{
             display: "flex",
             justifyContent: "space-between",
-            width:"100%"
+            width: "100%",
           }}
         >
           <Typography variant="h6" id="tableTitle" component="div">
@@ -198,7 +198,7 @@ const CustomTableToolbar = (props) => {
           </Typography>
           <SearchContainer>
             <Search />
-            <StyledInputBase placeholder="Search..." onChange={() => {}} />
+            <StyledInputBase placeholder="Search..." onChange={onSearch} />
           </SearchContainer>
           {toolbarButtons.whenNoneSelected.map(
             ({ id, component: Component, callback }) => {
@@ -216,6 +216,7 @@ CustomTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
   tableName: PropTypes.string.isRequired,
   toolbarButtons: PropTypes.object.isRequired,
+  onSearch: PropTypes.func.isRequired,
 };
 
 export default function CustomTable({ tableConfig, data, toolbarButtons }) {
@@ -228,6 +229,31 @@ export default function CustomTable({ tableConfig, data, toolbarButtons }) {
   const [CSV, setCSV] = useState({
     data: [],
   });
+
+  const arraySearch = (array, keyword, objKeys) => {
+    const searchItem = keyword.toLowerCase();
+    return array.filter((value) => {
+      let t = objKeys.map((key) => {
+        return value[key.id].toString().toLowerCase().includes(searchItem);
+      });
+      return t.includes(true);
+    });
+  };
+
+  const handleSearch = (event) => {
+    if (event.target.value.length === 0) {
+      startTransition(() => {
+        setDataRows(data);
+      });
+    } else {
+      setPage(0);
+      startTransition(() => {
+        setDataRows(
+          arraySearch(data, event.target.value, tableConfig.headCells)
+        );
+      });
+    }
+  };
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -312,6 +338,7 @@ export default function CustomTable({ tableConfig, data, toolbarButtons }) {
           numSelected={selected.length}
           tableName={tableConfig.tableName}
           toolbarButtons={toolbarButtons}
+          onSearch={handleSearch}
         />
         <TableContainer sx={{ maxHeight: tableConfig.maxHeight }}>
           <Table
@@ -326,11 +353,11 @@ export default function CustomTable({ tableConfig, data, toolbarButtons }) {
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={data.length}
+              rowCount={dataRows.length}
               headCells={tableConfig.headCells}
             />
             <TableBody>
-              {stableSort(data, getComparator(order, orderBy))
+              {stableSort(dataRows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const isItemSelected = isSelected(row);
@@ -376,10 +403,10 @@ export default function CustomTable({ tableConfig, data, toolbarButtons }) {
               {emptyRows > 0 && (
                 <TableRow
                   style={{
-                    height: (true ? 33 : 53) * emptyRows,
+                    height: (false ? 33 : 53) * emptyRows,
                   }}
                 >
-                  <TableCell colSpan={tableConfig.headCells.leng + 1} />
+                  <TableCell colSpan={`${tableConfig.headCells.leng + 1}`} />
                 </TableRow>
               )}
             </TableBody>
@@ -406,7 +433,7 @@ export default function CustomTable({ tableConfig, data, toolbarButtons }) {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={data.length}
+            count={dataRows.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
