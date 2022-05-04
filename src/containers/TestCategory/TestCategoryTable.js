@@ -10,7 +10,7 @@ function createData(id, name) {
   };
 }
 
-const rows = [createData(1, "Aung Aung")];
+const rows = [createData(1, "Test Category")];
 
 const headCells = [
   {
