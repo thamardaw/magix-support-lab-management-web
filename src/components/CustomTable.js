@@ -32,7 +32,7 @@ const SearchContainer = styled("div")(({ theme }) => ({
   width: "30%",
   [theme.breakpoints.down("sm")]: {
     display: (props) => (props.open ? "flex" : "none"),
-    width: "40%",
+    width: "60%",
   },
 }));
 
@@ -104,7 +104,10 @@ function CustomTableHead(props) {
             padding={headCell.disablePadding ? "none" : "normal"}
             sortDirection={orderBy === headCell.id ? order : false}
             sx={{
-              minWidth: `${headCell.minWidth || 100}px`,
+              minWidth: `${headCell.minWidth}px`,
+              maxWidth: `${
+                headCell.maxWidth || headCell.minWidth + 100 || 200
+              }px`,
             }}
           >
             <TableSortLabel
@@ -186,26 +189,58 @@ const CustomTableToolbar = (props) => {
           )}
         </>
       ) : (
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            width: "100%",
-          }}
-        >
-          <Typography variant="h6" id="tableTitle" component="div">
-            {tableName}
-          </Typography>
-          <SearchContainer>
-            <Search />
-            <StyledInputBase placeholder="Search..." onChange={onSearch} />
-          </SearchContainer>
-          {toolbarButtons.whenNoneSelected.map(
-            ({ id, component: Component, callback }) => {
-              return <Component key={id} onClick={() => callback(selected)} />;
-            }
-          )}
-        </Box>
+        <>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              alignItems: "start",
+              width: "100%",
+            }}
+          >
+            <Typography
+              variant="h6"
+              id="tableTitle"
+              component="div"
+              sx={{
+                fontSize: "16px",
+                display: { xs: "block", sm: "none" },
+                padding: "10px 0px",
+              }}
+            >
+              {tableName}
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                width: "100%",
+              }}
+            >
+              <Typography
+                variant="h6"
+                id="tableTitle"
+                component="div"
+                sx={{ fontSize: "16px", display: { xs: "none", sm: "block" } }}
+              >
+                {tableName}
+              </Typography>
+              <SearchContainer>
+                <Search />
+                <StyledInputBase placeholder="Search..." onChange={onSearch} />
+              </SearchContainer>
+              {toolbarButtons.whenNoneSelected.map(
+                ({ id, component: Component, callback }) => {
+                  return (
+                    <Component key={id} onClick={() => callback(selected)} />
+                  );
+                }
+              )}
+            </Box>
+          </Box>
+        </>
       )}
     </Toolbar>
   );
@@ -393,10 +428,11 @@ export default function CustomTable({
                           padding={index === 0 ? "none" : "normal"}
                           key={headCell.id}
                           sx={{
-                            maxWidth:
+                            maxWidth: `${
                               headCell.maxWidth ||
                               headCell.minWidth + 100 ||
-                              200,
+                              200
+                            }px`,
                             // wordWrap: "break-word",
                             whiteSpace: "nowrap",
                             overflow: "hidden",
