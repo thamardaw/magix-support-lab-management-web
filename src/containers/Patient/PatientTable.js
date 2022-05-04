@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
-import { memo } from "react";
-import { CustomTable } from "../../components";
+import { memo, useState } from "react";
+import { CustomTable, DeleteDialog } from "../../components";
 import { useNavigate } from "react-router-dom";
 
 function createData(
@@ -92,78 +92,88 @@ const headCells = [
 
 const PatientTable = () => {
   const navigate = useNavigate();
+  const [openDialog, setOpenDialog] = useState(false);
   return (
-    <CustomTable
-      tableConfig={{
-        headCells: headCells,
-        tableName: "Patient",
-        maxHeight: "62vh",
-      }}
-      data={rows}
-      isLoading={false}
-      toolbarButtons={{
-        whenNoneSelected: [
-          {
-            id: "patient table new button",
-            component: memo(({ ...rest }) => (
-              <Button variant="outlined" size="small" {...rest}>
-                New
-              </Button>
-            )),
-            callback: (selected) => {
-              navigate("form");
+    <>
+      <CustomTable
+        tableConfig={{
+          headCells: headCells,
+          tableName: "Patient",
+          maxHeight: "62vh",
+        }}
+        data={rows}
+        isLoading={false}
+        toolbarButtons={{
+          whenNoneSelected: [
+            {
+              id: "patient table new button",
+              component: memo(({ ...rest }) => (
+                <Button variant="outlined" size="small" {...rest}>
+                  New
+                </Button>
+              )),
+              callback: (selected) => {
+                navigate("form");
+              },
             },
-          },
-        ],
-        whenOneSelected: [
-          {
-            id: "patient table edit button",
-            component: memo(({ ...rest }) => (
-              <Button variant="contained" size="small" {...rest}>
-                Edit
-              </Button>
-            )),
-            callback: (selected) => {
-              navigate("form/1");
+          ],
+          whenOneSelected: [
+            {
+              id: "patient table edit button",
+              component: memo(({ ...rest }) => (
+                <Button variant="contained" size="small" {...rest}>
+                  Edit
+                </Button>
+              )),
+              callback: (selected) => {
+                navigate("form/1");
+              },
             },
-          },
-          {
-            id: "patient table detail button",
-            component: memo(({ ...rest }) => (
-              <Button
-                variant="contained"
-                size="small"
-                sx={{ marginLeft: "5px" }}
-                {...rest}
-              >
-                Details
-              </Button>
-            )),
-            callback: (selected) => {
-              navigate("details/1");
+            {
+              id: "patient table detail button",
+              component: memo(({ ...rest }) => (
+                <Button
+                  variant="contained"
+                  size="small"
+                  sx={{ marginLeft: "5px" }}
+                  {...rest}
+                >
+                  Details
+                </Button>
+              )),
+              callback: (selected) => {
+                navigate("details/1");
+              },
             },
-          },
-          {
-            id: "patient table delete button",
-            component: memo(({ ...rest }) => (
-              <Button
-                variant="contained"
-                size="small"
-                color="error"
-                sx={{ marginLeft: "5px" }}
-                {...rest}
-              >
-                Delete
-              </Button>
-            )),
-            callback: (selected) => {
-              console.log(selected);
+            {
+              id: "patient table delete button",
+              component: memo(({ ...rest }) => (
+                <Button
+                  variant="contained"
+                  size="small"
+                  color="error"
+                  sx={{ marginLeft: "5px" }}
+                  {...rest}
+                >
+                  Delete
+                </Button>
+              )),
+              callback: (selected) => {
+                setOpenDialog(true);
+              },
             },
-          },
-        ],
-        whenMoreThanOneSelected: [],
-      }}
-    />
+          ],
+          whenMoreThanOneSelected: [],
+        }}
+      />
+      <DeleteDialog
+        isOpen={openDialog}
+        handleClose={() => setOpenDialog(false)}
+        callback={() => {
+          console.log("delete");
+        }}
+      />
+    </>
   );
 };
 
