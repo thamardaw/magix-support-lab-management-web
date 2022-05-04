@@ -91,7 +91,7 @@ const headCells = [
 
 const PatientTable = () => {
   const navigate = useNavigate();
-  const [openDialog, setOpenDialog] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   return (
     <>
       <CustomTable
@@ -158,7 +158,7 @@ const PatientTable = () => {
                 </Button>
               )),
               callback: (selected) => {
-                setOpenDialog(true);
+                setOpenDeleteDialog(true);
               },
             },
           ],
@@ -166,8 +166,8 @@ const PatientTable = () => {
         }}
       />
       <DeleteDialog
-        isOpen={openDialog}
-        handleClose={() => setOpenDialog(false)}
+        isOpen={openDeleteDialog}
+        handleClose={() => setOpenDeleteDialog(false)}
         callback={() => {
           console.log("delete");
         }}

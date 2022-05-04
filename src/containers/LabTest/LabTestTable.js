@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 import { memo, useState } from "react";
-import { CustomTable, DeleteDialog } from "../../components";
+import { CustomTable, DeleteDialog, NewTestDialog } from "../../components";
 import { useNavigate } from "react-router-dom";
 
 function createData(id, name, test_category_id) {
@@ -36,7 +36,8 @@ const headCells = [
 
 const LabTestTable = () => {
   const navigate = useNavigate();
-  const [openDialog, setOpenDialog] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [openNewTestDialog, setOpenNewTestDialog] = useState(false);
   return (
     <>
       <CustomTable
@@ -57,7 +58,8 @@ const LabTestTable = () => {
                 </Button>
               )),
               callback: (selected) => {
-                navigate("form");
+                setOpenNewTestDialog(true);
+                // navigate("form");
               },
             },
           ],
@@ -103,7 +105,7 @@ const LabTestTable = () => {
                 </Button>
               )),
               callback: (selected) => {
-                setOpenDialog(true);
+                setOpenDeleteDialog(true);
               },
             },
           ],
@@ -111,11 +113,16 @@ const LabTestTable = () => {
         }}
       />
       <DeleteDialog
-        isOpen={openDialog}
-        handleClose={() => setOpenDialog(false)}
+        isOpen={openDeleteDialog}
+        handleClose={() => setOpenDeleteDialog(false)}
         callback={() => {
           console.log("delete");
         }}
+      />
+      <NewTestDialog
+        isOpen={openNewTestDialog}
+        handleClose={() => setOpenNewTestDialog(false)}
+        callback={() => navigate("form")}
       />
     </>
   );

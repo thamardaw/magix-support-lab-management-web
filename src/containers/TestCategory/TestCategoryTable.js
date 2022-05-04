@@ -29,7 +29,7 @@ const headCells = [
 
 const TestCategoryTable = () => {
   const navigate = useNavigate();
-  const [openDialog, setOpenDialog] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   return (
     <>
       <CustomTable
@@ -96,7 +96,7 @@ const TestCategoryTable = () => {
                 </Button>
               )),
               callback: (selected) => {
-                setOpenDialog(true);
+                setOpenDeleteDialog(true);
               },
             },
           ],
@@ -104,8 +104,8 @@ const TestCategoryTable = () => {
         }}
       />
       <DeleteDialog
-        isOpen={openDialog}
-        handleClose={() => setOpenDialog(false)}
+        isOpen={openDeleteDialog}
+        handleClose={() => setOpenDeleteDialog(false)}
         callback={() => {
           console.log("delete");
         }}

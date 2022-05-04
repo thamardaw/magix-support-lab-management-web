@@ -72,7 +72,7 @@ const headCells = [
 
 const LabReportTable = () => {
   const navigate = useNavigate();
-  const [openDialog, setOpenDialog] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   return (
     <>
       <CustomTable
@@ -139,7 +139,7 @@ const LabReportTable = () => {
                 </Button>
               )),
               callback: (selected) => {
-                setOpenDialog(true);
+                setOpenDeleteDialog(true);
               },
             },
           ],
@@ -147,8 +147,8 @@ const LabReportTable = () => {
         }}
       />
       <DeleteDialog
-        isOpen={openDialog}
-        handleClose={() => setOpenDialog(false)}
+        isOpen={openDeleteDialog}
+        handleClose={() => setOpenDeleteDialog(false)}
         callback={() => {
           console.log("delete");
         }}
