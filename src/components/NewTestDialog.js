@@ -10,7 +10,7 @@ import {
 const NewTestDialog = ({ isOpen, handleClose, callback }) => {
   return (
     <Dialog fullWidth maxWidth="xs" open={isOpen} onClose={handleClose}>
-      <DialogTitle sx={{ textAlign: "center" }}>New Test</DialogTitle>
+      <DialogTitle sx={{ textAlign: "center" }}>Create New Test</DialogTitle>
       <DialogContent>
         <TextField
           autoFocus
@@ -35,7 +35,7 @@ const NewTestDialog = ({ isOpen, handleClose, callback }) => {
           sx={{ width: "40%" }}
           onClick={callback}
         >
-          Save
+          Create
         </Button>
       </DialogActions>
     </Dialog>
