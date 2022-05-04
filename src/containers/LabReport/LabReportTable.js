@@ -1,6 +1,10 @@
 import { Button } from "@mui/material";
 import { memo, useState } from "react";
-import { CustomTable, DeleteDialog } from "../../components";
+import {
+  CustomTable,
+  DeleteDialog,
+  NewLabReportDialog,
+} from "../../components";
 import { useNavigate } from "react-router-dom";
 
 function createData(
@@ -73,6 +77,7 @@ const headCells = [
 const LabReportTable = () => {
   const navigate = useNavigate();
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [openLabReportDialog, setOpenLabReportDialog] = useState(false);
   return (
     <>
       <CustomTable
@@ -93,7 +98,8 @@ const LabReportTable = () => {
                 </Button>
               )),
               callback: (selected) => {
-                navigate("form");
+                setOpenLabReportDialog(true);
+                // navigate("form");
               },
             },
           ],
@@ -151,6 +157,13 @@ const LabReportTable = () => {
         handleClose={() => setOpenDeleteDialog(false)}
         callback={() => {
           console.log("delete");
+        }}
+      />
+      <NewLabReportDialog
+        isOpen={openLabReportDialog}
+        handleClose={() => setOpenLabReportDialog(false)}
+        callback={() => {
+          navigate("form");
         }}
       />
     </>
