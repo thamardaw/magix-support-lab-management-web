@@ -14,7 +14,7 @@ import BackButton from "../../components/BackButton";
 const PatientForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
 
   const [details, setDetails] = useState({
     name: "",
@@ -181,7 +181,8 @@ const PatientForm = () => {
       >
         <LoadingButton
           variant="contained"
-          loading={isLoading}
+          // loading={isLoading}
+          loading={false}
           size="small"
           sx={{ marginRight: "5px" }}
           onClick={id ? update : createNew}
