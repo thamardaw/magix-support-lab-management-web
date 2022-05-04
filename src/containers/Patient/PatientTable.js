@@ -44,7 +44,6 @@ const headCells = [
     numeric: false,
     disablePadding: true,
     label: "ID",
-    minWidth: 50,
   },
   {
     id: "name",
