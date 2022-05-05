@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-const ParameterForm = () => {
+const ParameterForm = ({ mode }) => {
   return (
     <>
       <Box
@@ -206,6 +206,17 @@ const ParameterForm = () => {
             />
           </ListItem>
         </List>
+      </Box>
+      <Box
+        sx={{
+          display: mode === "new" ? "flex" : "none",
+          padding: "10px 0px",
+          justifyContent: "space-between",
+        }}
+      >
+        <Button variant="contained" fullWidth>
+          Save
+        </Button>
       </Box>
     </>
   );

@@ -72,7 +72,7 @@ const LabTestTable = () => {
                 </Button>
               )),
               callback: (selected) => {
-                navigate("form/1");
+                navigate("form/1", { state: { mode: "edit" } });
               },
             },
             {
@@ -122,7 +122,7 @@ const LabTestTable = () => {
       <NewTestDialog
         isOpen={openNewTestDialog}
         handleClose={() => setOpenNewTestDialog(false)}
-        callback={() => navigate("form/1")}
+        callback={() => navigate("form/1", { state: { mode: "new" } })}
       />
     </>
   );

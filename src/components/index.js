@@ -8,3 +8,4 @@ export { default as DeleteDialog } from "./DeleteDialog";
 export { default as NewTestDialog } from "./NewTestDialog";
 export { default as NewLabReportDialog } from "./NewLabReportDialog";
 export { default as ParameterForm } from "./ParameterForm";
+export { default as ParameterFormTable } from "./ParameterFormTable";

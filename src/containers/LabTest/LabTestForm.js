@@ -1,33 +1,22 @@
-import styled from "@emotion/styled";
 import {
   Box,
   Divider,
   MenuItem,
-  Table,
-  TableBody,
-  TableCell,
-  tableCellClasses,
-  TableContainer,
-  TableHead,
-  TableRow,
   TextField,
   Toolbar,
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { BackButton, ParameterForm } from "../../components";
-
-const StyledTableCell = styled(TableCell)(({ theme, maxwidth }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: "#EBEBEB",
-  },
-  wordWrap: "break-word",
-  maxWidth: maxwidth,
-}));
+import { useNavigate, useParams, useLocation } from "react-router-dom";
+import {
+  BackButton,
+  ParameterForm,
+  ParameterFormTable,
+} from "../../components";
 
 const LabTestForm = () => {
   const { id } = useParams();
+  const location = useLocation();
   const navigate = useNavigate();
 
   const [details, setDetails] = useState({
@@ -38,6 +27,7 @@ const LabTestForm = () => {
   const handleChange = (e) => {
     setDetails({ ...details, [e.target.name]: e.target.value });
   };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Toolbar
@@ -49,7 +39,9 @@ const LabTestForm = () => {
         disableGutters={true}
       >
         <BackButton backFunction={() => navigate(-1)} />
-        <Typography variant="h5">{id ? "Edit" : "New"}</Typography>
+        <Typography variant="h5">
+          {location.state?.mode === "new" ? "New" : "Edit"}
+        </Typography>
       </Toolbar>
       <Divider />
       <Box sx={{ flexDirection: "column", padding: "10px" }}>
@@ -119,7 +111,7 @@ const LabTestForm = () => {
               width: { xs: "100%", md: "35%" },
             }}
           >
-            <ParameterForm />
+            <ParameterForm mode={location.state?.mode} />
           </Box>
           <Box
             sx={{
@@ -127,43 +119,7 @@ const LabTestForm = () => {
               padding: "0px 10px",
             }}
           >
-            <TableContainer
-              sx={{
-                height: 560,
-
-                border: "1px solid #ccc",
-              }}
-            >
-              <Table
-                aria-label="simple table"
-                size="small"
-                stickyHeader
-                sx={{ minWidth: 380 }}
-              >
-                <TableHead>
-                  <TableRow>
-                    <StyledTableCell maxwidth="15px">
-                      Parameter Name
-                    </StyledTableCell>
-                    <StyledTableCell maxwidth="15px">Unit</StyledTableCell>
-                    <StyledTableCell maxwidth="20px">Ranges</StyledTableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow
-                    sx={{
-                      "&:last-child td, &:last-child th": { border: 0 },
-                    }}
-                  >
-                    <StyledTableCell maxwidth="15px">
-                      parameter_name
-                    </StyledTableCell>
-                    <StyledTableCell maxwidth="15px">unit</StyledTableCell>
-                    <StyledTableCell maxwidth="20px">ranges</StyledTableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </TableContainer>
+            <ParameterFormTable mode={location.state?.mode} />
           </Box>
         </Box>
       </Box>
