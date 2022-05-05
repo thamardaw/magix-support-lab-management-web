@@ -122,7 +122,7 @@ const LabTestTable = () => {
       <NewTestDialog
         isOpen={openNewTestDialog}
         handleClose={() => setOpenNewTestDialog(false)}
-        callback={() => navigate("form")}
+        callback={() => navigate("form/1")}
       />
     </>
   );
