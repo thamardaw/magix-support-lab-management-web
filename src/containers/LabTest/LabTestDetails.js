@@ -110,7 +110,7 @@ const LabTestDetails = () => {
               padding: "0px 10px",
             }}
           >
-            <ParameterFormTable mode="new" newHeight={325} />
+            <ParameterFormTable height={325} />
           </Box>
         </Box>
       </Box>
