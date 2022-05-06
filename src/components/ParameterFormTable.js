@@ -17,12 +17,12 @@ const StyledTableCell = styled(TableCell)(({ theme, maxwidth }) => ({
   maxWidth: maxwidth,
 }));
 
-const ParameterFormTable = ({ mode }) => {
+const ParameterFormTable = ({ mode, newHeight = 605, editHeight = 560 }) => {
   return (
     <TableContainer
       sx={{
         // height: 560,
-        height: mode === "new" ? 605 : 560,
+        height: mode === "new" ? newHeight : editHeight,
         border: "1px solid #ccc",
       }}
     >
@@ -40,6 +40,15 @@ const ParameterFormTable = ({ mode }) => {
           </TableRow>
         </TableHead>
         <TableBody>
+          <TableRow
+            sx={{
+              "&:last-child td, &:last-child th": { border: 0 },
+            }}
+          >
+            <StyledTableCell maxwidth="15px">parameter_name</StyledTableCell>
+            <StyledTableCell maxwidth="15px">unit</StyledTableCell>
+            <StyledTableCell maxwidth="20px">ranges</StyledTableCell>
+          </TableRow>
           <TableRow
             sx={{
               "&:last-child td, &:last-child th": { border: 0 },

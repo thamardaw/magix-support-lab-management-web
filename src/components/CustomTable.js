@@ -423,9 +423,9 @@ export default function CustomTable({
                           }}
                         />
                       </TableCell>
-                      {tableConfig.headCells.map((headCell, index) => (
+                      {tableConfig.headCells.map((headCell) => (
                         <TableCell
-                          padding={index === 0 ? "none" : "normal"}
+                          padding={headCell.disablePadding ? "none" : "normal"}
                           key={headCell.id}
                           sx={{
                             maxWidth: `${

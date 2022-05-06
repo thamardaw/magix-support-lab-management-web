@@ -3,15 +3,18 @@ import { memo, useState } from "react";
 import { CustomTable, DeleteDialog, NewTestDialog } from "../../components";
 import { useNavigate } from "react-router-dom";
 
-function createData(id, name, test_category_id) {
+function createData(id, name, category, created_at) {
   return {
     id,
     name,
-    test_category_id,
+    category,
+    created_at,
   };
 }
 
-const rows = [createData(1, "Test Name", 1)];
+const rows = [
+  createData(1, "Test_Name", "Category_Name", "2022-04-24 11:11 AM"),
+];
 
 const headCells = [
   {
@@ -21,16 +24,22 @@ const headCells = [
     label: "ID",
   },
   {
+    id: "category",
+    numeric: false,
+    disablePadding: false,
+    label: "Category",
+  },
+  {
     id: "name",
     numeric: false,
     disablePadding: false,
     label: "Name",
   },
   {
-    id: "test_category_id",
+    id: "created_at",
     numeric: false,
     disablePadding: false,
-    label: "Test Category ID",
+    label: "Created At",
   },
 ];
 
