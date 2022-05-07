@@ -54,6 +54,7 @@ const LabTestTable = () => {
           headCells: headCells,
           tableName: "Lab Test",
           maxHeight: "62vh",
+          atom: "labTestTableAtom",
         }}
         data={rows}
         isLoading={false}

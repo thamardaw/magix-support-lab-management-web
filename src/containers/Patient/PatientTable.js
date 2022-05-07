@@ -99,6 +99,7 @@ const PatientTable = () => {
           headCells: headCells,
           tableName: "Patient",
           maxHeight: "62vh",
+          atom: "patientTableAtom",
         }}
         data={rows}
         isLoading={false}

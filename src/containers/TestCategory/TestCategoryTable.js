@@ -37,6 +37,7 @@ const TestCategoryTable = () => {
           headCells: headCells,
           tableName: "Test Category",
           maxHeight: "62vh",
+          atom: "testCategoryTableAtom",
         }}
         data={rows}
         isLoading={false}

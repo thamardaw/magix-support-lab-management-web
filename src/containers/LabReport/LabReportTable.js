@@ -70,6 +70,7 @@ const LabReportTable = () => {
           headCells: headCells,
           tableName: "Lab Report",
           maxHeight: "62vh",
+          atom: "labReportTableAtom",
         }}
         data={rows}
         isLoading={false}

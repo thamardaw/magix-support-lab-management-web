@@ -20,6 +20,13 @@ import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import { CSVLink } from "react-csv";
 import { styled } from "@mui/material/styles";
 import { Search } from "@mui/icons-material";
+import {
+  withOrder,
+  withOrderBy,
+  withPage,
+  withRowsPerPage,
+} from "../recoil/customTable";
+import { useRecoilState } from "recoil";
 
 const SearchContainer = styled("div")(({ theme }) => ({
   display: "flex",
@@ -260,12 +267,14 @@ export default function CustomTable({
   toolbarButtons,
   isLoading,
 }) {
-  const [order, setOrder] = useState("asc");
-  const [orderBy, setOrderBy] = useState("id");
+  const [order, setOrder] = useRecoilState(withOrder(tableConfig.atom));
+  const [orderBy, setOrderBy] = useRecoilState(withOrderBy(tableConfig.atom));
   const [dataRows, setDataRows] = useState([]);
   const [selected, setSelected] = useState([]);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [page, setPage] = useRecoilState(withPage(tableConfig.atom));
+  const [rowsPerPage, setRowsPerPage] = useRecoilState(
+    withRowsPerPage(tableConfig.atom)
+  );
   const [CSV, setCSV] = useState({
     data: [],
   });
