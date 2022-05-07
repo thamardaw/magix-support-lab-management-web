@@ -43,7 +43,7 @@ const LabResultPreview = ({ height, isPreview = true }) => {
           flexDirection: "column",
           alignItems: "flex-start",
           padding: "10px",
-          height: height,
+          height: { xs: !height || "600px", md: height },
           overflowY: isPreview && "auto",
           border: isPreview && "1px solid #ccc",
         }}
