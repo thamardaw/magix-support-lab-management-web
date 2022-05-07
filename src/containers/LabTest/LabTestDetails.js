@@ -65,13 +65,52 @@ const LabTestDetails = () => {
             >
               unit
             </Typography>
+            <Typography
+              variant="p"
+              sx={{ display: "block", fontWeight: 500, fontSize: "14px" }}
+            >
+              Result Type
+            </Typography>
+            <Typography
+              variant="p"
+              sx={{ display: "block", padding: "10px 0px", fontSize: "14px" }}
+            >
+              number
+            </Typography>
+            <Typography
+              variant="p"
+              sx={{ display: "block", fontWeight: 500, fontSize: "14px" }}
+            >
+              Result Default Text
+            </Typography>
+            <Typography
+              variant="p"
+              sx={{
+                display: "block",
+                margin: "10px 0px",
+                padding: "10px",
+                fontSize: "14px",
+                height: "60px",
+                overflow: "auto",
+                border: "1px solid #ccc",
+              }}
+            >
+              result_default_text, result_default_text2, result_default_text3
+            </Typography>
+            <Typography
+              variant="p"
+              sx={{ display: "block", fontWeight: 500, fontSize: "14px" }}
+            >
+              Ranges
+            </Typography>
             <Box
               sx={{
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "flex-start",
-                padding: "10px 0px",
-                height: "200px",
+                // padding: "10px 0px",
+                margin: "10px 0px",
+                height: "150px",
                 overflowY: "scroll",
                 border: "1px solid #ccc",
               }}
@@ -110,7 +149,7 @@ const LabTestDetails = () => {
               padding: "0px 10px",
             }}
           >
-            <ParameterFormTable height={325} />
+            <ParameterFormTable height={470} />
           </Box>
         </Box>
       </Box>
