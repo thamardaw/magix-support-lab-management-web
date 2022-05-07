@@ -7,27 +7,18 @@ import {
 } from "../../components";
 import { useNavigate } from "react-router-dom";
 
-function createData(
-  id,
-  patient_id,
-  doctor_name,
-  sample_id,
-  sample_type,
-  patient_type,
-  test_date
-) {
+function createData(id, date, sample_id, patient_id, patient_name, test_date) {
   return {
     id,
-    patient_id,
-    doctor_name,
+    date,
     sample_id,
-    sample_type,
-    patient_type,
+    patient_id,
+    patient_name,
     test_date,
   };
 }
 
-const rows = [createData(1, 1, "Aye Aye", 1, "Type", "Type", "2022-2-2")];
+const rows = [createData(1, "2022-2-2", 1, 1, "Name", "2022-2-2")];
 
 const headCells = [
   {
@@ -37,16 +28,10 @@ const headCells = [
     label: "ID",
   },
   {
-    id: "patient_id",
+    id: "date",
     numeric: false,
     disablePadding: false,
-    label: "Patient ID",
-  },
-  {
-    id: "doctor_name",
-    numeric: false,
-    disablePadding: false,
-    label: "Doctor Name",
+    label: "Date",
   },
   {
     id: "sample_id",
@@ -55,16 +40,16 @@ const headCells = [
     label: "Sample ID",
   },
   {
-    id: "sample_type",
+    id: "patient_id",
     numeric: false,
     disablePadding: false,
-    label: "Sample Type",
+    label: "Patient ID",
   },
   {
-    id: "patient_type",
+    id: "patient_name",
     numeric: false,
     disablePadding: false,
-    label: "Patient Type",
+    label: "Patient Name",
   },
   {
     id: "test_date",

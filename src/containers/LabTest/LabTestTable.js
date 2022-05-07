@@ -39,7 +39,7 @@ const headCells = [
     id: "created_at",
     numeric: false,
     disablePadding: false,
-    label: "Created At",
+    label: "Date & Time",
   },
 ];
 
