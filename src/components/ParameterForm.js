@@ -5,14 +5,29 @@ import {
   List,
   ListItem,
   ListItemText,
+  MenuItem,
   TextField,
   Typography,
 } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-const ParameterForm = ({ mode }) => {
+const StyledBox = styled(Box)(({ theme }) => ({
+  // "&::-webkit-scrollbar": {
+  //   width: "4px",
+  // },
+  // "&::-webkit-scrollbar-track": {
+  //   boxShadow: alpha(theme.palette.primary.light, 0.15),
+  //   borderRadius: "10px",
+  // },
+  // "&::-webkit-scrollbar-thumb": {
+  //   backgroundColor: alpha(theme.palette.primary.light, 0.25),
+  // },
+}));
+
+const ParameterForm = ({ height }) => {
   return (
-    <>
+    <StyledBox sx={{ height: height, overflowY: "scroll" }}>
       <Box
         sx={{
           display: "flex",
@@ -52,6 +67,56 @@ const ParameterForm = ({ mode }) => {
           }}
         >
           <TextField fullWidth name="unit" size="small" margin="dense" />
+        </Box>
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
+        }}
+      >
+        <Typography variant="p">Result Type</Typography>
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <TextField
+            select
+            fullWidth
+            name="result_type"
+            size="small"
+            margin="dense"
+          >
+            <MenuItem value="text">Text</MenuItem>
+            <MenuItem value="number">Number</MenuItem>
+          </TextField>
+        </Box>
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
+        }}
+      >
+        <Typography variant="p">Result Default Text</Typography>
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <TextField
+            fullWidth
+            name="result_default_text"
+            size="small"
+            margin="dense"
+          />
         </Box>
       </Box>
       <Box
@@ -129,7 +194,7 @@ const ParameterForm = ({ mode }) => {
         sx={{
           display: "flex",
           padding: "10px 0px",
-          justifyContent: "space-between",
+          justifyContent: "flex-end",
         }}
       >
         <Button
@@ -138,12 +203,6 @@ const ParameterForm = ({ mode }) => {
         >
           Add Range
         </Button>
-        <Button
-          variant="contained"
-          sx={{ width: "45%", textTransform: "none" }}
-        >
-          Add Parameter
-        </Button>
       </Box>
       <Box
         sx={{
@@ -151,7 +210,7 @@ const ParameterForm = ({ mode }) => {
           flexDirection: "column",
           alignItems: "flex-start",
           padding: "10px 0px",
-          height: "200px",
+          height: "150px",
           overflowY: "scroll",
           border: "1px solid #ccc",
         }}
@@ -209,7 +268,6 @@ const ParameterForm = ({ mode }) => {
       </Box>
       <Box
         sx={{
-          display: mode === "new" ? "flex" : "none",
           padding: "10px 0px",
           justifyContent: "space-between",
         }}
@@ -218,7 +276,7 @@ const ParameterForm = ({ mode }) => {
           Save
         </Button>
       </Box>
-    </>
+    </StyledBox>
   );
 };
 

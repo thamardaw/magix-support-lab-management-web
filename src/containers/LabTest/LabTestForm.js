@@ -111,7 +111,7 @@ const LabTestForm = () => {
               width: { xs: "100%", md: "35%" },
             }}
           >
-            <ParameterForm mode={location.state?.mode} />
+            <ParameterForm height={540} />
           </Box>
           <Box
             sx={{
@@ -119,7 +119,10 @@ const LabTestForm = () => {
               padding: "0px 10px",
             }}
           >
-            <ParameterFormTable mode={location.state?.mode} />
+            <ParameterFormTable
+              // height={location.state?.mode === "new" ? 557 : 511}
+              height={540}
+            />
           </Box>
         </Box>
       </Box>

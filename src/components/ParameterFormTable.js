@@ -17,12 +17,11 @@ const StyledTableCell = styled(TableCell)(({ theme, maxwidth }) => ({
   maxWidth: maxwidth,
 }));
 
-const ParameterFormTable = ({ mode, height }) => {
+const ParameterFormTable = ({ height }) => {
   return (
     <TableContainer
       sx={{
-        // height: 560,
-        height: height || (mode === "new" ? 605 : 560),
+        height: height,
         border: "1px solid #ccc",
       }}
     >
