@@ -1,4 +1,5 @@
 import {
+  Autocomplete,
   Button,
   Dialog,
   DialogActions,
@@ -12,12 +13,19 @@ const NewLabReportDialog = ({ isOpen, handleClose, callback }) => {
     <Dialog fullWidth maxWidth="xs" open={isOpen} onClose={handleClose}>
       <DialogTitle sx={{ textAlign: "center" }}>Create New Report</DialogTitle>
       <DialogContent>
-        <TextField
+        <Autocomplete
           autoFocus
-          margin="dense"
-          label="Patient"
+          options={[]}
           fullWidth
-          variant="standard"
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Patient"
+              variant="standard"
+              size="small"
+              margin="dense"
+            />
+          )}
         />
         <TextField
           margin="dense"

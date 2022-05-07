@@ -1,4 +1,10 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
+import {
+  Autocomplete,
+  Box,
+  Button,
+  TextField,
+  Typography,
+} from "@mui/material";
 
 const LabResultForm = ({ height }) => {
   return (
@@ -18,7 +24,18 @@ const LabResultForm = ({ height }) => {
             alignItems: "center",
           }}
         >
-          <TextField fullWidth name="parameter" size="small" margin="dense" />
+          <Autocomplete
+            options={[]}
+            fullWidth
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                name="parameter"
+                size="small"
+                margin="dense"
+              />
+            )}
+          />
         </Box>
       </Box>
       <Box
@@ -54,7 +71,13 @@ const LabResultForm = ({ height }) => {
             alignItems: "center",
           }}
         >
-          <TextField fullWidth name="range" size="small" margin="dense" />
+          <Autocomplete
+            options={[]}
+            fullWidth
+            renderInput={(params) => (
+              <TextField {...params} name="range" size="small" margin="dense" />
+            )}
+          />
         </Box>
       </Box>
       <Box
