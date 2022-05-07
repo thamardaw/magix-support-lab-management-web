@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   BackButton,
   ParameterForm,
@@ -15,7 +15,7 @@ import {
 } from "../../components";
 
 const LabTestForm = () => {
-  const { id } = useParams();
+  // const { id } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
 
