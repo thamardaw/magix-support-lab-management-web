@@ -10,11 +10,33 @@ import {
   Typography,
 } from "@mui/material";
 import DetailsRow from "./DetailsRow";
+// import EditIcon from "@mui/icons-material/Edit";
+// import SaveIcon from "@mui/icons-material/Save";
 
 const LabResultPreview = ({ height, isPreview = true }) => {
+  // const [isEditMode, setIsEditMode] = useState(false);
   return (
     <>
-      {isPreview && <Typography variant="h6">Preview</Typography>}
+      {isPreview && (
+        <Box display="flex" alignItems="center">
+          <Typography variant="h6">
+            {/* {isEditMode ? "Edit" : "Preview"} */}
+            Preview
+          </Typography>
+          {/* <IconButton
+            color="primary"
+            aria-label="edit"
+            size="small"
+            onClick={() => setIsEditMode(!isEditMode)}
+          >
+            {isEditMode ? (
+              <SaveIcon fontSize="small" />
+            ) : (
+              <EditIcon fontSize="small" />
+            )}
+          </IconButton> */}
+        </Box>
+      )}
       <Box
         sx={{
           display: "flex",
@@ -28,13 +50,29 @@ const LabResultPreview = ({ height, isPreview = true }) => {
       >
         <Grid container alignItems="center">
           <Grid item xs={12} md={6}>
+            {/* {isEditMode ? (
+              <TextField label="Patient Name" size="small" />
+            ) : ( */}
             <DetailsRow name="Patient Name" value="Aung Aung" padding="0px" />
+            {/* )} */}
           </Grid>
           <Grid item xs={12} md={6}>
+            {/* {isEditMode ? (
+              <TextField label="Date" size="small" placeholder="YYYY-MM-DD" />
+            ) : ( */}
             <DetailsRow name="Date" value="2022-2-2" padding="0px" />
+            {/* )} */}
           </Grid>
           <Grid item xs={12} md={6}>
+            {/* {isEditMode ? (
+              <TextField
+                label="Patient Sex"
+                size="small"
+                placeholder="YYYY-MM-DD"
+              />
+            ) : ( */}
             <DetailsRow name="Patient Sex" value="male" padding="0px" />
+            {/* )} */}
           </Grid>
           <Grid item xs={12} md={6}>
             <DetailsRow name="Sample ID" value="1" padding="0px" />

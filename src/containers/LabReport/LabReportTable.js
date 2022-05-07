@@ -148,7 +148,7 @@ const LabReportTable = () => {
         isOpen={openLabReportDialog}
         handleClose={() => setOpenLabReportDialog(false)}
         callback={() => {
-          navigate("form");
+          navigate("form/1", { state: { mode: "new" } });
         }}
       />
     </>
