@@ -14,12 +14,12 @@ const NewLabReportDialog = ({ isOpen, handleClose, callback }) => {
       <DialogTitle sx={{ textAlign: "center" }}>Create New Report</DialogTitle>
       <DialogContent>
         <Autocomplete
-          autoFocus
           options={[]}
           fullWidth
           renderInput={(params) => (
             <TextField
               {...params}
+              autoFocus
               label="Patient"
               variant="standard"
               size="small"
@@ -40,14 +40,12 @@ const NewLabReportDialog = ({ isOpen, handleClose, callback }) => {
           variant="standard"
         />
         <TextField
-          autoFocus
           margin="dense"
           label="Sample Type"
           fullWidth
           variant="standard"
         />
         <TextField
-          autoFocus
           margin="dense"
           label="Date"
           placeholder="YYYY-MM-DD"
