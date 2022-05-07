@@ -108,13 +108,13 @@ const Appbar = ({ drawerWidth }) => {
           <ListItemIcon>
             <PersonIcon fontSize="small" />
           </ListItemIcon>
-          {user.sub}
+          {user?.sub || "Guest"}
         </MenuItem>
         <MenuItem>
           <ListItemIcon>
             <BadgeIcon fontSize="small" />
           </ListItemIcon>
-          {user.role}
+          {user?.role || "None"}
         </MenuItem>
         <Divider />
         <MenuItem onClick={logoutUser}>
