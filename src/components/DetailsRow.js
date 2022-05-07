@@ -2,12 +2,12 @@ import PropTypes from "prop-types";
 import { alpha, Box, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
-const StyledBox = styled("div")(({ theme }) => ({
+const StyledBox = styled("div")(({ theme, padding = "10px" }) => ({
   display: "flex",
   flexDirection: "row",
   alignItems: "center",
   margin: "10px 0px",
-  padding: "10px",
+  padding: padding,
   "&:hover": {
     backgroundColor: alpha(theme.palette.primary.light, 0.1),
   },
@@ -17,11 +17,12 @@ const DetailsRow = ({
   leftWidth = "30%",
   rightWidth = "70%",
   textVariant = "body2",
+  padding,
   name,
   value,
 }) => {
   return (
-    <StyledBox>
+    <StyledBox padding={padding}>
       <Box sx={{ width: leftWidth }}>
         <Typography variant={textVariant} sx={{ fontWeight: "bold" }}>
           {name}

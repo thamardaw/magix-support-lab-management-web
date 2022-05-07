@@ -9,3 +9,5 @@ export { default as NewTestDialog } from "./NewTestDialog";
 export { default as NewLabReportDialog } from "./NewLabReportDialog";
 export { default as ParameterForm } from "./ParameterForm";
 export { default as ParameterFormTable } from "./ParameterFormTable";
+export { default as LabResultForm } from "./LabResultForm";
+export { default as LabResultPreview } from "./LabResultPreview";
