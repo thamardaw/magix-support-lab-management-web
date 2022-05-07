@@ -57,7 +57,7 @@ const LabResultPreview = ({ height, isPreview = true }) => {
           </Grid>
         </Grid>
         <TableContainer>
-          <Table size="small">
+          <Table size="small" stickyHeader>
             <TableHead>
               <TableRow>
                 <TableCell padding="none">Paramter</TableCell>
