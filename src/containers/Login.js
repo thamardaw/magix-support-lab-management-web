@@ -69,38 +69,34 @@ const Login = () => {
   };
 
   const submitHandler = async (e) => {
-    if (false) {
-      setLoading(true);
-      e.preventDefault();
-      const formData = new FormData();
-      formData.append("username", details.username);
-      formData.append("password", details.password);
-      const res = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/api/login`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          validateStatus: function (status) {
-            return status < 500;
-          },
-        }
-      );
-      if (res.status === 200) {
-        setAuth(res.data);
-        localStorage.setItem(
-          "magix-support-auth-tokens",
-          JSON.stringify(res.data)
-        );
-        navigate("/");
-      } else {
-        openAlert({ status: res.status, detail: res.data.detail });
+    setLoading(true);
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("username", details.username);
+    formData.append("password", details.password);
+    const res = await axios.post(
+      `${process.env.REACT_APP_BASE_URL}/api/login`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        validateStatus: function (status) {
+          return status < 500;
+        },
       }
-      setLoading(false);
-    } else {
+    );
+    if (res.status === 200) {
+      setAuth(res.data);
+      localStorage.setItem(
+        "magix-support-auth-tokens",
+        JSON.stringify(res.data)
+      );
       navigate("/");
+    } else {
+      openAlert({ status: res.status, detail: res.data.detail });
     }
+    setLoading(false);
   };
 
   return (
