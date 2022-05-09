@@ -25,7 +25,6 @@ const LabResultForm = ({ height }) => {
           }}
         >
           <Autocomplete
-            options={[]}
             fullWidth
             renderInput={(params) => (
               <TextField
