@@ -1,6 +1,7 @@
 import { Box, Divider, Toolbar, Typography } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import { BackButton, LabResultForm, LabResultPreview } from "../../components";
+import { labReportData, labResultData } from "../../utils/mock_data";
 
 const LabReportForm = () => {
   const navigate = useNavigate();
@@ -41,7 +42,10 @@ const LabReportForm = () => {
             padding: "0px 10px",
           }}
         >
-          <LabResultPreview height="365px" />
+          <LabResultPreview
+            height="365px"
+            data={{ labReport: labReportData, labResult: labResultData }}
+          />
         </Box>
       </Box>
     </Box>

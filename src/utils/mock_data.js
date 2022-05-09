@@ -1,6 +1,11 @@
 export const labReportData = {
   id: 1,
   patient_id: 1,
+  patient: {
+    name: "John Doe",
+    age: "30",
+    gender: "male",
+  },
   doctor_name: "Aung Aung",
   sample_id: 1,
   sample_type: "String",

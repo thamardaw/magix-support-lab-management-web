@@ -1,6 +1,7 @@
 import { Box, Toolbar, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { BackButton, LabResultPreview } from "../../components";
+import { labReportData, labResultData } from "../../utils/mock_data";
 
 const LabReportDetails = () => {
   const navigate = useNavigate();
@@ -17,7 +18,10 @@ const LabReportDetails = () => {
         <BackButton backFunction={() => navigate(-1)} />
         <Typography variant="h5">Details</Typography>
       </Toolbar>
-      <LabResultPreview isPreview={false} />
+      <LabResultPreview
+        isPreview={false}
+        data={{ labReport: labReportData, labResult: labResultData }}
+      />
     </Box>
   );
 };
