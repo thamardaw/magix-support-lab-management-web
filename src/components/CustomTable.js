@@ -365,6 +365,7 @@ export default function CustomTable({
       headers: h,
       filename: `${tableConfig.tableName}.csv`,
     });
+    setSelected([]);
   }, [data, tableConfig]);
 
   useEffect(() => {

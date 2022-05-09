@@ -1,42 +1,8 @@
 import { Button } from "@mui/material";
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { CustomTable, DeleteDialog } from "../../components";
 import { useNavigate } from "react-router-dom";
-
-function createData(
-  id,
-  name,
-  age,
-  contact_details,
-  gender,
-  date_of_birth,
-  address,
-  created_time
-) {
-  return {
-    id,
-    name,
-    age,
-    contact_details,
-    gender,
-    date_of_birth,
-    address,
-    created_time,
-  };
-}
-
-const rows = [
-  createData(
-    1,
-    "Aung Aung",
-    "18",
-    "09123456789",
-    "male",
-    "2002-2-2",
-    "Kamaryut",
-    "2022-04-24 11:11 AM"
-  ),
-];
+import { useAxios } from "../../hooks";
 
 const headCells = [
   {
@@ -91,7 +57,58 @@ const headCells = [
 
 const PatientTable = () => {
   const navigate = useNavigate();
+  const api = useAxios({ autoSnackbar: true });
+  const [isTableLoading, setIsTableLoading] = useState(false);
+  const [rows, setRows] = useState([]);
+  const [selected, setSelected] = useState([]);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+
+  const getData = async () => {
+    setIsTableLoading(true);
+    const res = await api.get("/api/patients/");
+    if (res.status === 200) {
+      const data = res.data.map((row) => {
+        // const ID = generateID(row.id, row.created_time);
+        const dateAndTime = `${row.created_time.split("T")[0]} ${new Date(
+          row.created_time
+        ).toLocaleTimeString("en-US", {
+          hour: "numeric",
+          minute: "numeric",
+          hour12: true,
+        })}`;
+        return {
+          id: row.id,
+          name: row.name,
+          age: row.age,
+          contact_details: row.contact_details,
+          gender: row.gender,
+          date_of_birth: row.date_of_birth || "",
+          address: row.address,
+          created_time: dateAndTime,
+        };
+      });
+      setRows(data);
+      setIsTableLoading(false);
+    }
+    return;
+  };
+
+  const deleteItem = async () => {
+    if (selected.length === 0) {
+      return;
+    } else if (selected.length === 1) {
+      await api.delete(`/api/patients/${parseInt(selected[0].id)}`);
+    }
+    setOpenDeleteDialog(false);
+    setSelected([]);
+    getData();
+  };
+
+  useEffect(() => {
+    getData();
+    // eslint-disable-next-line
+  }, []);
+
   return (
     <>
       <CustomTable
@@ -102,7 +119,7 @@ const PatientTable = () => {
           atom: "patientTableAtom",
         }}
         data={rows}
-        isLoading={false}
+        isLoading={isTableLoading}
         toolbarButtons={{
           whenNoneSelected: [
             {
@@ -126,7 +143,7 @@ const PatientTable = () => {
                 </Button>
               )),
               callback: (selected) => {
-                navigate("form/1");
+                navigate(`form/${selected[0].id}`);
               },
             },
             {
@@ -142,7 +159,7 @@ const PatientTable = () => {
                 </Button>
               )),
               callback: (selected) => {
-                navigate("details/1");
+                navigate(`details/${selected[0].id}`);
               },
             },
             {
@@ -159,6 +176,7 @@ const PatientTable = () => {
                 </Button>
               )),
               callback: (selected) => {
+                setSelected(selected);
                 setOpenDeleteDialog(true);
               },
             },
@@ -170,7 +188,7 @@ const PatientTable = () => {
         isOpen={openDeleteDialog}
         handleClose={() => setOpenDeleteDialog(false)}
         callback={() => {
-          console.log("delete");
+          deleteItem();
         }}
       />
     </>

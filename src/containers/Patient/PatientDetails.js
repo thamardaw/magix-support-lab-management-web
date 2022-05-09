@@ -1,9 +1,31 @@
 import { Box, Divider, Toolbar, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { BackButton, DetailsRow } from "../../components";
+import { useAxios } from "../../hooks";
 
 const PatientDetails = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
+  const api = useAxios({ autoSnackbar: true });
+  const [details, setDetails] = useState({});
+
+  const getData = async () => {
+    const res = await api.get(`/api/patients/${parseInt(id)}`);
+    if (res.status === 200) {
+      setDetails({ ...res.data });
+    }
+  };
+
+  useEffect(() => {
+    if (id) {
+      getData();
+    } else {
+      navigate(-1);
+    }
+    // eslint-disable-next-line
+  }, [id]);
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Toolbar
@@ -19,13 +41,13 @@ const PatientDetails = () => {
       </Toolbar>
       <Divider />
       <Box sx={{ flexDirection: "column", padding: "10px" }}>
-        <DetailsRow name="ID" value="1" />
-        <DetailsRow name="Name" value="Aung Aung" />
-        <DetailsRow name="Age" value="18" />
-        <DetailsRow name="Contact Details" value="09123456789" />
-        <DetailsRow name="Gender" value="male" />
-        <DetailsRow name="Date Of Birth" value="2002-2-2" />
-        <DetailsRow name="Address" value="Kamaryut" />
+        <DetailsRow name="ID" value={details?.id} />
+        <DetailsRow name="Name" value={details?.name} />
+        <DetailsRow name="Age" value={details?.age} />
+        <DetailsRow name="Contact Details" value={details?.contact_details} />
+        <DetailsRow name="Gender" value={details?.gender} />
+        <DetailsRow name="Date Of Birth" value={details.date_of_birth} />
+        <DetailsRow name="Address" value={details?.address} />
       </Box>
     </Box>
   );

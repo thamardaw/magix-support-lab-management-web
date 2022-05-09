@@ -7,14 +7,16 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import BackButton from "../../components/BackButton";
+import { useAxios } from "../../hooks";
 
 const PatientForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  // const [isLoading, setIsLoading] = useState(false);
+  const api = useAxios({ autoSnackbar: true });
+  const [isLoading, setIsLoading] = useState(false);
 
   const [details, setDetails] = useState({
     name: "",
@@ -29,8 +31,49 @@ const PatientForm = () => {
     setDetails({ ...details, [e.target.name]: e.target.value });
   };
 
-  const createNew = async () => {};
-  const update = async () => {};
+  const getData = async () => {
+    const res = await api.get(`/api/patients/${parseInt(id)}`);
+    if (res.status === 200) {
+      setDetails({ ...res.data });
+    } else {
+      navigate(-1);
+    }
+  };
+
+  const createNew = async () => {
+    setIsLoading(true);
+    const res = await api.post(`/api/patients/`, {
+      ...details,
+      date_of_birth: details.date_of_birth || null,
+    });
+    if (res.status === 200) {
+      navigate(-1);
+    }
+    setIsLoading(false);
+  };
+
+  const update = async () => {
+    setIsLoading(true);
+    const res = await api.put(`/api/patients/${parseInt(id)}`, {
+      name: details.name,
+      age: details.age,
+      contact_details: details.contact_details,
+      gender: details.gender,
+      date_of_birth: details.date_of_birth || null,
+      address: details.address,
+    });
+    if (res.status === 200) {
+      navigate(-1);
+    }
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    if (id) {
+      getData();
+    }
+    // eslint-disable-next-line
+  }, [id]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -114,7 +157,7 @@ const PatientForm = () => {
           <Box sx={{ width: "30%" }}>
             <Typography variant="p">Gender</Typography>
           </Box>
-          {/* <TextField size="small" sx={{ width: "70%" }} margin="dense" /> */}
+
           <TextField
             select
             fullWidth
@@ -181,8 +224,7 @@ const PatientForm = () => {
       >
         <LoadingButton
           variant="contained"
-          // loading={isLoading}
-          loading={false}
+          loading={isLoading}
           size="small"
           sx={{ marginRight: "5px" }}
           onClick={id ? update : createNew}
