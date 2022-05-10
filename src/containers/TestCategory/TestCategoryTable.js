@@ -1,16 +1,8 @@
 import { Button } from "@mui/material";
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { CustomTable, DeleteDialog } from "../../components";
 import { useNavigate } from "react-router-dom";
-
-function createData(id, name) {
-  return {
-    id,
-    name,
-  };
-}
-
-const rows = [createData(1, "Test Category")];
+import { useAxios } from "../../hooks";
 
 const headCells = [
   {
@@ -29,7 +21,44 @@ const headCells = [
 
 const TestCategoryTable = () => {
   const navigate = useNavigate();
+  const api = useAxios({ autoSnackbar: true });
+  const [isTableLoading, setIsTableLoading] = useState(false);
+  const [rows, setRows] = useState([]);
+  const [selected, setSelected] = useState([]);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+
+  const getData = async () => {
+    setIsTableLoading(true);
+    const res = await api.get("/api/test_categories/");
+    if (res.status === 200) {
+      const data = res.data.map((row) => {
+        return {
+          id: row.id,
+          name: row.name,
+        };
+      });
+      setRows(data);
+      setIsTableLoading(false);
+    }
+    return;
+  };
+
+  const deleteItem = async () => {
+    if (selected.length === 0) {
+      return;
+    } else if (selected.length === 1) {
+      await api.delete(`/api/test_categories/${parseInt(selected[0].id)}`);
+    }
+    setOpenDeleteDialog(false);
+    setSelected([]);
+    getData();
+  };
+
+  useEffect(() => {
+    getData();
+    // eslint-disable-next-line
+  }, []);
+
   return (
     <>
       <CustomTable
@@ -40,7 +69,7 @@ const TestCategoryTable = () => {
           atom: "testCategoryTableAtom",
         }}
         data={rows}
-        isLoading={false}
+        isLoading={isTableLoading}
         toolbarButtons={{
           whenNoneSelected: [
             {
@@ -64,7 +93,7 @@ const TestCategoryTable = () => {
                 </Button>
               )),
               callback: (selected) => {
-                navigate("form/1");
+                navigate(`form/${selected[0].id}`);
               },
             },
             {
@@ -80,7 +109,7 @@ const TestCategoryTable = () => {
                 </Button>
               )),
               callback: (selected) => {
-                navigate("details/1");
+                navigate(`details/${selected[0].id}`);
               },
             },
             {
@@ -97,6 +126,7 @@ const TestCategoryTable = () => {
                 </Button>
               )),
               callback: (selected) => {
+                setSelected(selected);
                 setOpenDeleteDialog(true);
               },
             },
@@ -108,7 +138,7 @@ const TestCategoryTable = () => {
         isOpen={openDeleteDialog}
         handleClose={() => setOpenDeleteDialog(false)}
         callback={() => {
-          console.log("delete");
+          deleteItem();
         }}
       />
     </>
