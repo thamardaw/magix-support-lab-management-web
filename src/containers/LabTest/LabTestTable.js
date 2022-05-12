@@ -1,20 +1,8 @@
 import { Button } from "@mui/material";
-import { memo, useState } from "react";
-import { CustomTable, DeleteDialog, NewTestDialog } from "../../components";
+import { memo, useEffect, useState } from "react";
+import { CustomTable, DeleteDialog } from "../../components";
 import { useNavigate } from "react-router-dom";
-
-function createData(id, name, category, created_at) {
-  return {
-    id,
-    name,
-    category,
-    created_at,
-  };
-}
-
-const rows = [
-  createData(1, "Test_Name", "Category_Name", "2022-04-24 11:11 AM"),
-];
+import { useAxios } from "../../hooks";
 
 const headCells = [
   {
@@ -36,7 +24,7 @@ const headCells = [
     label: "Name",
   },
   {
-    id: "created_at",
+    id: "created_time",
     numeric: false,
     disablePadding: false,
     label: "Date & Time",
@@ -45,8 +33,53 @@ const headCells = [
 
 const LabTestTable = () => {
   const navigate = useNavigate();
+  const api = useAxios({ autoSnackbar: true });
+  const [isTableLoading, setIsTableLoading] = useState(false);
+  const [rows, setRows] = useState([]);
+  const [selected, setSelected] = useState([]);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const [openNewTestDialog, setOpenNewTestDialog] = useState(false);
+
+  const getData = async () => {
+    setIsTableLoading(true);
+    const res = await api.get("/api/lab_tests/");
+    if (res.status === 200) {
+      const data = res.data.map((row) => {
+        const dateAndTime = `${row.created_time.split("T")[0]} ${new Date(
+          row.created_time
+        ).toLocaleTimeString("en-US", {
+          hour: "numeric",
+          minute: "numeric",
+          hour12: true,
+        })}`;
+        return {
+          id: row.id,
+          category: row?.test_category_?.name || "",
+          name: row?.name || "",
+          created_time: dateAndTime,
+        };
+      });
+      setRows(data);
+      setIsTableLoading(false);
+    }
+    return;
+  };
+
+  const deleteItem = async () => {
+    if (selected.length === 0) {
+      return;
+    } else if (selected.length === 1) {
+      await api.delete(`/api/lab_tests/${parseInt(selected[0].id)}`);
+    }
+    setOpenDeleteDialog(false);
+    setSelected([]);
+    getData();
+  };
+
+  useEffect(() => {
+    getData();
+    // eslint-disable-next-line
+  }, []);
+
   return (
     <>
       <CustomTable
@@ -57,7 +90,7 @@ const LabTestTable = () => {
           atom: "labTestTableAtom",
         }}
         data={rows}
-        isLoading={false}
+        isLoading={isTableLoading}
         toolbarButtons={{
           whenNoneSelected: [
             {
@@ -68,8 +101,7 @@ const LabTestTable = () => {
                 </Button>
               )),
               callback: (selected) => {
-                setOpenNewTestDialog(true);
-                // navigate("form");
+                navigate("form", { state: { mode: "new" } });
               },
             },
           ],
@@ -82,7 +114,7 @@ const LabTestTable = () => {
                 </Button>
               )),
               callback: (selected) => {
-                navigate("form/1", { state: { mode: "edit" } });
+                navigate(`form/${selected[0].id}`, { state: { mode: "edit" } });
               },
             },
             {
@@ -98,7 +130,7 @@ const LabTestTable = () => {
                 </Button>
               )),
               callback: (selected) => {
-                navigate("details/1");
+                navigate(`details/${selected[0].id}`);
               },
             },
             {
@@ -115,6 +147,7 @@ const LabTestTable = () => {
                 </Button>
               )),
               callback: (selected) => {
+                setSelected(selected);
                 setOpenDeleteDialog(true);
               },
             },
@@ -126,13 +159,8 @@ const LabTestTable = () => {
         isOpen={openDeleteDialog}
         handleClose={() => setOpenDeleteDialog(false)}
         callback={() => {
-          console.log("delete");
+          deleteItem();
         }}
-      />
-      <NewTestDialog
-        isOpen={openNewTestDialog}
-        handleClose={() => setOpenNewTestDialog(false)}
-        callback={() => navigate("form/1", { state: { mode: "new" } })}
       />
     </>
   );

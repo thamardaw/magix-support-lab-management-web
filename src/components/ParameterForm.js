@@ -9,25 +9,112 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { styled } from "@mui/material/styles";
+// import { styled } from "@mui/material/styles";
 import DeleteIcon from "@mui/icons-material/Delete";
+// import { alpha } from "@mui/material/styles";
+import { useRecoilState, useResetRecoilState } from "recoil";
+import parameterFormAtom from "../recoil/parameterForm";
+import { useEffect, useState } from "react";
+import { useAxios } from "../hooks";
+import { LoadingButton } from "@mui/lab";
 
-const StyledBox = styled(Box)(({ theme }) => ({
-  // "&::-webkit-scrollbar": {
-  //   width: "4px",
-  // },
-  // "&::-webkit-scrollbar-track": {
-  //   boxShadow: alpha(theme.palette.primary.light, 0.15),
-  //   borderRadius: "10px",
-  // },
-  // "&::-webkit-scrollbar-thumb": {
-  //   backgroundColor: alpha(theme.palette.primary.light, 0.25),
-  // },
-}));
+// const StyledBox = styled(Box)(({ theme }) => ({
+//   "&::-webkit-scrollbar": {
+//     width: "4px",
+//   },
+//   "&::-webkit-scrollbar-track": {
+//     backgroundColor: alpha(theme.palette.primary.light, 0.15),
+//     borderRadius: "10px",
+//   },
+//   "&::-webkit-scrollbar-thumb": {
+//     backgroundColor: alpha(theme.palette.primary.light, 0.25),
+//   },
+// }));
 
-const ParameterForm = ({ height }) => {
+const ParameterForm = ({ height, refreshData, id }) => {
+  const api = useAxios({ autoSnackbar: true });
+  const [details, setDetails] = useRecoilState(parameterFormAtom);
+  const resetParameterFrom = useResetRecoilState(parameterFormAtom);
+  const [isLoading, setIsLoading] = useState(false);
+  const [range, setRange] = useState({
+    lower_limit: "",
+    upper_limit: "",
+    low_remark: "",
+    normal_remark: "",
+    high_remark: "",
+  });
+
+  const handleChange = (e) => {
+    setDetails({ ...details, [e.target.name]: e.target.value });
+  };
+
+  const handleRangeChange = (e) => {
+    setRange({ ...range, [e.target.name]: e.target.value });
+  };
+
+  const addRange = async () => {
+    if (details.id) {
+      await api.post(`/api/parameters/ranges/${details.id}`, { ...range });
+      refreshData();
+    } else {
+      setDetails({
+        ...details,
+        parameter_ranges: [{ ...range }, ...details.parameter_ranges],
+      });
+    }
+    setRange({
+      lower_limit: "",
+      upper_limit: "",
+      low_remark: "",
+      normal_remark: "",
+      high_remark: "",
+    });
+  };
+
+  const removeRange = async (index) => {
+    const newRanges = [...details.parameter_ranges];
+    if (newRanges[index].id) {
+      await api.delete(`/api/parameters/ranges/${newRanges[index].id}`);
+      refreshData();
+    } else {
+      newRanges.splice(index, 1);
+      setDetails({ ...details, parameter_ranges: newRanges });
+    }
+  };
+
+  const createNewParameter = async () => {
+    setIsLoading(true);
+    const res = await api.post(`/api/parameters/`, {
+      ...details,
+      result_default_text: details.result_default_text.split(","),
+      lab_test_id: id,
+    });
+    if (res.status === 200) {
+      refreshData();
+      resetParameterFrom();
+    }
+    setIsLoading(false);
+  };
+
+  const updateParameter = async () => {
+    setIsLoading(true);
+    const res = await api.put(`/api/parameters/${details.id}/`, {
+      ...details,
+      result_default_text: details.result_default_text.split(","),
+    });
+    if (res.status === 200) {
+      refreshData();
+      resetParameterFrom();
+    }
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    return () => resetParameterFrom();
+  }, [resetParameterFrom]);
+
   return (
-    <StyledBox sx={{ height: height, overflowY: "scroll" }}>
+    <Box sx={{ height: height, overflowY: "scroll" }}>
       <Box
         sx={{
           display: "flex",
@@ -45,9 +132,11 @@ const ParameterForm = ({ height }) => {
         >
           <TextField
             fullWidth
-            name="parameter_name"
+            name="name"
             size="small"
             margin="dense"
+            onChange={handleChange}
+            value={details?.name || ""}
           />
         </Box>
       </Box>
@@ -66,7 +155,14 @@ const ParameterForm = ({ height }) => {
             alignItems: "center",
           }}
         >
-          <TextField fullWidth name="unit" size="small" margin="dense" />
+          <TextField
+            fullWidth
+            name="unit"
+            size="small"
+            margin="dense"
+            onChange={handleChange}
+            value={details?.unit || ""}
+          />
         </Box>
       </Box>
       <Box
@@ -87,9 +183,11 @@ const ParameterForm = ({ height }) => {
           <TextField
             select
             fullWidth
+            value={details?.result_type || ""}
             name="result_type"
             size="small"
             margin="dense"
+            onChange={handleChange}
           >
             <MenuItem value="text">Text</MenuItem>
             <MenuItem value="number">Number</MenuItem>
@@ -116,6 +214,8 @@ const ParameterForm = ({ height }) => {
             name="result_default_text"
             size="small"
             margin="dense"
+            onChange={handleChange}
+            value={details?.result_default_text || ""}
           />
         </Box>
       </Box>
@@ -141,6 +241,8 @@ const ParameterForm = ({ height }) => {
             size="small"
             margin="dense"
             sx={{ width: "45%" }}
+            value={range.lower_limit || ""}
+            onChange={handleRangeChange}
           />
           <TextField
             name="upper_limit"
@@ -148,6 +250,8 @@ const ParameterForm = ({ height }) => {
             size="small"
             margin="dense"
             sx={{ width: "45%" }}
+            value={range.upper_limit || ""}
+            onChange={handleRangeChange}
           />
         </Box>
       </Box>
@@ -168,25 +272,31 @@ const ParameterForm = ({ height }) => {
           }}
         >
           <TextField
-            name="lower_limit"
+            name="low_remark"
             placeholder="Low"
             size="small"
             margin="dense"
             sx={{ width: "30%" }}
+            value={range.low_remark || ""}
+            onChange={handleRangeChange}
           />
           <TextField
-            name="upper_limit"
+            name="normal_remark"
             placeholder="Normal"
             size="small"
             margin="dense"
             sx={{ width: "30%" }}
+            value={range.normal_remark || ""}
+            onChange={handleRangeChange}
           />
           <TextField
-            name="upper_limit"
+            name="high_remark"
             placeholder="High"
             size="small"
             margin="dense"
             sx={{ width: "30%" }}
+            value={range.high_remark || ""}
+            onChange={handleRangeChange}
           />
         </Box>
       </Box>
@@ -200,6 +310,7 @@ const ParameterForm = ({ height }) => {
         <Button
           variant="contained"
           sx={{ width: "45%", textTransform: "none" }}
+          onClick={addRange}
         >
           Add Range
         </Button>
@@ -215,55 +326,26 @@ const ParameterForm = ({ height }) => {
           border: "1px solid #ccc",
         }}
       >
-        <List>
-          <ListItem
-            secondaryAction={
-              <IconButton edge="end" aria-label="delete">
-                <DeleteIcon />
-              </IconButton>
-            }
-          >
-            <ListItemText
-              primary="0-100"
-              secondary="Low Remark, Normal Remark, High Remark"
-            />
-          </ListItem>
-          <ListItem
-            secondaryAction={
-              <IconButton edge="end" aria-label="delete">
-                <DeleteIcon />
-              </IconButton>
-            }
-          >
-            <ListItemText
-              primary="0-100"
-              secondary="Low Remark, Normal Remark, High Remark"
-            />
-          </ListItem>
-          <ListItem
-            secondaryAction={
-              <IconButton edge="end" aria-label="delete">
-                <DeleteIcon />
-              </IconButton>
-            }
-          >
-            <ListItemText
-              primary="0-100"
-              secondary="Low Remark, Normal Remark, High Remark"
-            />
-          </ListItem>
-          <ListItem
-            secondaryAction={
-              <IconButton edge="end" aria-label="delete">
-                <DeleteIcon />
-              </IconButton>
-            }
-          >
-            <ListItemText
-              primary="0-100"
-              secondary="Low Remark, Normal Remark, High Remark"
-            />
-          </ListItem>
+        <List sx={{ width: "100%" }}>
+          {details?.parameter_ranges?.map((range, index) => (
+            <ListItem
+              key={index}
+              secondaryAction={
+                <IconButton
+                  edge="end"
+                  aria-label="delete"
+                  onClick={() => removeRange(index)}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              }
+            >
+              <ListItemText
+                primary={`${range.lower_limit}-${range.upper_limit}`}
+                secondary={`${range.low_remark}, ${range.normal_remark}, ${range.high_remark}`}
+              />
+            </ListItem>
+          ))}
         </List>
       </Box>
       <Box
@@ -272,11 +354,16 @@ const ParameterForm = ({ height }) => {
           justifyContent: "space-between",
         }}
       >
-        <Button variant="contained" fullWidth>
+        <LoadingButton
+          variant="contained"
+          loading={isLoading}
+          fullWidth
+          onClick={details.id ? updateParameter : createNewParameter}
+        >
           Save
-        </Button>
+        </LoadingButton>
       </Box>
-    </StyledBox>
+    </Box>
   );
 };
 

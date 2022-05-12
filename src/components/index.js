@@ -11,3 +11,5 @@ export { default as ParameterForm } from "./ParameterForm";
 export { default as ParameterFormTable } from "./ParameterFormTable";
 export { default as LabResultForm } from "./LabResultForm";
 export { default as LabResultPreview } from "./LabResultPreview";
+export { default as LabTestSubForm } from "./LabTestSubForm";
+export { default as TabPanel } from "./TabPanel";
