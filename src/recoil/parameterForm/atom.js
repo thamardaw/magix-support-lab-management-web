@@ -8,7 +8,7 @@ const parameterFormAtom = atom({
     unit: "",
     lab_test_id: null,
     result_type: "",
-    result_default_text: [],
+    result_default_text: "",
     parameter_ranges: [],
   },
 });

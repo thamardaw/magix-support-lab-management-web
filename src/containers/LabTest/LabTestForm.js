@@ -29,9 +29,11 @@ const LabTestForm = () => {
   // };
 
   const getParameterData = async () => {
-    const res = await api.get(`/api/parameters?lab_test_id=${id}`);
-    if (res.status === 200) {
-      setParameters(res.data);
+    if (id) {
+      const res = await api.get(`/api/parameters?lab_test_id=${id}`);
+      if (res.status === 200) {
+        setParameters(res.data);
+      }
     }
   };
 

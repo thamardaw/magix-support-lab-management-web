@@ -86,7 +86,7 @@ const ParameterForm = ({ height, refreshData, id }) => {
     setIsLoading(true);
     const res = await api.post(`/api/parameters/`, {
       ...details,
-      result_default_text: details.result_default_text.split(","),
+      result_default_text: details?.result_default_text.split(","),
       lab_test_id: id,
     });
     if (res.status === 200) {
@@ -100,7 +100,7 @@ const ParameterForm = ({ height, refreshData, id }) => {
     setIsLoading(true);
     const res = await api.put(`/api/parameters/${details.id}/`, {
       ...details,
-      result_default_text: details.result_default_text.split(","),
+      result_default_text: details?.result_default_text.split(","),
     });
     if (res.status === 200) {
       refreshData();

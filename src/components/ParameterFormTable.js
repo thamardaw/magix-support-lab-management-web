@@ -77,7 +77,7 @@ const ParameterFormTable = ({
         <TableBody>
           {rows.map((row) => (
             <TableRow
-              selected={row.id === parameterForm.id}
+              selected={row.id === parameterForm?.id}
               onClick={() => {
                 if (row.id === parameterForm.id) {
                   resetParameterFrom();
@@ -90,8 +90,8 @@ const ParameterFormTable = ({
                 "&:last-child td, &:last-child th": { border: 0 },
               }}
             >
-              <StyledTableCell maxwidth="20px">{row.name}</StyledTableCell>
-              <StyledTableCell maxwidth="15px">{row.unit}</StyledTableCell>
+              <StyledTableCell maxwidth="20px">{row?.name}</StyledTableCell>
+              <StyledTableCell maxwidth="15px">{row?.unit}</StyledTableCell>
               <StyledTableCell maxwidth="20px">
                 {row.parameter_ranges
                   .map((pr) => `${pr?.lower_limit}-${pr?.upper_limit}`)
@@ -102,7 +102,7 @@ const ParameterFormTable = ({
                   <IconButton
                     edge="end"
                     aria-label="delete"
-                    onClick={() => deleteParameter(row.id)}
+                    onClick={() => deleteParameter(row?.id)}
                   >
                     <DeleteIcon />
                   </IconButton>
