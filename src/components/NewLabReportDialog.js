@@ -8,6 +8,7 @@ import {
   TextField,
 } from "@mui/material";
 
+/* NOT IN USE */
 const NewLabReportDialog = ({ isOpen, handleClose, callback }) => {
   return (
     <Dialog fullWidth maxWidth="xs" open={isOpen} onClose={handleClose}>

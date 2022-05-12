@@ -41,7 +41,7 @@ const LabTestTable = () => {
 
   const getData = async () => {
     setIsTableLoading(true);
-    const res = await api.get("/api/lab_tests/");
+    const res = await api.get("/api/lab_tests");
     if (res.status === 200) {
       const data = res.data.map((row) => {
         const dateAndTime = `${row.created_time.split("T")[0]} ${new Date(
