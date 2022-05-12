@@ -100,6 +100,8 @@ const LabTestForm = () => {
                 // height={location.state?.mode === "new" ? 557 : 511}
                 height={510}
                 data={parameters}
+                refreshData={getParameterData}
+                enableDelete={true}
               />
             </Box>
           </Box>

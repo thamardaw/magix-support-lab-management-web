@@ -358,7 +358,7 @@ const ParameterForm = ({ height, refreshData, id }) => {
           variant="contained"
           loading={isLoading}
           fullWidth
-          onClick={details.id ? updateParameter : createNewParameter}
+          onClick={details?.id ? updateParameter : createNewParameter}
         >
           Save
         </LoadingButton>
