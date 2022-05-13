@@ -8,6 +8,7 @@ const LabTestSubForm = ({ id }) => {
   const navigate = useNavigate();
   const api = useAxios({ autoSnackbar: true });
   const [testCategories, setTestCategories] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [details, setDetails] = useState({
     name: "",
@@ -38,15 +39,19 @@ const LabTestSubForm = ({ id }) => {
   };
 
   const createNewLabTest = async () => {
+    setIsLoading(true);
     const res = await api.post("/api/lab_tests/", details);
     if (res.status === 200) {
       navigate(`${res.data.id}`, { replace: true, state: { mode: "new" } });
     }
+    setIsLoading(false);
     return;
   };
 
   const updateLabTest = async () => {
+    setIsLoading(true);
     await api.put(`/api/lab_tests/${id}/`, details);
+    setIsLoading(false);
     return;
   };
 
@@ -115,7 +120,7 @@ const LabTestSubForm = ({ id }) => {
       >
         <LoadingButton
           variant="contained"
-          // loading={isLoading}
+          loading={isLoading}
           size="small"
           sx={{ marginRight: "5px" }}
           onClick={id ? updateLabTest : createNewLabTest}

@@ -48,6 +48,7 @@ const ParameterFormTable = ({
     if (parameterForm.id) {
       setParameterForm(data.find((d) => d.id === parameterForm.id));
     }
+    return () => resetParameterFrom();
     // eslint-disable-next-line
   }, [data]);
 

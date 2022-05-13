@@ -13,6 +13,7 @@ const labResultFormAtom = atom({
     upper_limit: "",
     lower_limit: "",
     remark: "",
+    currentParameter: null,
   },
 });
 

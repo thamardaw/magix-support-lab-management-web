@@ -150,7 +150,7 @@ const LabTestDetails = () => {
                     <ListItem key={pr.id}>
                       <ListItemText
                         primary={`${pr?.lower_limit}-${pr?.upper_limit}`}
-                        secondary="Low Remark, Normal Remark, High Remark"
+                        secondary={`${pr.low_remark}, ${pr.normal_remark}, ${pr.high_remark}`}
                       />
                     </ListItem>
                   ))}

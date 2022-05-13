@@ -13,3 +13,4 @@ export { default as LabResultForm } from "./LabResultForm";
 export { default as LabResultPreview } from "./LabResultPreview";
 export { default as LabTestSubForm } from "./LabTestSubForm";
 export { default as TabPanel } from "./TabPanel";
+export { default as LabReportSubForm } from "./LabReportSubForm";
