@@ -58,6 +58,14 @@ const LabReportDetails = () => {
           variant="contained"
           size="small"
           sx={{ marginRight: "5px" }}
+          onClick={() => navigate(`/dashboard/lab_report/form/${id}`)}
+        >
+          Edit
+        </Button>
+        <Button
+          variant="contained"
+          size="small"
+          sx={{ marginRight: "5px" }}
           onClick={handlePrint}
         >
           Print
