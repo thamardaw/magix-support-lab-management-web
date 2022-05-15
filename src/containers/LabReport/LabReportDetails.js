@@ -11,14 +11,14 @@ const LabReportDetails = () => {
   const reportRef = useRef();
   const api = useAxios({ autoSnackbar: true });
   const [data, setData] = useState({});
-  // const [isPrintMode, setIsPrintMode] = useState(false);
+  const [isPrintMode, setIsPrintMode] = useState(false);
 
   const handlePrint = useReactToPrint({
     pageStyle:
       "@media print { body { -webkit-print-color-adjust: exact; } @page { size: A4; margin: 200mm !important }}",
     content: () => reportRef.current,
     onAfterPrint: () => {
-      // setIsPrintMode(false);
+      setIsPrintMode(false);
     },
     onBeforeGetContent: () => {
       // setIsPrintMode(true);
@@ -34,6 +34,13 @@ const LabReportDetails = () => {
     }
     return;
   };
+
+  useEffect(() => {
+    if (isPrintMode) {
+      handlePrint();
+    }
+    // eslint-disable-next-line
+  }, [isPrintMode]);
 
   useEffect(() => {
     getData();
@@ -66,7 +73,7 @@ const LabReportDetails = () => {
           variant="contained"
           size="small"
           sx={{ marginRight: "5px" }}
-          onClick={handlePrint}
+          onClick={() => setIsPrintMode(true)}
         >
           Print
         </Button>
@@ -75,6 +82,7 @@ const LabReportDetails = () => {
         ref={reportRef}
         isPreview={false}
         data={{ labReport: data, labResult: data.lab_results }}
+        isPrintMode={isPrintMode}
       />
     </Box>
   );

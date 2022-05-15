@@ -38,6 +38,10 @@ const LabTestForm = () => {
   };
 
   useEffect(() => {
+    if (id) setTab(1);
+  }, [id]);
+
+  useEffect(() => {
     getParameterData();
     // eslint-disable-next-line
   }, []);
