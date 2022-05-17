@@ -1,32 +1,50 @@
-import {
-  Box,
-  Divider,
-  MenuItem,
-  TextField,
-  Toolbar,
-  Typography,
-} from "@mui/material";
-import { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { Box, Divider, Tab, Tabs, Toolbar, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import {
   BackButton,
+  LabTestSubForm,
   ParameterForm,
   ParameterFormTable,
+  TabPanel,
 } from "../../components";
+import { useAxios } from "../../hooks";
+// import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const LabTestForm = () => {
-  // const { id } = useParams();
+  const { id } = useParams();
+  const api = useAxios({ autoSnackbar: true });
   const location = useLocation();
   const navigate = useNavigate();
+  // const [expanded, setExpanded] = useState("lab_test");
+  const [tab, setTab] = useState(0);
+  const [parameters, setParameters] = useState([]);
 
-  const [details, setDetails] = useState({
-    name: "",
-    category: "",
-  });
-
-  const handleChange = (e) => {
-    setDetails({ ...details, [e.target.name]: e.target.value });
+  const handleTabChange = (event, newValue) => {
+    setTab(newValue);
   };
+
+  // const handlePanelChange = (panel) => (event, isExpanded) => {
+  //   setExpanded(isExpanded ? panel : false);
+  // };
+
+  const getParameterData = async () => {
+    if (id) {
+      const res = await api.get(`/api/parameters?lab_test_id=${id}`);
+      if (res.status === 200) {
+        setParameters(res.data);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (id) setTab(1);
+  }, [id]);
+
+  useEffect(() => {
+    getParameterData();
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -44,87 +62,115 @@ const LabTestForm = () => {
         </Typography>
       </Toolbar>
       <Divider />
-      <Box sx={{ flexDirection: "column", padding: "10px" }}>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-          }}
+      <Box sx={{ flexDirection: "column" }}>
+        <Tabs
+          value={tab}
+          onChange={handleTabChange}
+          aria-label="basic tabs example"
         >
-          <Box sx={{ width: "30%" }}>
-            <Typography variant="p">Name</Typography>
-          </Box>
-          <TextField
-            size="small"
-            sx={{ width: "70%" }}
-            margin="dense"
-            value={details?.name || ""}
-            name="name"
-            onChange={handleChange}
+          <Tab label="Lab Test" sx={{ textTransform: "none" }} />
+          <Tab
+            label="Parameter"
+            sx={{ textTransform: "none" }}
+            disabled={id === undefined}
           />
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
-          <Box sx={{ width: "30%" }}>
-            <Typography variant="p">Category</Typography>
-          </Box>
-          <TextField
-            select
-            fullWidth
-            label="Category"
-            size="small"
-            sx={{ width: "70%" }}
-            margin="dense"
-            value={details?.category || ""}
-            name="category"
-            onChange={handleChange}
-          >
-            <MenuItem value="1">Test Category</MenuItem>
-          </TextField>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            padding: "14px 0px",
-          }}
-        >
-          <Typography variant="p" fontWeight="bold">
-            Parameter
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: { xs: "column", sm: "column", md: "row" },
-          }}
-        >
+        </Tabs>
+        <TabPanel value={tab} index={0} style={{ padding: "10px" }}>
+          <LabTestSubForm id={id} />
+        </TabPanel>
+        <TabPanel value={tab} index={1} style={{ padding: "10px" }}>
           <Box
             sx={{
-              width: { xs: "100%", md: "35%" },
+              display: "flex",
+              flexDirection: { xs: "column", sm: "column", md: "row" },
             }}
           >
-            <ParameterForm height={540} />
+            <Box
+              sx={{
+                width: { xs: "100%", md: "35%" },
+              }}
+            >
+              <ParameterForm
+                height={510}
+                refreshData={getParameterData}
+                id={id}
+              />
+            </Box>
+            <Box
+              sx={{
+                width: { xs: "100%", md: "65%" },
+                padding: "0px 10px",
+              }}
+            >
+              <ParameterFormTable
+                // height={location.state?.mode === "new" ? 557 : 511}
+                height={510}
+                data={parameters}
+                refreshData={getParameterData}
+                enableDelete={true}
+              />
+            </Box>
           </Box>
-          <Box
-            sx={{
-              width: { xs: "100%", md: "65%" },
-              padding: "0px 10px",
-            }}
+        </TabPanel>
+        {/* <Accordion
+          expanded={expanded === "lab_test"}
+          onChange={handlePanelChange("lab_test")}
+        >
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
           >
-            <ParameterFormTable
-              // height={location.state?.mode === "new" ? 557 : 511}
-              height={540}
-            />
-          </Box>
-        </Box>
+            <Typography variant="p" fontWeight="bold">
+              Lab Test
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <LabTestSubForm id={id} />
+          </AccordionDetails>
+        </Accordion>
+        <Accordion
+          // expanded={expanded === "parameter"}
+          // onChange={handlePanelChange("parameter")}
+          disabled={id === undefined}
+        >
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <Typography variant="p" fontWeight="bold">
+              Parameter
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: { xs: "column", sm: "column", md: "row" },
+              }}
+            >
+              <Box
+                sx={{
+                  width: { xs: "100%", md: "35%" },
+                }}
+              >
+                <ParameterForm height={540} />
+              </Box>
+              <Box
+                sx={{
+                  width: { xs: "100%", md: "65%" },
+                  padding: "0px 10px",
+                }}
+              >
+                <ParameterFormTable
+                  // height={location.state?.mode === "new" ? 557 : 511}
+                  height={540}
+                />
+              </Box>
+            </Box>
+          </AccordionDetails>
+        </Accordion> */}
       </Box>
     </Box>
   );

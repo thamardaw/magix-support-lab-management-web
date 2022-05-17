@@ -1,24 +1,8 @@
 import { Button } from "@mui/material";
-import { memo, useState } from "react";
-import {
-  CustomTable,
-  DeleteDialog,
-  NewLabReportDialog,
-} from "../../components";
+import { memo, useEffect, useState } from "react";
+import { CustomTable, DeleteDialog } from "../../components";
 import { useNavigate } from "react-router-dom";
-
-function createData(id, date, sample_id, patient_id, patient_name, test_date) {
-  return {
-    id,
-    date,
-    sample_id,
-    patient_id,
-    patient_name,
-    test_date,
-  };
-}
-
-const rows = [createData(1, "2022-2-2", 1, 1, "Name", "2022-2-2")];
+import { useAxios } from "../../hooks";
 
 const headCells = [
   {
@@ -61,8 +45,48 @@ const headCells = [
 
 const LabReportTable = () => {
   const navigate = useNavigate();
+  const api = useAxios({ autoSnackbar: true });
+  const [isTableLoading, setIsTableLoading] = useState(false);
+  const [rows, setRows] = useState([]);
+  const [selected, setSelected] = useState([]);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const [openLabReportDialog, setOpenLabReportDialog] = useState(false);
+
+  const getData = async () => {
+    setIsTableLoading(true);
+    const res = await api.get("/api/lab_reports/");
+    if (res.status === 200) {
+      const data = res.data.map((row) => {
+        return {
+          id: row.id,
+          date: row.created_time.split("T")[0],
+          sample_id: row?.sample_id,
+          patient_id: row?.patient_id,
+          patient_name: row?.patient?.name || "",
+          test_date: row?.test_date,
+        };
+      });
+      setRows(data);
+      setIsTableLoading(false);
+    }
+    return;
+  };
+
+  const deleteItem = async () => {
+    if (selected.length === 0) {
+      return;
+    } else if (selected.length === 1) {
+      await api.delete(`/api/lab_reports/${parseInt(selected[0].id)}`);
+    }
+    setOpenDeleteDialog(false);
+    setSelected([]);
+    getData();
+  };
+
+  useEffect(() => {
+    getData();
+    // eslint-disable-next-line
+  }, []);
+
   return (
     <>
       <CustomTable
@@ -73,7 +97,7 @@ const LabReportTable = () => {
           atom: "labReportTableAtom",
         }}
         data={rows}
-        isLoading={false}
+        isLoading={isTableLoading}
         toolbarButtons={{
           whenNoneSelected: [
             {
@@ -84,8 +108,7 @@ const LabReportTable = () => {
                 </Button>
               )),
               callback: (selected) => {
-                setOpenLabReportDialog(true);
-                // navigate("form");
+                navigate("form", { state: { mode: "new" } });
               },
             },
           ],
@@ -98,7 +121,9 @@ const LabReportTable = () => {
                 </Button>
               )),
               callback: (selected) => {
-                navigate("form/1");
+                navigate(`form/${selected[0].id}`, {
+                  state: { mode: "edit" },
+                });
               },
             },
             {
@@ -114,7 +139,7 @@ const LabReportTable = () => {
                 </Button>
               )),
               callback: (selected) => {
-                navigate("details/1");
+                navigate(`details/${selected[0].id}`);
               },
             },
             {
@@ -131,6 +156,7 @@ const LabReportTable = () => {
                 </Button>
               )),
               callback: (selected) => {
+                setSelected(selected);
                 setOpenDeleteDialog(true);
               },
             },
@@ -142,14 +168,7 @@ const LabReportTable = () => {
         isOpen={openDeleteDialog}
         handleClose={() => setOpenDeleteDialog(false)}
         callback={() => {
-          console.log("delete");
-        }}
-      />
-      <NewLabReportDialog
-        isOpen={openLabReportDialog}
-        handleClose={() => setOpenLabReportDialog(false)}
-        callback={() => {
-          navigate("form/1", { state: { mode: "new" } });
+          deleteItem();
         }}
       />
     </>

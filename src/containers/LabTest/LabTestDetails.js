@@ -7,11 +7,39 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useRecoilValue } from "recoil";
 import { BackButton, DetailsRow, ParameterFormTable } from "../../components";
+import { useAxios } from "../../hooks";
+import parameterFormAtom from "../../recoil/parameterForm";
 
 const LabTestDetails = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
+  const api = useAxios({ autoSnackbar: true });
+  const [labTest, setLabTest] = useState({});
+  const [parameter, setParameter] = useState([]);
+  const parameterForm = useRecoilValue(parameterFormAtom);
+
+  const getLabTestAndParameter = async () => {
+    const [labTest, parameter] = await Promise.all([
+      api.get(`/api/lab_tests/${id}`),
+      api.get(`/api/parameters?lab_test_id=${id}`),
+    ]);
+    if (labTest.status === 200 && parameter.status === 200) {
+      setLabTest(labTest.data);
+      setParameter(parameter.data);
+    } else {
+      navigate(-1);
+    }
+  };
+
+  useEffect(() => {
+    getLabTestAndParameter();
+    // eslint-disable-next-line
+  }, []);
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Toolbar
@@ -27,8 +55,8 @@ const LabTestDetails = () => {
       </Toolbar>
       <Divider />
       <Box sx={{ flexDirection: "column", padding: "10px" }}>
-        <DetailsRow name="Name" value="Test_Name" />
-        <DetailsRow name="Category" value="Test_Category" />
+        <DetailsRow name="Name" value={labTest?.name} />
+        <DetailsRow name="Category" value={labTest?.test_category_?.name} />
         <Box
           sx={{
             display: "flex",
@@ -46,12 +74,11 @@ const LabTestDetails = () => {
             >
               Parameter Name
             </Typography>
-
             <Typography
               variant="p"
               sx={{ display: "block", padding: "10px 0px", fontSize: "14px" }}
             >
-              Parameter_Name
+              {parameterForm?.name || "-"}
             </Typography>
             <Typography
               variant="p"
@@ -63,7 +90,7 @@ const LabTestDetails = () => {
               variant="p"
               sx={{ display: "block", padding: "10px 0px", fontSize: "14px" }}
             >
-              unit
+              {parameterForm?.unit || "-"}
             </Typography>
             <Typography
               variant="p"
@@ -75,7 +102,7 @@ const LabTestDetails = () => {
               variant="p"
               sx={{ display: "block", padding: "10px 0px", fontSize: "14px" }}
             >
-              number
+              {parameterForm?.result_type || "-"}
             </Typography>
             <Typography
               variant="p"
@@ -95,7 +122,9 @@ const LabTestDetails = () => {
                 border: "1px solid #ccc",
               }}
             >
-              result_default_text, result_default_text2, result_default_text3
+              {typeof parameterForm?.result_default_text === "string"
+                ? "-"
+                : parameterForm?.result_default_text.join(", ")}
             </Typography>
             <Typography
               variant="p"
@@ -116,30 +145,15 @@ const LabTestDetails = () => {
               }}
             >
               <List>
-                <ListItem>
-                  <ListItemText
-                    primary="0-100"
-                    secondary="Low Remark, Normal Remark, High Remark"
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemText
-                    primary="0-100"
-                    secondary="Low Remark, Normal Remark, High Remark"
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemText
-                    primary="0-100"
-                    secondary="Low Remark, Normal Remark, High Remark"
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemText
-                    primary="0-100"
-                    secondary="Low Remark, Normal Remark, High Remark"
-                  />
-                </ListItem>
+                {parameterForm?.parameter_ranges &&
+                  parameterForm.parameter_ranges.map((pr) => (
+                    <ListItem key={pr.id}>
+                      <ListItemText
+                        primary={`${pr?.lower_limit}-${pr?.upper_limit}`}
+                        secondary={`${pr.low_remark}, ${pr.normal_remark}, ${pr.high_remark}`}
+                      />
+                    </ListItem>
+                  ))}
               </List>
             </Box>
           </Box>
@@ -149,7 +163,7 @@ const LabTestDetails = () => {
               padding: "0px 10px",
             }}
           >
-            <ParameterFormTable height={470} />
+            <ParameterFormTable height={470} data={parameter} />
           </Box>
         </Box>
       </Box>

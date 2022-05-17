@@ -1,6 +1,7 @@
 import {
   Box,
   Grid,
+  IconButton,
   Table,
   TableBody,
   TableCell,
@@ -9,35 +10,52 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import DetailsRow from "./DetailsRow";
 import labResultFormAtom from "../recoil/labResultForm";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useAxios } from "../hooks";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { useNavigate } from "react-router-dom";
 // import EditIcon from "@mui/icons-material/Edit";
 // import SaveIcon from "@mui/icons-material/Save";
 
-const LabResultPreview = ({ height, isPreview = true, data }) => {
+const LabResultPreview = (
+  {
+    height,
+    isPreview = true,
+    data,
+    refreshData,
+    enableDelete = false,
+    isPrintMode = false,
+  },
+  ref
+) => {
   // const [isEditMode, setIsEditMode] = useState(false);
+  const api = useAxios({ autoSnackbar: true });
+  const navigate = useNavigate();
   const { labReport, labResult } = data;
   const [testList, setTestList] = useState([]);
   const [labResultForm, setLabResultForm] = useRecoilState(labResultFormAtom);
   const resetLabResultForm = useResetRecoilState(labResultFormAtom);
 
-  const handleClick = (newSelected) => {
-    if (isSelected(newSelected)) {
+  const deleteParameter = async (id) => {
+    const res = await api.delete(`/api/lab_reports/result/${id}`);
+    if (res.status === 200) {
+      refreshData();
       resetLabResultForm();
-    } else {
-      setLabResultForm(newSelected);
     }
-  };
-
-  const isSelected = (row) => {
-    return JSON.stringify(row) === JSON.stringify(labResultForm);
+    return;
   };
 
   useEffect(() => {
-    const tl = [...new Set(labResult.map((lr) => lr.test_name))];
-    setTestList(tl);
+    if (labResult) {
+      const tl = [...new Set(labResult.map((lr) => lr.test_name))];
+      setTestList(tl);
+    }
+    return () => resetLabResultForm();
+    // eslint-disable-next-line
   }, [labResult]);
 
   return (
@@ -48,6 +66,15 @@ const LabResultPreview = ({ height, isPreview = true, data }) => {
             {/* {isEditMode ? "Edit" : "Preview"} */}
             Preview
           </Typography>
+          <IconButton
+            color="primary"
+            disabled={labReport?.id === undefined}
+            onClick={() =>
+              navigate(`/dashboard/lab_report/details/${labReport?.id}`)
+            }
+          >
+            <ArrowForwardIcon />
+          </IconButton>
           {/* <IconButton
             color="primary"
             aria-label="edit"
@@ -63,6 +90,7 @@ const LabResultPreview = ({ height, isPreview = true, data }) => {
         </Box>
       )}
       <Box
+        ref={ref}
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -74,7 +102,7 @@ const LabResultPreview = ({ height, isPreview = true, data }) => {
         }}
       >
         <Grid container alignItems="center">
-          <Grid item xs={12} md={6}>
+          <Grid item xs={isPrintMode ? 6 : 12} sm={6}>
             {/* {isEditMode ? (
               <TextField label="Patient Name" size="small" />
             ) : ( */}
@@ -85,7 +113,7 @@ const LabResultPreview = ({ height, isPreview = true, data }) => {
             />
             {/* )} */}
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={isPrintMode ? 6 : 12} sm={6}>
             {/* {isEditMode ? (
               <TextField label="Date" size="small" placeholder="YYYY-MM-DD" />
             ) : ( */}
@@ -96,7 +124,7 @@ const LabResultPreview = ({ height, isPreview = true, data }) => {
             />
             {/* )} */}
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={isPrintMode ? 6 : 12} sm={6}>
             {/* {isEditMode ? (
               <TextField
                 label="Patient Sex"
@@ -111,35 +139,35 @@ const LabResultPreview = ({ height, isPreview = true, data }) => {
             />
             {/* )} */}
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={isPrintMode ? 6 : 12} sm={6}>
             <DetailsRow
               name="Sample ID"
               value={labReport?.sample_id}
               padding="0px"
             />
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={isPrintMode ? 6 : 12} sm={6}>
             <DetailsRow
               name="Patient Age"
               value={labReport?.patient?.age}
               padding="0px"
             />
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={isPrintMode ? 6 : 12} sm={6}>
             <DetailsRow
               name="Sample Type"
               value={labReport?.sample_type}
               padding="0px"
             />
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={isPrintMode ? 6 : 12} sm={6}>
             <DetailsRow
               name="Patient Type"
               value="patient_type"
               padding="0px"
             />
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={isPrintMode ? 6 : 12} sm={6}>
             <DetailsRow
               name="Doctor"
               value={labReport?.doctor_name}
@@ -152,10 +180,11 @@ const LabResultPreview = ({ height, isPreview = true, data }) => {
             <TableHead>
               <TableRow>
                 <TableCell padding="none">Paramter</TableCell>
-                <TableCell>value</TableCell>
+                <TableCell>Result</TableCell>
                 <TableCell>Unit</TableCell>
                 <TableCell>Range</TableCell>
                 <TableCell>Remark</TableCell>
+                {enableDelete && <TableCell>Actions</TableCell>}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -182,12 +211,19 @@ const LabResultPreview = ({ height, isPreview = true, data }) => {
                     </TableRow>
                     {labResult.map((lr) => {
                       if (lr.test_name === test) {
-                        const isItemSelected = isSelected(lr);
                         return (
                           <TableRow
-                            selected={isItemSelected}
-                            onClick={() => handleClick(lr)}
                             key={lr.id}
+                            selected={labResultForm?.id === lr?.id}
+                            onClick={() => {
+                              if (lr.id === labResultForm.id) {
+                                resetLabResultForm();
+                              } else {
+                                setLabResultForm({
+                                  ...lr,
+                                });
+                              }
+                            }}
                             sx={{
                               "&:last-child td, &:last-child th": { border: 0 },
                             }}
@@ -205,6 +241,17 @@ const LabResultPreview = ({ height, isPreview = true, data }) => {
                               lr?.upper_limit || ""
                             }`}</TableCell>
                             <TableCell>{lr.remark}</TableCell>
+                            {enableDelete && (
+                              <TableCell maxwidth="4px">
+                                <IconButton
+                                  edge="end"
+                                  aria-label="delete"
+                                  onClick={() => deleteParameter(lr?.id)}
+                                >
+                                  <DeleteIcon />
+                                </IconButton>
+                              </TableCell>
+                            )}
                           </TableRow>
                         );
                       } else {
@@ -222,4 +269,4 @@ const LabResultPreview = ({ height, isPreview = true, data }) => {
   );
 };
 
-export default LabResultPreview;
+export default forwardRef(LabResultPreview);
