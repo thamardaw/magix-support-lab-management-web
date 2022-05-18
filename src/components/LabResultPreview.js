@@ -16,15 +16,25 @@ import DetailsRow from "./DetailsRow";
 import labResultFormAtom from "../recoil/labResultForm";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useAxios } from "../hooks";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { useNavigate } from "react-router-dom";
 // import EditIcon from "@mui/icons-material/Edit";
 // import SaveIcon from "@mui/icons-material/Save";
 
 const LabResultPreview = (
-  { height, isPreview = true, data, refreshData, enableDelete = false },
+  {
+    height,
+    isPreview = true,
+    data,
+    refreshData,
+    enableDelete = false,
+    isPrintMode = false,
+  },
   ref
 ) => {
   // const [isEditMode, setIsEditMode] = useState(false);
   const api = useAxios({ autoSnackbar: true });
+  const navigate = useNavigate();
   const { labReport, labResult } = data;
   const [testList, setTestList] = useState([]);
   const [labResultForm, setLabResultForm] = useRecoilState(labResultFormAtom);
@@ -56,6 +66,15 @@ const LabResultPreview = (
             {/* {isEditMode ? "Edit" : "Preview"} */}
             Preview
           </Typography>
+          <IconButton
+            color="primary"
+            disabled={labReport?.id === undefined}
+            onClick={() =>
+              navigate(`/dashboard/lab_report/details/${labReport?.id}`)
+            }
+          >
+            <ArrowForwardIcon />
+          </IconButton>
           {/* <IconButton
             color="primary"
             aria-label="edit"
@@ -83,7 +102,7 @@ const LabResultPreview = (
         }}
       >
         <Grid container alignItems="center">
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={isPrintMode ? 6 : 12} sm={6}>
             {/* {isEditMode ? (
               <TextField label="Patient Name" size="small" />
             ) : ( */}
@@ -94,7 +113,7 @@ const LabResultPreview = (
             />
             {/* )} */}
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={isPrintMode ? 6 : 12} sm={6}>
             {/* {isEditMode ? (
               <TextField label="Date" size="small" placeholder="YYYY-MM-DD" />
             ) : ( */}
@@ -105,7 +124,7 @@ const LabResultPreview = (
             />
             {/* )} */}
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={isPrintMode ? 6 : 12} sm={6}>
             {/* {isEditMode ? (
               <TextField
                 label="Patient Sex"
@@ -120,35 +139,35 @@ const LabResultPreview = (
             />
             {/* )} */}
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={isPrintMode ? 6 : 12} sm={6}>
             <DetailsRow
               name="Sample ID"
               value={labReport?.sample_id}
               padding="0px"
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={isPrintMode ? 6 : 12} sm={6}>
             <DetailsRow
               name="Patient Age"
               value={labReport?.patient?.age}
               padding="0px"
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={isPrintMode ? 6 : 12} sm={6}>
             <DetailsRow
               name="Sample Type"
               value={labReport?.sample_type}
               padding="0px"
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={isPrintMode ? 6 : 12} sm={6}>
             <DetailsRow
               name="Patient Type"
               value="patient_type"
               padding="0px"
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={isPrintMode ? 6 : 12} sm={6}>
             <DetailsRow
               name="Doctor"
               value={labReport?.doctor_name}
