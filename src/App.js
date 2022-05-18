@@ -7,7 +7,7 @@ import {
 import { RecoilRoot } from "recoil";
 import { Dashboard, Login, ResetPassword, Signup } from "./containers";
 import { CustomSnackbar } from "./hocs/CustomSnackbar";
-// import PrivateRoute from "./hocs/PrivateRoute";
+import PrivateRoute from "./hocs/PrivateRoute";
 
 function App() {
   return (
@@ -15,11 +15,11 @@ function App() {
       <CustomSnackbar>
         <Router>
           <Routes>
-            {/* <Route
-              path="/dashboard/*"
+            <Route
+              path="dashboard/*"
               element={<PrivateRoute component={Dashboard} />}
-            /> */}
-            <Route path="dashboard/*" element={<Dashboard />} />
+            />
+            {/* <Route path="dashboard/*" element={<Dashboard />} /> */}
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<Signup />} />
             <Route path="resetPassword" element={<ResetPassword />} />
