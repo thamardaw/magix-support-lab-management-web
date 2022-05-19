@@ -16,7 +16,8 @@ import DetailsRow from "./DetailsRow";
 import labResultFormAtom from "../recoil/labResultForm";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useAxios } from "../hooks";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+// import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import SettingsOverscanIcon from '@mui/icons-material/SettingsOverscan';
 import { useNavigate } from "react-router-dom";
 // import EditIcon from "@mui/icons-material/Edit";
 // import SaveIcon from "@mui/icons-material/Save";
@@ -73,7 +74,7 @@ const LabResultPreview = (
               navigate(`/dashboard/lab_report/details/${labReport?.id}`)
             }
           >
-            <ArrowForwardIcon />
+            <SettingsOverscanIcon />
           </IconButton>
           {/* <IconButton
             color="primary"
