@@ -130,7 +130,13 @@ const LabReportForm = () => {
         variant="dense"
         disableGutters={true}
       >
-        <BackButton backFunction={() => navigate(-1)} />
+        <BackButton
+          backFunction={() => {
+            if (location.state?.mode === "new")
+              navigate("/dashboard/lab_report");
+            else navigate(-1);
+          }}
+        />
         <Typography variant="h5">
           {location.state?.mode === "new" ? "New" : "Edit"}
         </Typography>

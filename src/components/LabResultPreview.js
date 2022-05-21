@@ -71,7 +71,9 @@ const LabResultPreview = (
             color="primary"
             disabled={labReport?.id === undefined}
             onClick={() =>
-              navigate(`/dashboard/lab_report/details/${labReport?.id}`)
+              navigate(`/dashboard/lab_report/details/${labReport?.id}`, {
+                state: { goBack: true },
+              })
             }
           >
             <SettingsOverscanIcon />
