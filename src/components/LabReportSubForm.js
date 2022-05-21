@@ -1,4 +1,3 @@
-import { LoadingButton } from "@mui/lab";
 import {
   Autocomplete,
   Box,
@@ -10,21 +9,15 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAxios } from "../hooks";
 import AddIcon from "@mui/icons-material/Add";
+import labReportSubFormAtom from "../recoil/labReportSubForm";
+import { useRecoilState, useResetRecoilState } from "recoil";
 
 const LabReportSubForm = ({ id }) => {
   const navigate = useNavigate();
   const api = useAxios({ autoSnackbar: true });
   const [patients, setPatients] = useState([]);
-  const [currentPatient, setCurrentPatient] = useState(null);
-
-  const [details, setDetails] = useState({
-    patient_id: null,
-    doctor_name: "",
-    sample_id: "",
-    sample_type: "",
-    patient_type: "",
-    test_date: "",
-  });
+  const [details, setDetails] = useRecoilState(labReportSubFormAtom);
+  const resetLabReportSubForm = useResetRecoilState(labReportSubFormAtom);
 
   const handleChange = (e) => {
     setDetails({ ...details, [e.target.name]: e.target.value });
@@ -42,63 +35,39 @@ const LabReportSubForm = ({ id }) => {
   const getData = async () => {
     const res = await api.get(`/api/lab_reports/${id}`);
     if (res.status === 200) {
-      setCurrentPatient(res?.data?.patient);
-      setDetails(res.data);
+      setDetails({ ...res.data, currentPatient: res?.data?.patient });
     } else {
       navigate(-1);
     }
     return;
   };
 
-  const createNewLabTest = async () => {
-    if (currentPatient) {
-      const res = await api.post("/api/lab_reports/", {
-        ...details,
-        patient_id: currentPatient.id,
-      });
-      if (res.status === 200) {
-        navigate(`${res.data.id}`, { replace: true, state: { mode: "new" } });
-      }
-    }
-    return;
-  };
-
-  const updateLabTest = async () => {
-    if (currentPatient) {
-      await api.put(`/api/lab_reports/${id}/`, {
-        ...details,
-        patient_id: currentPatient.id,
-      });
-    }
-    return;
-  };
-
   useEffect(() => {
     getPatients();
+    return () => resetLabReportSubForm();
     // eslint-disable-next-line
   }, []);
 
   return (
-    <Box sx={{ flexDirection: "column" }}>
+    <Box>
       <Box
         sx={{
           display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
+          flexDirection: "column",
+          alignItems: "flex-start",
         }}
       >
-        <Box sx={{ width: "30%" }}>
-          <Typography variant="p">Patient</Typography>
-        </Box>
+        <Typography variant="p">Patient</Typography>
+
         <Box
           sx={{
-            width: "70%",
+            width: "100%",
             display: "flex",
             alignItems: "center",
           }}
         >
           <Autocomplete
-            value={currentPatient}
+            value={details?.currentPatient}
             options={patients}
             getOptionLabel={(option) => `${option.name}, ${option.id}`}
             renderOption={(props, option) => {
@@ -111,7 +80,7 @@ const LabReportSubForm = ({ id }) => {
             isOptionEqualToValue={(option, value) => option.id === value.id}
             style={{ width: "90%" }}
             onChange={(event, newValue) => {
-              setCurrentPatient(newValue);
+              setDetails({ ...details, currentPatient: newValue });
             }}
             renderInput={(params) => (
               <TextField
@@ -136,16 +105,15 @@ const LabReportSubForm = ({ id }) => {
       <Box
         sx={{
           display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
+          flexDirection: "column",
+          alignItems: "flex-start",
         }}
       >
-        <Box sx={{ width: "30%" }}>
-          <Typography variant="p">Doctor Name</Typography>
-        </Box>
+        <Typography variant="p">Doctor Name</Typography>
+
         <TextField
           size="small"
-          sx={{ width: "70%" }}
+          fullWidth
           margin="dense"
           value={details?.doctor_name || ""}
           name="doctor_name"
@@ -155,16 +123,14 @@ const LabReportSubForm = ({ id }) => {
       <Box
         sx={{
           display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
+          flexDirection: "column",
+          alignItems: "flex-start",
         }}
       >
-        <Box sx={{ width: "30%" }}>
-          <Typography variant="p">Sample ID</Typography>
-        </Box>
+        <Typography variant="p">Sample ID</Typography>
         <TextField
           size="small"
-          sx={{ width: "70%" }}
+          fullWidth
           margin="dense"
           value={details?.sample_id || ""}
           name="sample_id"
@@ -174,16 +140,14 @@ const LabReportSubForm = ({ id }) => {
       <Box
         sx={{
           display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
+          flexDirection: "column",
+          alignItems: "flex-start",
         }}
       >
-        <Box sx={{ width: "30%" }}>
-          <Typography variant="p">Sample Type</Typography>
-        </Box>
+        <Typography variant="p">Sample Type</Typography>
         <TextField
           size="small"
-          sx={{ width: "70%" }}
+          fullWidth
           margin="dense"
           value={details?.sample_type || ""}
           name="sample_type"
@@ -193,16 +157,14 @@ const LabReportSubForm = ({ id }) => {
       <Box
         sx={{
           display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
+          flexDirection: "column",
+          alignItems: "flex-start",
         }}
       >
-        <Box sx={{ width: "30%" }}>
-          <Typography variant="p">Patient Type</Typography>
-        </Box>
+        <Typography variant="p">Patient Type</Typography>
         <TextField
           size="small"
-          sx={{ width: "70%" }}
+          fullWidth
           margin="dense"
           value={details?.patient_type || ""}
           name="patient_type"
@@ -212,16 +174,14 @@ const LabReportSubForm = ({ id }) => {
       <Box
         sx={{
           display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
+          flexDirection: "column",
+          alignItems: "flex-start",
         }}
       >
-        <Box sx={{ width: "30%" }}>
-          <Typography variant="p">Test Date</Typography>
-        </Box>
+        <Typography variant="p">Test Date</Typography>
         <TextField
           size="small"
-          sx={{ width: "70%" }}
+          fullWidth
           margin="dense"
           placeholder="YYYY-MM-DD"
           value={details?.test_date || ""}
@@ -229,16 +189,7 @@ const LabReportSubForm = ({ id }) => {
           onChange={handleChange}
         />
       </Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "flex-end",
-          padding: "10px",
-        }}
-      >
-        <LoadingButton
+      {/* <LoadingButton
           variant="contained"
           // loading={isLoading}
           size="small"
@@ -246,8 +197,7 @@ const LabReportSubForm = ({ id }) => {
           onClick={id ? updateLabTest : createNewLabTest}
         >
           Save
-        </LoadingButton>
-      </Box>
+        </LoadingButton> */}
     </Box>
   );
 };

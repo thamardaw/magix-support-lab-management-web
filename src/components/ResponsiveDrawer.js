@@ -41,13 +41,13 @@ const ResponsiveDrawer = ({ window, drawerWidth }) => {
           </Typography>
         </ListItem>
         <ListItemButton
-          selected={location.pathname.includes("patient")}
-          onClick={handleClick("patient")}
+          selected={location.pathname.includes("lab_report")}
+          onClick={handleClick("lab_report")}
         >
           <ListItemIcon>
-            <PeopleIcon />
+            <SummarizeIcon />
           </ListItemIcon>
-          <ListItemText primary="Patient" />
+          <ListItemText primary="Lab Report" />
         </ListItemButton>
         <ListItemButton
           selected={location.pathname.includes("test_category")}
@@ -68,13 +68,13 @@ const ResponsiveDrawer = ({ window, drawerWidth }) => {
           <ListItemText primary="Lab Test" />
         </ListItemButton>
         <ListItemButton
-          selected={location.pathname.includes("lab_report")}
-          onClick={handleClick("lab_report")}
+          selected={location.pathname.includes("patient")}
+          onClick={handleClick("patient")}
         >
           <ListItemIcon>
-            <SummarizeIcon />
+            <PeopleIcon />
           </ListItemIcon>
-          <ListItemText primary="Lab Report" />
+          <ListItemText primary="Patient" />
         </ListItemButton>
       </List>
     </>

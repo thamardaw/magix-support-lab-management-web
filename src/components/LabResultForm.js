@@ -1,4 +1,3 @@
-import { LoadingButton } from "@mui/lab";
 import {
   Autocomplete,
   Box,
@@ -33,12 +32,11 @@ import labResultFormAtom from "../recoil/labResultForm";
 // eslint-disable-next-line
 // }, [currentParameter]);
 
-const LabResultForm = ({ height, id, refreshData }) => {
+const LabResultForm = ({ height, refreshData }) => {
   const api = useAxios({ autoSnackbar: true });
   const [parameters, setParameters] = useState([]);
   const [details, setDetails] = useRecoilState(labResultFormAtom);
-  const resetParameterFrom = useResetRecoilState(labResultFormAtom);
-  const [isLoading, setIsLoading] = useState(false);
+  const resetLabResultFrom = useResetRecoilState(labResultFormAtom);
 
   const handleChange = (e) => {
     setDetails({ ...details, [e.target.name]: e.target.value });
@@ -58,42 +56,6 @@ const LabResultForm = ({ height, id, refreshData }) => {
   //   }
   // };
 
-  const createNewLabResult = async () => {
-    setIsLoading(true);
-    const res = await api.post(`/api/lab_reports/result/${id}`, {
-      ...details,
-      parameter_name: details?.currentParameter?.name,
-      parameter_id: details?.currentParameter?.id,
-      test_name: details?.currentParameter?.lab_test_?.name,
-      unit: details?.currentParameter?.unit,
-      lower_limit: details?.lower_limit || null,
-      upper_limit: details?.upper_limit || null,
-    });
-    if (res.status === 200) {
-      refreshData();
-      resetParameterFrom();
-    }
-    setIsLoading(false);
-  };
-
-  const updateLabResult = async () => {
-    setIsLoading(true);
-    const res = await api.put(`/api/lab_reports/result/${details?.id}`, {
-      ...details,
-      parameter_name: details?.currentParameter?.name,
-      parameter_id: details?.currentParameter?.id,
-      test_name: details?.currentParameter?.lab_test_?.name,
-      unit: details?.currentParameter?.unit,
-      lower_limit: details?.lower_limit || null,
-      upper_limit: details?.upper_limit || null,
-    });
-    if (res.status === 200) {
-      refreshData();
-      resetParameterFrom();
-    }
-    setIsLoading(false);
-  };
-
   useEffect(() => {
     if (details?.parameter_id && details?.id) {
       setDetails({
@@ -110,8 +72,8 @@ const LabResultForm = ({ height, id, refreshData }) => {
     if (details?.currentParameter?.result_type === "number") {
       const pr = details?.currentParameter?.parameter_ranges.filter((p) => {
         return (
-          p.lower_limit.toString() === details?.lower_limit &&
-          p.upper_limit.toString() === details?.upper_limit
+          p.lower_limit.toString() === details?.lower_limit.toString() &&
+          p.upper_limit.toString() === details?.upper_limit.toString()
         );
       });
       if (parseFloat(details?.lower_limit) > parseFloat(details?.result)) {
@@ -138,7 +100,8 @@ const LabResultForm = ({ height, id, refreshData }) => {
 
   useEffect(() => {
     getParameterData();
-    return () => resetParameterFrom();
+    refreshData();
+    return () => resetLabResultFrom();
     // eslint-disable-next-line
   }, []);
 
@@ -311,21 +274,14 @@ const LabResultForm = ({ height, id, refreshData }) => {
           />
         </Box>
       </Box>
-      <Box
-        sx={{
-          padding: "10px 0px",
-          justifyContent: "space-between",
-        }}
-      >
-        <LoadingButton
+      {/* <LoadingButton
           variant="contained"
           loading={isLoading}
           fullWidth
           onClick={details?.id ? updateLabResult : createNewLabResult}
         >
           Save
-        </LoadingButton>
-      </Box>
+        </LoadingButton> */}
     </Box>
   );
 };
