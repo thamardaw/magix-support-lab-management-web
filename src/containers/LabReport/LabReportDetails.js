@@ -1,6 +1,6 @@
 import { Box, Button, Toolbar, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { BackButton, LabResultPreview } from "../../components";
 import { useReactToPrint } from "react-to-print";
 import { useAxios } from "../../hooks";
@@ -8,6 +8,7 @@ import { useAxios } from "../../hooks";
 const LabReportDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const reportRef = useRef();
   const api = useAxios({ autoSnackbar: true });
   const [data, setData] = useState({});
@@ -19,6 +20,8 @@ const LabReportDetails = () => {
     content: () => reportRef.current,
     onAfterPrint: () => {
       setIsPrintMode(false);
+      if (location.state?.goBack)
+        navigate("/dashboard/lab_report/form", { state: { mode: "new" } });
     },
     onBeforeGetContent: () => {
       // setIsPrintMode(true);

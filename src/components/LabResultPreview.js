@@ -17,7 +17,7 @@ import labResultFormAtom from "../recoil/labResultForm";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useAxios } from "../hooks";
 // import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import SettingsOverscanIcon from '@mui/icons-material/SettingsOverscan';
+import SettingsOverscanIcon from "@mui/icons-material/SettingsOverscan";
 import { useNavigate } from "react-router-dom";
 // import EditIcon from "@mui/icons-material/Edit";
 // import SaveIcon from "@mui/icons-material/Save";
@@ -71,7 +71,9 @@ const LabResultPreview = (
             color="primary"
             disabled={labReport?.id === undefined}
             onClick={() =>
-              navigate(`/dashboard/lab_report/details/${labReport?.id}`)
+              navigate(`/dashboard/lab_report/details/${labReport?.id}`, {
+                state: { goBack: true },
+              })
             }
           >
             <SettingsOverscanIcon />
@@ -164,7 +166,7 @@ const LabResultPreview = (
           <Grid item xs={isPrintMode ? 6 : 12} sm={6}>
             <DetailsRow
               name="Patient Type"
-              value="patient_type"
+              value={labReport?.patient_type}
               padding="0px"
             />
           </Grid>
