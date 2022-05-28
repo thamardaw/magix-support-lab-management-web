@@ -3,6 +3,8 @@ import { memo, useEffect, useState } from "react";
 import { CustomTable, DeleteDialog } from "../../components";
 import { useNavigate } from "react-router-dom";
 import { useAxios } from "../../hooks";
+import { generateID } from "../../utils/generateID";
+import { extractID } from "../../utils/extractID";
 
 const headCells = [
   {
@@ -68,7 +70,7 @@ const PatientTable = () => {
     const res = await api.get("/api/patients/");
     if (res.status === 200) {
       const data = res.data.map((row) => {
-        // const ID = generateID(row.id, row.created_time);
+        const ID = generateID(row.id, row.created_time);
         const dateAndTime = `${row.created_time.split("T")[0]} ${new Date(
           row.created_time
         ).toLocaleTimeString("en-US", {
@@ -77,7 +79,7 @@ const PatientTable = () => {
           hour12: true,
         })}`;
         return {
-          id: row.id,
+          id: ID,
           name: row.name,
           age: row.age,
           contact_details: row.contact_details,
@@ -97,7 +99,7 @@ const PatientTable = () => {
     if (selected.length === 0) {
       return;
     } else if (selected.length === 1) {
-      await api.delete(`/api/patients/${parseInt(selected[0].id)}`);
+      await api.delete(`/api/patients/${parseInt(extractID(selected[0].id))}`);
     }
     setOpenDeleteDialog(false);
     setSelected([]);
@@ -143,7 +145,7 @@ const PatientTable = () => {
                 </Button>
               )),
               callback: (selected) => {
-                navigate(`form/${selected[0].id}`);
+                navigate(`form/${extractID(selected[0].id)}`);
               },
             },
             {
@@ -159,7 +161,7 @@ const PatientTable = () => {
                 </Button>
               )),
               callback: (selected) => {
-                navigate(`details/${selected[0].id}`);
+                navigate(`details/${extractID(selected[0].id)}`);
               },
             },
             {
