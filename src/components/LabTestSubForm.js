@@ -40,7 +40,12 @@ const LabTestSubForm = ({ id }) => {
 
   const createNewLabTest = async () => {
     setIsLoading(true);
-    const res = await api.post("/api/lab_tests/", details);
+    const res = await api.post("/api/lab_tests/", {
+      ...details,
+      test_category_name: testCategories.find(
+        (tc) => tc.id === details.test_category_id
+      ).name,
+    });
     if (res.status === 200) {
       navigate(`${res.data.id}`, { replace: true, state: { mode: "new" } });
     }
@@ -50,7 +55,12 @@ const LabTestSubForm = ({ id }) => {
 
   const updateLabTest = async () => {
     setIsLoading(true);
-    await api.put(`/api/lab_tests/${id}/`, details);
+    await api.put(`/api/lab_tests/${id}/`, {
+      ...details,
+      test_category_name: testCategories.find(
+        (tc) => tc.id === details.test_category_id
+      ).name,
+    });
     setIsLoading(false);
     return;
   };
