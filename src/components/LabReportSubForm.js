@@ -46,7 +46,7 @@ const LabReportSubForm = ({ id }) => {
     getPatients();
     return () => resetLabReportSubForm();
     // eslint-disable-next-line
-  }, []);
+  }, [id]);
 
   return (
     <Box>
