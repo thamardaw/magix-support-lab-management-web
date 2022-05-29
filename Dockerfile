@@ -22,6 +22,6 @@ RUN npm run build
 
 # production environment
 FROM nginx
-EXPOSE 3000
+EXPOSE 3001
 COPY --from=build /app/react_nginx/default.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /app/build /usr/share/nginx/html
