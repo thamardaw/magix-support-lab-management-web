@@ -18,6 +18,7 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import authAtom, { withUser } from "../recoil/auth";
 import { useNavigate } from "react-router-dom";
 import drawerAtom from "../recoil/drawer";
+import { constants } from "../utils/constants";
 
 const Appbar = ({ drawerWidth }) => {
   const navigate = useNavigate();
@@ -63,7 +64,7 @@ const Appbar = ({ drawerWidth }) => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-            Magix Support
+            {constants.name}
           </Typography>
           <IconButton sx={{ color: "white" }} onClick={handleClick}>
             <AccountCircleIcon />
