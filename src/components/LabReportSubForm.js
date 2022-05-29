@@ -11,6 +11,7 @@ import { useAxios } from "../hooks";
 import AddIcon from "@mui/icons-material/Add";
 import labReportSubFormAtom from "../recoil/labReportSubForm";
 import { useRecoilState, useResetRecoilState } from "recoil";
+import { generateID } from "../utils/generateID";
 
 const LabReportSubForm = ({ id }) => {
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ const LabReportSubForm = ({ id }) => {
   };
 
   const getPatients = async () => {
+    resetLabReportSubForm();
     const res = await api.get("/api/patients/");
     if (res.status === 200) {
       setPatients(res.data);
@@ -69,11 +71,13 @@ const LabReportSubForm = ({ id }) => {
           <Autocomplete
             value={details?.currentPatient}
             options={patients}
-            getOptionLabel={(option) => `${option.name}, ${option.id}`}
+            getOptionLabel={(option) =>
+              `${option.name}, ${generateID(option.id, option.created_time)}`
+            }
             renderOption={(props, option) => {
               return (
                 <Box {...props} key={option.id}>
-                  {option.name}, {option.id}
+                  {option.name}, {generateID(option.id, option.created_time)}
                 </Box>
               );
             }}
