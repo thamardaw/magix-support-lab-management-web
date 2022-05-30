@@ -4,7 +4,7 @@ const customTableAtomFamily = atomFamily({
   key: "customTableAtomFamily",
   default: {
     orderBy: "id",
-    rowsPerPage: 5,
+    rowsPerPage: 25,
     order: "desc",
     page: 0,
   },

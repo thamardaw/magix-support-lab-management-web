@@ -486,7 +486,7 @@ export default function CustomTable({
             </Button>
           </CSVLink>
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={[5, 10, 25, 50, 75, 100]}
             component="div"
             count={dataRows.length}
             rowsPerPage={rowsPerPage}
