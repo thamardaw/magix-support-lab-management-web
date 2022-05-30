@@ -56,7 +56,7 @@ const LabTestDetails = () => {
       <Divider />
       <Box sx={{ flexDirection: "column", padding: "10px" }}>
         <DetailsRow name="Name" value={labTest?.name} />
-        <DetailsRow name="Category" value={labTest?.test_category_?.name} />
+        <DetailsRow name="Category" value={labTest?.test_category_name} />
         <Box
           sx={{
             display: "flex",
