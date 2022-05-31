@@ -25,8 +25,8 @@ jobs:
           context: .
           push: true
           build-args: |
-            BASE_URL=http://localhost:8001
+            BASE_URL=http://192.168.1.2:8001
             THEME=
-            TITLE="Kan Daw Mon"
-            TITLE_SHORT=KDM
+            TITLE=Kan Taw Mon
+            TITLE_SHORT=KTM
           tags: jasoniv/kdm-lab:latest
