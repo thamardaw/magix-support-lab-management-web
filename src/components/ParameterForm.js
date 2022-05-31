@@ -120,239 +120,241 @@ const ParameterForm = ({ height, refreshData, id }) => {
   }, [resetParameterFrom]);
 
   return (
-    <Box sx={{ height: height, overflowY: "scroll" }}>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-start",
-        }}
-      >
-        <Typography variant="p">Parameter Name</Typography>
+    <>
+      <Box sx={{ height: height, overflowY: "scroll" }}>
         <Box
           sx={{
-            width: "100%",
             display: "flex",
-            alignItems: "center",
+            flexDirection: "column",
+            alignItems: "flex-start",
           }}
         >
-          <TextField
-            fullWidth
-            name="name"
-            size="small"
-            margin="dense"
-            onChange={handleChange}
-            value={details?.name || ""}
-          />
-        </Box>
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-start",
-        }}
-      >
-        <Typography variant="p">Unit</Typography>
-        <Box
-          sx={{
-            width: "100%",
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          <TextField
-            fullWidth
-            name="unit"
-            size="small"
-            margin="dense"
-            onChange={handleChange}
-            value={details?.unit || ""}
-          />
-        </Box>
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-start",
-        }}
-      >
-        <Typography variant="p">Result Type</Typography>
-        <Box
-          sx={{
-            width: "100%",
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          <TextField
-            select
-            fullWidth
-            value={details?.result_type || ""}
-            name="result_type"
-            size="small"
-            margin="dense"
-            onChange={handleChange}
+          <Typography variant="p">Parameter Name</Typography>
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+            }}
           >
-            <MenuItem value="text">Text</MenuItem>
-            <MenuItem value="number">Number</MenuItem>
-          </TextField>
+            <TextField
+              fullWidth
+              name="name"
+              size="small"
+              margin="dense"
+              onChange={handleChange}
+              value={details?.name || ""}
+            />
+          </Box>
         </Box>
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-start",
-        }}
-      >
-        <Typography variant="p">Result Default Text</Typography>
         <Box
           sx={{
-            width: "100%",
             display: "flex",
-            alignItems: "center",
+            flexDirection: "column",
+            alignItems: "flex-start",
           }}
         >
-          <TextField
-            fullWidth
-            name="result_default_text"
-            size="small"
-            margin="dense"
-            onChange={handleChange}
-            value={details?.result_default_text || ""}
-          />
+          <Typography variant="p">Unit</Typography>
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <TextField
+              fullWidth
+              name="unit"
+              size="small"
+              margin="dense"
+              onChange={handleChange}
+              value={details?.unit || ""}
+            />
+          </Box>
         </Box>
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-start",
-        }}
-      >
-        <Typography variant="p">Range</Typography>
         <Box
           sx={{
-            width: "100%",
             display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
+            flexDirection: "column",
+            alignItems: "flex-start",
           }}
         >
-          <TextField
-            name="lower_limit"
-            placeholder="Lower Limit"
-            size="small"
-            margin="dense"
-            sx={{ width: "45%" }}
-            value={range.lower_limit || ""}
-            onChange={handleRangeChange}
-          />
-          <TextField
-            name="upper_limit"
-            placeholder="Upper Limit"
-            size="small"
-            margin="dense"
-            sx={{ width: "45%" }}
-            value={range.upper_limit || ""}
-            onChange={handleRangeChange}
-          />
-        </Box>
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-start",
-        }}
-      >
-        <Typography variant="p">Remark</Typography>
-        <Box
-          sx={{
-            width: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <TextField
-            name="low_remark"
-            placeholder="Low"
-            size="small"
-            margin="dense"
-            sx={{ width: "30%" }}
-            value={range.low_remark || ""}
-            onChange={handleRangeChange}
-          />
-          <TextField
-            name="normal_remark"
-            placeholder="Normal"
-            size="small"
-            margin="dense"
-            sx={{ width: "30%" }}
-            value={range.normal_remark || ""}
-            onChange={handleRangeChange}
-          />
-          <TextField
-            name="high_remark"
-            placeholder="High"
-            size="small"
-            margin="dense"
-            sx={{ width: "30%" }}
-            value={range.high_remark || ""}
-            onChange={handleRangeChange}
-          />
-        </Box>
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          padding: "10px 0px",
-          justifyContent: "flex-end",
-        }}
-      >
-        <Button
-          variant="contained"
-          sx={{ width: "45%", textTransform: "none" }}
-          onClick={addRange}
-        >
-          Add Range
-        </Button>
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-start",
-          padding: "10px 0px",
-          height: "150px",
-          overflowY: "scroll",
-          border: "1px solid #ccc",
-        }}
-      >
-        <List sx={{ width: "100%" }}>
-          {details?.parameter_ranges?.map((range, index) => (
-            <ListItem
-              key={index}
-              secondaryAction={
-                <IconButton
-                  edge="end"
-                  aria-label="delete"
-                  onClick={() => removeRange(index)}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              }
+          <Typography variant="p">Result Type</Typography>
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <TextField
+              select
+              fullWidth
+              value={details?.result_type || ""}
+              name="result_type"
+              size="small"
+              margin="dense"
+              onChange={handleChange}
             >
-              <ListItemText
-                primary={`${range.lower_limit}-${range.upper_limit}`}
-                secondary={`${range.low_remark}, ${range.normal_remark}, ${range.high_remark}`}
-              />
-            </ListItem>
-          ))}
-        </List>
+              <MenuItem value="text">Text</MenuItem>
+              <MenuItem value="number">Number</MenuItem>
+            </TextField>
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+          }}
+        >
+          <Typography variant="p">Result Default Text</Typography>
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <TextField
+              fullWidth
+              name="result_default_text"
+              size="small"
+              margin="dense"
+              onChange={handleChange}
+              value={details?.result_default_text || ""}
+            />
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+          }}
+        >
+          <Typography variant="p">Range</Typography>
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <TextField
+              name="lower_limit"
+              placeholder="Lower Limit"
+              size="small"
+              margin="dense"
+              sx={{ width: "45%" }}
+              value={range.lower_limit || ""}
+              onChange={handleRangeChange}
+            />
+            <TextField
+              name="upper_limit"
+              placeholder="Upper Limit"
+              size="small"
+              margin="dense"
+              sx={{ width: "45%" }}
+              value={range.upper_limit || ""}
+              onChange={handleRangeChange}
+            />
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+          }}
+        >
+          <Typography variant="p">Remark</Typography>
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <TextField
+              name="low_remark"
+              placeholder="Low"
+              size="small"
+              margin="dense"
+              sx={{ width: "30%" }}
+              value={range.low_remark || ""}
+              onChange={handleRangeChange}
+            />
+            <TextField
+              name="normal_remark"
+              placeholder="Normal"
+              size="small"
+              margin="dense"
+              sx={{ width: "30%" }}
+              value={range.normal_remark || ""}
+              onChange={handleRangeChange}
+            />
+            <TextField
+              name="high_remark"
+              placeholder="High"
+              size="small"
+              margin="dense"
+              sx={{ width: "30%" }}
+              value={range.high_remark || ""}
+              onChange={handleRangeChange}
+            />
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            padding: "10px 0px",
+            justifyContent: "flex-end",
+          }}
+        >
+          <Button
+            variant="contained"
+            sx={{ width: "45%", textTransform: "none" }}
+            onClick={addRange}
+          >
+            Add Range
+          </Button>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            padding: "10px 0px",
+            height: "150px",
+            overflowY: "scroll",
+            border: "1px solid #ccc",
+          }}
+        >
+          <List sx={{ width: "100%" }}>
+            {details?.parameter_ranges?.map((range, index) => (
+              <ListItem
+                key={index}
+                secondaryAction={
+                  <IconButton
+                    edge="end"
+                    aria-label="delete"
+                    onClick={() => removeRange(index)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                }
+              >
+                <ListItemText
+                  primary={`${range.lower_limit}-${range.upper_limit}`}
+                  secondary={`${range.low_remark}, ${range.normal_remark}, ${range.high_remark}`}
+                />
+              </ListItem>
+            ))}
+          </List>
+        </Box>
       </Box>
       <Box
         sx={{
@@ -369,7 +371,7 @@ const ParameterForm = ({ height, refreshData, id }) => {
           Save
         </LoadingButton>
       </Box>
-    </Box>
+    </>
   );
 };
 
