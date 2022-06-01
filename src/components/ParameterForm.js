@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Checkbox,
   IconButton,
   List,
   ListItem,
@@ -31,10 +32,12 @@ import { LoadingButton } from "@mui/lab";
 //   },
 // }));
 
-const ParameterForm = ({ height, refreshData, id }) => {
+const ParameterForm = ({ height, data, refreshData, id }) => {
   const api = useAxios({ autoSnackbar: true });
+  const apiNoSnackbar = useAxios({ autoSnackbar: false });
   const [details, setDetails] = useRecoilState(parameterFormAtom);
   const resetParameterFrom = useResetRecoilState(parameterFormAtom);
+  const [labTest, setLabTest] = useState({ show_in_report_form: false });
   const [isLoading, setIsLoading] = useState(false);
   const [range, setRange] = useState({
     lower_limit: "",
@@ -82,14 +85,18 @@ const ParameterForm = ({ height, refreshData, id }) => {
     }
   };
 
+  const processResultDefaultText = (v) => {
+    return v ? (typeof v === "object" ? v : v.split(",")) : [];
+  };
+
   const createNewParameter = async () => {
     setIsLoading(true);
+    console.log("create");
     const res = await api.post(`/api/parameters/`, {
       ...details,
-      result_default_text:
-        typeof details?.result_default_text === "object"
-          ? details?.result_default_text
-          : details?.result_default_text.split(","),
+      result_default_text: processResultDefaultText(
+        details?.result_default_text
+      ),
       lab_test_id: id,
     });
     if (res.status === 200) {
@@ -101,12 +108,12 @@ const ParameterForm = ({ height, refreshData, id }) => {
 
   const updateParameter = async () => {
     setIsLoading(true);
+    console.log("update");
     const res = await api.put(`/api/parameters/${details.id}/`, {
       ...details,
-      result_default_text:
-        typeof details?.result_default_text === "object"
-          ? details?.result_default_text
-          : details?.result_default_text.split(","),
+      result_default_text: processResultDefaultText(
+        details?.result_default_text
+      ),
     });
     if (res.status === 200) {
       refreshData();
@@ -115,13 +122,65 @@ const ParameterForm = ({ height, refreshData, id }) => {
     setIsLoading(false);
   };
 
+  const getLabTestData = async () => {
+    const res = await api.get(`/api/lab_tests/${id}`);
+    if (res.status === 200) {
+      setLabTest(res.data);
+    }
+    return;
+  };
+
+  const updateLabTest = async (e) => {
+    const res = await apiNoSnackbar.put(`/api/lab_tests/${id}/`, {
+      ...labTest,
+      show_in_report_form: e.target.checked,
+    });
+    if (res.status === 200) {
+      getLabTestData();
+    }
+  };
+
   useEffect(() => {
     return () => resetParameterFrom();
   }, [resetParameterFrom]);
 
+  useEffect(() => {
+    if (data.length > 1) {
+      if (labTest?.show_in_report_form === true) return;
+      updateLabTest({ target: { checked: true } });
+    } else {
+      if (labTest?.show_in_report_form === false) return;
+      updateLabTest({ target: { checked: false } });
+    }
+    getLabTestData();
+    // eslint-disable-next-line
+  }, [id, data]);
+
   return (
     <>
       <Box sx={{ height: height, overflowY: "scroll" }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            paddingBottom: "10px",
+          }}
+        >
+          <Typography variant="p">Show In Report Form</Typography>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Checkbox
+              checked={labTest?.show_in_report_form}
+              onChange={updateLabTest}
+            />
+          </Box>
+        </Box>
         <Box
           sx={{
             display: "flex",
