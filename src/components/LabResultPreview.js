@@ -5,6 +5,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  tableCellClasses,
   TableContainer,
   TableHead,
   TableRow,
@@ -19,6 +20,9 @@ import { useAxios } from "../hooks";
 // import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import SettingsOverscanIcon from "@mui/icons-material/SettingsOverscan";
 import { useNavigate } from "react-router-dom";
+import LetterHead from "./LetterHead";
+import { generateID } from "../utils/generateID";
+
 // import EditIcon from "@mui/icons-material/Edit";
 // import SaveIcon from "@mui/icons-material/Save";
 
@@ -120,174 +124,227 @@ const LabResultPreview = (
           border: isPreview && "1px solid #ccc",
         }}
       >
-        <Grid container alignItems="center">
-          <Grid item xs={isPrintMode ? 6 : 12} sm={6}>
-            {/* {isEditMode ? (
+        <LetterHead isPreview={isPreview} isPrintMode={isPrintMode} />
+        <Box paddingLeft="10px" paddingRight="10px" width="100%">
+          <Grid container alignItems="flex-start" sx={{ marginBottom: "8px" }}>
+            <Grid item xs={isPrintMode ? 4 : 12} sm={4}>
+              {/* {isEditMode ? (
               <TextField label="Patient Name" size="small" />
             ) : ( */}
-            <DetailsRow
-              name="Patient Name"
-              value={labReport?.patient?.name}
-              padding="0px"
-            />
-            {/* )} */}
-          </Grid>
-          <Grid item xs={isPrintMode ? 6 : 12} sm={6}>
-            {/* {isEditMode ? (
-              <TextField label="Date" size="small" placeholder="YYYY-MM-DD" />
-            ) : ( */}
-            <DetailsRow
-              name="Date"
-              value={labReport?.test_date}
-              padding="0px"
-            />
-            {/* )} */}
-          </Grid>
-          <Grid item xs={isPrintMode ? 6 : 12} sm={6}>
-            {/* {isEditMode ? (
+              <DetailsRow
+                name="Name"
+                value={labReport?.patient?.name}
+                padding="0px"
+                marginV="2px"
+              />
+              {/* )} */}
+            </Grid>
+            <Grid item xs={isPrintMode ? 4 : 12} sm={4}>
+              {/* {isEditMode ? (
               <TextField
                 label="Patient Sex"
                 size="small"
                 placeholder="YYYY-MM-DD"
               />
             ) : ( */}
-            <DetailsRow
-              name="Patient Sex"
-              value={labReport?.patient?.gender}
-              padding="0px"
-            />
-            {/* )} */}
+              <DetailsRow
+                name="Patient ID"
+                value={generateID(
+                  labReport?.patient?.id,
+                  labReport?.patient?.created_time
+                )}
+                padding="0px"
+                marginV="2px"
+              />
+              {/* )} */}
+            </Grid>
+            <Grid item xs={isPrintMode ? 4 : 12} sm={4}>
+              <DetailsRow
+                name="Sample Type"
+                value={labReport?.sample_type}
+                padding="0px"
+                marginV="2px"
+              />
+            </Grid>
+            <Grid item xs={isPrintMode ? 4 : 12} sm={4}>
+              {/* {isEditMode ? (
+              <TextField
+                label="Patient Sex"
+                size="small"
+                placeholder="YYYY-MM-DD"
+              />
+            ) : ( */}
+              <DetailsRow
+                name="Gender"
+                value={labReport?.patient?.gender}
+                padding="0px"
+                marginV="2px"
+              />
+              {/* )} */}
+            </Grid>
+            <Grid item xs={isPrintMode ? 4 : 12} sm={4}>
+              <DetailsRow
+                name="Sample ID"
+                value={labReport?.sample_id}
+                padding="0px"
+                marginV="2px"
+              />
+            </Grid>
+            <Grid item xs={isPrintMode ? 4 : 12} sm={4}>
+              <DetailsRow
+                name="Patient Type"
+                value={labReport?.patient_type}
+                padding="0px"
+                marginV="2px"
+              />
+            </Grid>
+            <Grid item xs={isPrintMode ? 4 : 12} sm={4}>
+              <DetailsRow
+                name="Age"
+                value={labReport?.patient?.age}
+                padding="0px"
+                marginV="2px"
+              />
+            </Grid>
+
+            <Grid item xs={isPrintMode ? 4 : 12} sm={4}>
+              <DetailsRow
+                name="Refer Dr."
+                value={labReport?.doctor_name}
+                padding="0px"
+                marginV="2px"
+              />
+            </Grid>
+            <Grid item xs={isPrintMode ? 4 : 12} sm={4}>
+              {/* {isEditMode ? (
+              <TextField label="Date" size="small" placeholder="YYYY-MM-DD" />
+            ) : ( */}
+              <DetailsRow
+                name="Test Time"
+                value={labReport?.test_date}
+                padding="0px"
+                marginV="2px"
+              />
+              {/* )} */}
+            </Grid>
           </Grid>
-          <Grid item xs={isPrintMode ? 6 : 12} sm={6}>
-            <DetailsRow
-              name="Sample ID"
-              value={labReport?.sample_id}
-              padding="0px"
-            />
-          </Grid>
-          <Grid item xs={isPrintMode ? 6 : 12} sm={6}>
-            <DetailsRow
-              name="Patient Age"
-              value={labReport?.patient?.age}
-              padding="0px"
-            />
-          </Grid>
-          <Grid item xs={isPrintMode ? 6 : 12} sm={6}>
-            <DetailsRow
-              name="Sample Type"
-              value={labReport?.sample_type}
-              padding="0px"
-            />
-          </Grid>
-          <Grid item xs={isPrintMode ? 6 : 12} sm={6}>
-            <DetailsRow
-              name="Patient Type"
-              value={labReport?.patient_type}
-              padding="0px"
-            />
-          </Grid>
-          <Grid item xs={isPrintMode ? 6 : 12} sm={6}>
-            <DetailsRow
-              name="Doctor"
-              value={labReport?.doctor_name}
-              padding="0px"
-            />
-          </Grid>
-        </Grid>
-        <TableContainer>
-          <Table size="small" stickyHeader>
-            <TableHead>
-              <TableRow>
-                <TableCell padding="none">Paramter</TableCell>
-                <TableCell>Result</TableCell>
-                <TableCell>Unit</TableCell>
-                <TableCell>Range</TableCell>
-                <TableCell>Remark</TableCell>
-                {enableDelete && <TableCell>Actions</TableCell>}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {testList.map((test) => {
-                return (
-                  <>
-                    <TableRow
-                      key={test.test_id}
-                      sx={{
-                        "&:last-child td, &:last-child th": { border: 0 },
-                        display: test?.test?.show_in_report_form
-                          ? "block"
-                          : "none",
-                      }}
-                    >
-                      <TableCell
-                        component="th"
-                        scope="row"
-                        padding="none"
-                        colSpan={5}
+          <TableContainer>
+            <Table
+              size="small"
+              sx={{
+                [`& .${tableCellClasses.root}`]: {
+                  borderBottom: "none",
+                },
+              }}
+            >
+              <TableHead>
+                <TableRow
+                  style={{
+                    borderTop: "2px solid black",
+                    borderBottom: "2px solid black",
+                  }}
+                >
+                  <TableCell
+                    padding="none"
+                    sx={{
+                      minWidth: "120px",
+                    }}
+                  >
+                    Paramter
+                  </TableCell>
+                  <TableCell>Result</TableCell>
+                  <TableCell>Unit</TableCell>
+                  <TableCell>Range</TableCell>
+                  <TableCell>Remark</TableCell>
+                  {enableDelete && <TableCell>Actions</TableCell>}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {testList.map((test) => {
+                  return (
+                    <>
+                      <TableRow
+                        key={test.test_id}
+                        sx={{
+                          "&:last-child td, &:last-child th": { border: 0 },
+                          display: test?.test?.show_in_report_form
+                            ? "block"
+                            : "none",
+                        }}
                       >
-                        <Typography
-                          variant="body2"
-                          sx={{ fontWeight: "bold", padding: "10px 0px" }}
+                        <TableCell
+                          component="th"
+                          scope="row"
+                          padding="none"
+                          colSpan={5}
                         >
-                          {test.test_name}
-                        </Typography>
-                      </TableCell>
-                    </TableRow>
-                    {labResult.map((lr) => {
-                      if (lr.test_name === test.test_name) {
-                        return (
-                          <TableRow
-                            key={lr.id}
-                            selected={labResultForm?.id === lr?.id}
-                            onClick={() => {
-                              if (lr.id === labResultForm.id) {
-                                resetLabResultForm();
-                              } else {
-                                setLabResultForm({
-                                  ...lr,
-                                });
-                              }
-                            }}
-                            sx={{
-                              "&:last-child td, &:last-child th": { border: 0 },
-                            }}
+                          <Typography
+                            variant="body2"
+                            sx={{ fontWeight: "bold", padding: "10px 0px" }}
                           >
-                            <TableCell
-                              component="th"
-                              scope="row"
-                              padding="none"
+                            {test.test_name}
+                          </Typography>
+                        </TableCell>
+                      </TableRow>
+                      {labResult.map((lr) => {
+                        if (lr.test_name === test.test_name) {
+                          return (
+                            <TableRow
+                              key={lr.id}
+                              selected={labResultForm?.id === lr?.id}
+                              onClick={() => {
+                                if (lr.id === labResultForm.id) {
+                                  resetLabResultForm();
+                                } else {
+                                  setLabResultForm({
+                                    ...lr,
+                                  });
+                                }
+                              }}
+                              sx={{
+                                // border: 0,
+                                "&:last-child td, &:last-child th": {
+                                  border: 0,
+                                },
+                              }}
                             >
-                              {lr?.parameter_name}
-                            </TableCell>
-                            <TableCell>{lr?.result}</TableCell>
-                            <TableCell>{lr?.unit}</TableCell>
-                            <TableCell>{`${lr?.lower_limit || ""} - ${
-                              lr?.upper_limit || ""
-                            }`}</TableCell>
-                            <TableCell>{lr.remark}</TableCell>
-                            {enableDelete && (
-                              <TableCell maxwidth="4px">
-                                <IconButton
-                                  edge="end"
-                                  aria-label="delete"
-                                  onClick={() => deleteParameter(lr?.id)}
-                                >
-                                  <DeleteIcon />
-                                </IconButton>
+                              <TableCell
+                                component="th"
+                                scope="row"
+                                padding="none"
+                              >
+                                {lr?.parameter_name}
                               </TableCell>
-                            )}
-                          </TableRow>
-                        );
-                      } else {
-                        return null;
-                      }
-                    })}
-                  </>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
+                              <TableCell>{lr?.result}</TableCell>
+                              <TableCell>{lr?.unit}</TableCell>
+                              <TableCell>{`${lr?.lower_limit || ""} - ${
+                                lr?.upper_limit || ""
+                              }`}</TableCell>
+                              <TableCell>{lr.remark}</TableCell>
+                              {enableDelete && (
+                                <TableCell maxwidth="4px">
+                                  <IconButton
+                                    edge="end"
+                                    aria-label="delete"
+                                    onClick={() => deleteParameter(lr?.id)}
+                                  >
+                                    <DeleteIcon />
+                                  </IconButton>
+                                </TableCell>
+                              )}
+                            </TableRow>
+                          );
+                        } else {
+                          return null;
+                        }
+                      })}
+                    </>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
       </Box>
     </>
   );
