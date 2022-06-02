@@ -7,6 +7,7 @@ const labResultFormAtom = atom({
     lab_report_id: null,
     parameter_name: null,
     test_name: "",
+    test_id: null,
     parameter_id: null,
     result: "",
     unit: "",

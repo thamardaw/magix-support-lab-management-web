@@ -78,12 +78,14 @@ const LabReportForm = () => {
   };
 
   const createNewLabResult = async () => {
+    if (!labResultDetails?.currentParameter?.id) return;
     setIsLoading(true);
     const res = await api.post(`/api/lab_reports/result/${id}`, {
       ...labResultDetails,
       parameter_name: labResultDetails?.currentParameter?.name,
       parameter_id: labResultDetails?.currentParameter?.id,
       test_name: labResultDetails?.currentParameter?.lab_test_?.name,
+      test_id: labResultDetails?.currentParameter?.lab_test_id,
       unit: labResultDetails?.currentParameter?.unit,
       lower_limit: labResultDetails?.lower_limit || null,
       upper_limit: labResultDetails?.upper_limit || null,
@@ -96,6 +98,7 @@ const LabReportForm = () => {
   };
 
   const updateLabResult = async () => {
+    if (!labResultDetails?.currentParameter?.id) return;
     setIsLoading(true);
     const res = await api.put(
       `/api/lab_reports/result/${labResultDetails?.id}`,
@@ -104,6 +107,7 @@ const LabReportForm = () => {
         parameter_name: labResultDetails?.currentParameter?.name,
         parameter_id: labResultDetails?.currentParameter?.id,
         test_name: labResultDetails?.currentParameter?.lab_test_?.name,
+        test_id: labResultDetails?.currentParameter?.lab_test_id,
         unit: labResultDetails?.currentParameter?.unit,
         lower_limit: labResultDetails?.lower_limit || null,
         upper_limit: labResultDetails?.upper_limit || null,

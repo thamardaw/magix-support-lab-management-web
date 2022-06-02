@@ -50,9 +50,25 @@ const LabResultPreview = (
     return;
   };
 
+  const removeDuplicateObjectFromArray = (array, key) => {
+    let check = new Set();
+    return array.filter((obj) => !check.has(obj[key]) && check.add(obj[key]));
+  };
+
   useEffect(() => {
     if (labResult) {
-      const tl = [...new Set(labResult.map((lr) => lr.test_name))];
+      const tl = [
+        ...removeDuplicateObjectFromArray(
+          labResult.map((lr) => {
+            return {
+              test_name: lr?.test_name,
+              test_id: lr?.test_id,
+              test: lr?.test,
+            };
+          }),
+          "test_name"
+        ),
+      ];
       setTestList(tl);
     }
     return () => resetLabResultForm();
@@ -195,8 +211,13 @@ const LabResultPreview = (
                 return (
                   <>
                     <TableRow
-                      key={test}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                      key={test.test_id}
+                      sx={{
+                        "&:last-child td, &:last-child th": { border: 0 },
+                        display: test?.test?.show_in_report_form
+                          ? "block"
+                          : "none",
+                      }}
                     >
                       <TableCell
                         component="th"
@@ -208,12 +229,12 @@ const LabResultPreview = (
                           variant="body2"
                           sx={{ fontWeight: "bold", padding: "10px 0px" }}
                         >
-                          {test}
+                          {test.test_name}
                         </Typography>
                       </TableCell>
                     </TableRow>
                     {labResult.map((lr) => {
-                      if (lr.test_name === test) {
+                      if (lr.test_name === test.test_name) {
                         return (
                           <TableRow
                             key={lr.id}
