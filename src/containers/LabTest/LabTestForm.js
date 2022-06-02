@@ -91,7 +91,8 @@ const LabTestForm = () => {
               }}
             >
               <ParameterForm
-                height={510}
+                height={463}
+                data={parameters}
                 refreshData={getParameterData}
                 id={id}
               />

@@ -80,7 +80,7 @@ const ParameterFormTable = ({
             <TableRow
               selected={row.id === parameterForm?.id}
               onClick={() => {
-                if (row.id === parameterForm.id) {
+                if (row.id === parameterForm?.id) {
                   resetParameterFrom();
                 } else {
                   setParameterForm({ ...row });
