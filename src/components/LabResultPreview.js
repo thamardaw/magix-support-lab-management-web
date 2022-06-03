@@ -149,10 +149,14 @@ const LabResultPreview = (
             ) : ( */}
               <DetailsRow
                 name="Patient ID"
-                value={generateID(
-                  labReport?.patient?.id,
-                  labReport?.patient?.created_time
-                )}
+                value={
+                  labReport?.patient?.id
+                    ? generateID(
+                        labReport?.patient?.id,
+                        labReport?.patient?.created_time
+                      )
+                    : ""
+                }
                 padding="0px"
                 marginV="2px"
               />
