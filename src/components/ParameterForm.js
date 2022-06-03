@@ -92,7 +92,6 @@ const ParameterForm = ({ height, data, refreshData, id }) => {
 
   const createNewParameter = async () => {
     setIsLoading(true);
-    console.log("create");
     const res = await api.post(`/api/parameters/`, {
       ...details,
       result_default_text: processResultDefaultText(
@@ -109,7 +108,6 @@ const ParameterForm = ({ height, data, refreshData, id }) => {
 
   const updateParameter = async () => {
     setIsLoading(true);
-    console.log("update");
     const res = await api.put(`/api/parameters/${details.id}/`, {
       ...details,
       result_default_text: processResultDefaultText(
@@ -152,18 +150,6 @@ const ParameterForm = ({ height, data, refreshData, id }) => {
       initialMountRef.current = false;
       return;
     }
-    if (data.length > 1) {
-      if (labTest?.show_in_report_form === true) return;
-      updateLabTest({ target: { checked: true } });
-    } else {
-      if (labTest?.show_in_report_form === false) return;
-      updateLabTest({ target: { checked: false } });
-    }
-    getLabTestData();
-    // eslint-disable-next-line
-  }, [id, data]);
-
-  useEffect(() => {
     if (data.length > 1) {
       if (labTest?.show_in_report_form === true) return;
       updateLabTest({ target: { checked: true } });
