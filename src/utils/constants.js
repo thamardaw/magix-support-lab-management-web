@@ -2,6 +2,7 @@ export const constants = {
   name: process.env.REACT_APP_TITLE || "Magix Support",
   hospital_name: `${process.env.REACT_APP_TITLE || "Magix Support"} Hospital`,
   hospital_name_symbol: process.env.REACT_APP_TITLE_SHORT || "MS",
+  hospital_logo: process.env.REACT_APP_LOGO,
   hospital_desc:
     process.env.REACT_APP_DESC || "Specialist Clinic and Diagnostic Center",
   primary_color: process.env.REACT_APP_THEME || "#1976d2",
