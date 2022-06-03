@@ -29,4 +29,10 @@ jobs:
             THEME=
             TITLE=Kan Taw Mon
             TITLE_SHORT=KTM
+            LOGO=/logos/ktm_logo.png
+            DESC=Specialist Clinic and Diagnostic Center
+            PHONES=09-97-8396650, 09-94-3031598 (Viber)
+            ADDRESS=No.3 A, Kan Taw Mon Housing, Lay Daung Kan Road, Thingangyun township (Near May Ka Housing)
+            EMAILS=kantawmon.clinic@gmail.com
+            FB=https://www.facebook.com/KanTawMonSpecialistClinic/
           tags: jasoniv/kdm-lab:latest
