@@ -9,7 +9,7 @@ export const constants = {
     process.env.REACT_APP_PHONES || "09-97-8396650, 09-94-3031598 (Viber)",
   hospital_address:
     process.env.REACT_APP_ADDRESS ||
-    "No.3 A, Kan Taw Mon Housing, Lan Daung Kan Road, Thingangyun township (Near May Ka Housing)",
+    "No.3 A, Kan Taw Mon Housing, Lay Daung Kan Road, Thingangyun township (Near May Ka Housing)",
   hospital_email: process.env.REACT_APP_EMAILS || "kantawmon.clinic@gmail.com",
   hospital_fb:
     process.env.REACT_APP_FB ||

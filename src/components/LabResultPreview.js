@@ -254,11 +254,11 @@ const LabResultPreview = (
                       minWidth: "120px",
                     }}
                   >
-                    Paramter
+                    Parameter
                   </TableCell>
                   <TableCell>Result</TableCell>
                   <TableCell>Unit</TableCell>
-                  <TableCell>Range</TableCell>
+                  <TableCell>Ref.range</TableCell>
                   <TableCell>Remark</TableCell>
                   {enableDelete && <TableCell>Actions</TableCell>}
                 </TableRow>
