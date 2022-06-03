@@ -15,7 +15,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 // import { alpha } from "@mui/material/styles";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import parameterFormAtom from "../recoil/parameterForm";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAxios } from "../hooks";
 import { LoadingButton } from "@mui/lab";
 
@@ -35,6 +35,7 @@ import { LoadingButton } from "@mui/lab";
 const ParameterForm = ({ height, data, refreshData, id }) => {
   const api = useAxios({ autoSnackbar: true });
   const apiNoSnackbar = useAxios({ autoSnackbar: false });
+  const initialMountRef = useRef(true);
   const [details, setDetails] = useRecoilState(parameterFormAtom);
   const resetParameterFrom = useResetRecoilState(parameterFormAtom);
   const [labTest, setLabTest] = useState({ show_in_report_form: false });
@@ -91,7 +92,6 @@ const ParameterForm = ({ height, data, refreshData, id }) => {
 
   const createNewParameter = async () => {
     setIsLoading(true);
-    console.log("create");
     const res = await api.post(`/api/parameters/`, {
       ...details,
       result_default_text: processResultDefaultText(
@@ -108,7 +108,6 @@ const ParameterForm = ({ height, data, refreshData, id }) => {
 
   const updateParameter = async () => {
     setIsLoading(true);
-    console.log("update");
     const res = await api.put(`/api/parameters/${details.id}/`, {
       ...details,
       result_default_text: processResultDefaultText(
@@ -141,10 +140,16 @@ const ParameterForm = ({ height, data, refreshData, id }) => {
   };
 
   useEffect(() => {
+    getLabTestData();
     return () => resetParameterFrom();
-  }, [resetParameterFrom]);
+    // eslint-disable-next-line
+  }, [id, resetParameterFrom]);
 
   useEffect(() => {
+    if (initialMountRef.current && data.length !== 0) {
+      initialMountRef.current = false;
+      return;
+    }
     if (data.length > 1) {
       if (labTest?.show_in_report_form === true) return;
       updateLabTest({ target: { checked: true } });
