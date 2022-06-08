@@ -4,7 +4,7 @@ import React from "react";
 import { constants } from "../utils/constants";
 import PhoneIcon from "@mui/icons-material/Phone";
 import HomeIcon from "@mui/icons-material/Home";
-import DraftsIcon from "@mui/icons-material/Drafts";
+// import DraftsIcon from "@mui/icons-material/Drafts";
 
 const LetterHead = ({ isPreview, isPrintMode }) => {
   return (
@@ -33,8 +33,12 @@ const LetterHead = ({ isPreview, isPrintMode }) => {
             <Logo width="100%" height="100%" />
           </Box>
           <Box display="flex" flexDirection="Column" justifyContent="center">
-            <Typography variant="h6">{constants.name}</Typography>
-            <Typography fontSize="0.9rem">{constants.hospital_desc}</Typography>
+            <Typography sx={{ fontSize: "24px", fontWeight: 600 }}>
+              {constants.name_bur}
+            </Typography>
+            <Typography fontSize="0.9rem">
+              {constants.hospital_desc_bur}
+            </Typography>
           </Box>
         </Box>
         <Box
@@ -76,7 +80,7 @@ const LetterHead = ({ isPreview, isPrintMode }) => {
               sx={{ paddingLeft: "4px" }}
               fontSize={isPreview ? "0.8rem" : "0.9rem"}
             >
-              {constants.hospital_phones}
+              {constants.hospital_phones_bur}
             </Typography>
           </Box>
           <Box
@@ -92,10 +96,10 @@ const LetterHead = ({ isPreview, isPrintMode }) => {
               sx={{ paddingLeft: "4px" }}
               fontSize={isPreview ? "0.8rem" : "0.9rem"}
             >
-              {constants.hospital_address}
+              {constants.hospital_address_bur}
             </Typography>
           </Box>
-          <Box
+          {/* <Box
             sx={{ display: "flex", margin: "5px 10px", alignItems: "center" }}
           >
             <Avatar
@@ -118,7 +122,7 @@ const LetterHead = ({ isPreview, isPrintMode }) => {
                 {constants.hospital_fb}
               </Typography>
             </Box>
-          </Box>
+          </Box> */}
         </Box>
       </Box>
       <Box
