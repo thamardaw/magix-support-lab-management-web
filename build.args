@@ -1,0 +1,14 @@
+BASE_URL=http://localhost:8001
+THEME=
+TITLE=Kan Taw Mon
+TITLE_BUR=ကန်တော်မွန်
+TITLE_SHORT=KTM
+LOGO=/logos/ktm_logo.png
+DESC=Specialist Clinic and Diagnostic Center
+DESC_BUR=အထူးကုဆေးခန်း နှင့် အဆင့်မြင့်ရောဂါရှာဖွေရေးစင်တာ
+PHONES=09-97-8396650, 09-94-3031598 (Viber)
+PHONES_BUR=၀၉-၉၇-၈၃၉၆၆၅၀၊ ၀၉-၉၄-၃၀၃၁၅၉၈
+ADDRESS=No.3 A, Kan Taw Mon Housing, Lay Daung Kan Road, Thingangyun township (Near May Ka Housing)
+ADDRESS_BUR=အမှတ် ၃ (အေ)၊ ကန်တော်မွန်အိမ်ရာ၊ လေးထောင့်ကန်လမ်း (မေခအိမ်ရာအနီး)၊ သင်္ဃန်းကျွန်းမြို့နယ်။
+EMAILS=kantawmon.clinic@gmail.com
+FB=https://www.facebook.com/KanTawMonSpecialistClinic/
