@@ -22,6 +22,8 @@ import SettingsOverscanIcon from "@mui/icons-material/SettingsOverscan";
 import { useNavigate } from "react-router-dom";
 import LetterHead from "./LetterHead";
 import { generateID } from "../utils/generateID";
+import capitalize from "../utils/capitalize";
+import padZero from "../utils/padZero";
 
 // import EditIcon from "@mui/icons-material/Edit";
 // import SaveIcon from "@mui/icons-material/Save";
@@ -180,7 +182,7 @@ const LabResultPreview = (
             ) : ( */}
               <DetailsRow
                 name="Gender"
-                value={labReport?.patient?.gender}
+                value={capitalize(labReport?.patient?.gender)}
                 padding="0px"
                 marginV="2px"
               />
@@ -189,7 +191,7 @@ const LabResultPreview = (
             <Grid item xs={isPrintMode ? 4 : 12} sm={4}>
               <DetailsRow
                 name="Sample ID"
-                value={labReport?.sample_id}
+                value={padZero(labReport?.sample_id)}
                 padding="0px"
                 marginV="2px"
               />
