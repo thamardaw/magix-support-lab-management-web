@@ -265,6 +265,11 @@ const LabResultPreview = (
                   {enableDelete && <TableCell>Actions</TableCell>}
                 </TableRow>
               </TableHead>
+              <Box
+                sx={{
+                  height: "10px",
+                }}
+              />
               <TableBody>
                 {testList.map((test) => {
                   return (
