@@ -321,9 +321,15 @@ const LabResultPreview = (
                               </TableCell>
                               <TableCell>{lr?.result}</TableCell>
                               <TableCell>{lr?.unit}</TableCell>
-                              <TableCell>{`${lr?.lower_limit || ""} - ${
-                                lr?.upper_limit || ""
-                              }`}</TableCell>
+                              <TableCell>
+                                {(() => {
+                                  if (lr?.lower_limit || lr?.upper_limit) {
+                                    return `${lr?.lower_limit || ""} - ${
+                                      lr?.upper_limit || ""
+                                    }`;
+                                  }
+                                })()}
+                              </TableCell>
                               <TableCell>{lr.remark}</TableCell>
                               {enableDelete && (
                                 <TableCell maxwidth="4px">
