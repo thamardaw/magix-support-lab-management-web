@@ -19,6 +19,7 @@ const PatientForm = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [details, setDetails] = useState({
+    patient_id: "",
     name: "",
     age: "",
     contact_details: "",
@@ -55,6 +56,7 @@ const PatientForm = () => {
   const update = async () => {
     setIsLoading(true);
     const res = await api.put(`/api/patients/${parseInt(id)}`, {
+      patient_id: details.patient_id,
       name: details.name,
       age: details.age,
       contact_details: details.contact_details,
@@ -90,6 +92,25 @@ const PatientForm = () => {
       </Toolbar>
       <Divider />
       <Box sx={{ flexDirection: "column", padding: "10px" }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          <Box sx={{ width: "30%" }}>
+            <Typography variant="p">ID</Typography>
+          </Box>
+          <TextField
+            size="small"
+            sx={{ width: "70%" }}
+            margin="dense"
+            value={details?.patient_id || ""}
+            name="patient_id"
+            onChange={handleChange}
+          />
+        </Box>
         <Box
           sx={{
             display: "flex",
