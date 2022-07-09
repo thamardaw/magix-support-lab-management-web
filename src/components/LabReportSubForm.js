@@ -11,7 +11,6 @@ import { useAxios } from "../hooks";
 import AddIcon from "@mui/icons-material/Add";
 import labReportSubFormAtom from "../recoil/labReportSubForm";
 import { useRecoilState, useResetRecoilState } from "recoil";
-import { generateID } from "../utils/generateID";
 
 const LabReportSubForm = ({ id }) => {
   const navigate = useNavigate();
@@ -71,13 +70,11 @@ const LabReportSubForm = ({ id }) => {
           <Autocomplete
             value={details?.currentPatient}
             options={patients}
-            getOptionLabel={(option) =>
-              `${option.name}, ${generateID(option.id, option.created_time)}`
-            }
+            getOptionLabel={(option) => `${option.name}, ${option?.patient_id}`}
             renderOption={(props, option) => {
               return (
                 <Box {...props} key={option.id}>
-                  {option.name}, {generateID(option.id, option.created_time)}
+                  {option.name}, {option?.patient_id}
                 </Box>
               );
             }}
