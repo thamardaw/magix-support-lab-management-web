@@ -285,6 +285,7 @@ export default function CustomTable({
     return array.filter((value) => {
       let t = objKeys.map((key) => {
         if (key?.disable) return false;
+        if (!value[key.id]) return false;
         return value[key.id].toString().toLowerCase().includes(searchItem);
       });
       return t.includes(true);
