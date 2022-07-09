@@ -21,7 +21,6 @@ import { useAxios } from "../hooks";
 import SettingsOverscanIcon from "@mui/icons-material/SettingsOverscan";
 import { useNavigate } from "react-router-dom";
 import LetterHead from "./LetterHead";
-import { generateID } from "../utils/generateID";
 import capitalize from "../utils/capitalize";
 import padZero from "../utils/padZero";
 
