@@ -3,7 +3,6 @@ import { memo, useEffect, useState } from "react";
 import { CustomTable, DeleteDialog } from "../../components";
 import { useNavigate } from "react-router-dom";
 import { useAxios } from "../../hooks";
-import { generateID } from "../../utils/generateID";
 
 const headCells = [
   {
@@ -57,12 +56,11 @@ const LabReportTable = () => {
     const res = await api.get("/api/lab_reports/");
     if (res.status === 200) {
       const data = res.data.map((row) => {
-        const pid = generateID(row.patient_id, row.created_time);
         return {
           id: row.id,
           date: row.created_time.split("T")[0],
           sample_id: row?.sample_id,
-          patient_id: pid,
+          patient_id: row?.patient?.patient_id,
           patient_name: row?.patient?.name || "",
           test_date: row?.test_date,
         };
