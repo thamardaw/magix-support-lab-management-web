@@ -150,7 +150,6 @@ const PatientTable = () => {
                 </Button>
               )),
               callback: (selected) => {
-                console.log(selected);
                 navigate(`form/${selected[0].unique_id}`);
               },
             },
