@@ -115,6 +115,7 @@ function CustomTableHead(props) {
               maxWidth: `${
                 headCell.maxWidth || headCell.minWidth + 100 || 200
               }px`,
+              display: headCell?.disable && "none",
             }}
           >
             <TableSortLabel
@@ -283,6 +284,7 @@ export default function CustomTable({
     const searchItem = keyword.toLowerCase();
     return array.filter((value) => {
       let t = objKeys.map((key) => {
+        if (key?.disable) return false;
         return value[key.id].toString().toLowerCase().includes(searchItem);
       });
       return t.includes(true);
@@ -447,6 +449,7 @@ export default function CustomTable({
                             whiteSpace: "nowrap",
                             overflow: "hidden",
                             textOverflow: "ellipsis",
+                            display: headCell?.disable && "none",
                           }}
                         >
                           {row[headCell.id]}
