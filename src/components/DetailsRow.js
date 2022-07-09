@@ -3,11 +3,11 @@ import { alpha, Box, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 const StyledBox = styled("div")(
-  ({ theme, padding = "10px", marginV = "10px" }) => ({
+  ({ theme, padding = "10px", marginv = "10px" }) => ({
     display: "flex",
     flexDirection: "row",
     alignItems: "flex-start",
-    margin: `${marginV} 0`,
+    margin: `${marginv} 0`,
     padding: padding,
     "&:hover": {
       backgroundColor: alpha(theme.palette.primary.light, 0.1),
@@ -25,7 +25,7 @@ const DetailsRow = ({
   value,
 }) => {
   return (
-    <StyledBox padding={padding} marginV={marginV}>
+    <StyledBox padding={padding} marginv={marginV}>
       <Box sx={{ width: leftWidth }}>
         <Typography variant={textVariant} sx={{ fontWeight: "bold" }}>
           {name}
