@@ -68,10 +68,13 @@ const LabReportForm = () => {
   const updateHeader = async () => {
     setIsLoading(true);
     if (labReportSubDetails?.currentPatient) {
-      await api.put(`/api/lab_reports/${id}/`, {
+      const res = await api.put(`/api/lab_reports/${id}/`, {
         ...labReportSubDetails,
         patient_id: labReportSubDetails?.currentPatient?.id,
       });
+      if (res.status === 200) {
+        getData();
+      }
     }
     setIsLoading(false);
     return;

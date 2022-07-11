@@ -7,6 +7,7 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
+import { MobileDatePicker } from "@mui/x-date-pickers";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import BackButton from "../../components/BackButton";
@@ -30,6 +31,14 @@ const PatientForm = () => {
 
   const handleChange = (e) => {
     setDetails({ ...details, [e.target.name]: e.target.value });
+  };
+
+  const onDatePicked = (e) => {
+    const date_obj = new Date(e);
+    const v = `${date_obj.getFullYear()}-${
+      date_obj.getMonth() + 1
+    }-${date_obj.getDate()}`;
+    setDetails({ ...details, date_of_birth: v });
   };
 
   const getData = async () => {
@@ -204,7 +213,22 @@ const PatientForm = () => {
           <Box sx={{ width: "30%" }}>
             <Typography variant="p">Date Of Birth</Typography>
           </Box>
-          <TextField
+
+          <MobileDatePicker
+            inputFormat="yyyy-MM-dd"
+            value={details?.date_of_birth}
+            onChange={onDatePicked}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                sx={{ width: "70%" }}
+                size="small"
+                margin="dense"
+              />
+            )}
+          />
+
+          {/* <TextField
             size="small"
             sx={{ width: "70%" }}
             margin="dense"
@@ -212,7 +236,7 @@ const PatientForm = () => {
             value={details?.date_of_birth || ""}
             name="date_of_birth"
             onChange={handleChange}
-          />
+          /> */}
         </Box>
         <Box
           sx={{

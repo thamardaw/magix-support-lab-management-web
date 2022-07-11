@@ -183,7 +183,7 @@ const LabResultPreview = (
             <Grid item xs={isPrintMode ? 4 : 12} sm={4}>
               <DetailsRow
                 name="Sample ID"
-                value={padZero(labReport?.sample_id)}
+                value={labReport?.sample_id && padZero(labReport?.sample_id)}
                 padding="0px"
                 marginV="2px"
               />

@@ -11,6 +11,7 @@ import { useAxios } from "../hooks";
 import AddIcon from "@mui/icons-material/Add";
 import labReportSubFormAtom from "../recoil/labReportSubForm";
 import { useRecoilState, useResetRecoilState } from "recoil";
+import { MobileDatePicker } from "@mui/x-date-pickers";
 
 const LabReportSubForm = ({ id }) => {
   const navigate = useNavigate();
@@ -21,6 +22,14 @@ const LabReportSubForm = ({ id }) => {
 
   const handleChange = (e) => {
     setDetails({ ...details, [e.target.name]: e.target.value });
+  };
+
+  const onDatePicked = (e) => {
+    const date_obj = new Date(e);
+    const v = `${date_obj.getFullYear()}-${
+      date_obj.getMonth() + 1
+    }-${date_obj.getDate()}`;
+    setDetails({ ...details, test_date: v });
   };
 
   const getPatients = async () => {
@@ -180,7 +189,15 @@ const LabReportSubForm = ({ id }) => {
         }}
       >
         <Typography variant="p">Test Date</Typography>
-        <TextField
+        <MobileDatePicker
+          inputFormat="yyyy-MM-dd"
+          value={details?.test_date}
+          onChange={onDatePicked}
+          renderInput={(params) => (
+            <TextField {...params} size="small" fullWidth margin="dense" />
+          )}
+        />
+        {/* <TextField
           size="small"
           fullWidth
           margin="dense"
@@ -188,7 +205,7 @@ const LabReportSubForm = ({ id }) => {
           value={details?.test_date || ""}
           name="test_date"
           onChange={handleChange}
-        />
+        /> */}
       </Box>
       {/* <LoadingButton
           variant="contained"
