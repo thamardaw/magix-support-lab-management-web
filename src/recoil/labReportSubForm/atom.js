@@ -8,7 +8,7 @@ const labReportSubFormAtom = atom({
     sample_id: "",
     sample_type: "",
     patient_type: "",
-    test_date: "",
+    test_date: null,
     currentPatient: null,
   },
 });

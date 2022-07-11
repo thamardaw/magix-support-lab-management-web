@@ -70,7 +70,7 @@ const PatientDetails = () => {
         </Toolbar>
         <Divider />
         <Box sx={{ flexDirection: "column", padding: "10px" }}>
-          <DetailsRow name="ID" value={details?.id} />
+          <DetailsRow name="ID" value={details?.patient_id} />
           <DetailsRow name="Name" value={details?.name} />
           <DetailsRow name="Age" value={details?.age} />
           <DetailsRow name="Contact Details" value={details?.contact_details} />

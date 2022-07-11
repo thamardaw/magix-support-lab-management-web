@@ -3,12 +3,17 @@ import { memo, useEffect, useState } from "react";
 import { CustomTable, DeleteDialog } from "../../components";
 import { useNavigate } from "react-router-dom";
 import { useAxios } from "../../hooks";
-import { generateID } from "../../utils/generateID";
-import { extractID } from "../../utils/extractID";
 
 const headCells = [
   {
-    id: "id",
+    id: "unique_id",
+    numeric: false,
+    disablePadding: true,
+    label: "Unique ID",
+    disable: true,
+  },
+  {
+    id: "patient_id",
     numeric: false,
     disablePadding: true,
     label: "ID",
@@ -70,7 +75,6 @@ const PatientTable = () => {
     const res = await api.get("/api/patients/");
     if (res.status === 200) {
       const data = res.data.map((row) => {
-        const ID = generateID(row.id, row.created_time);
         const dateAndTime = `${row.created_time.split("T")[0]} ${new Date(
           row.created_time
         ).toLocaleTimeString("en-US", {
@@ -79,7 +83,8 @@ const PatientTable = () => {
           hour12: true,
         })}`;
         return {
-          id: ID,
+          unique_id: row.id,
+          patient_id: row.patient_id,
           name: row.name,
           age: row.age,
           contact_details: row.contact_details,
@@ -99,7 +104,7 @@ const PatientTable = () => {
     if (selected.length === 0) {
       return;
     } else if (selected.length === 1) {
-      await api.delete(`/api/patients/${parseInt(extractID(selected[0].id))}`);
+      await api.delete(`/api/patients/${parseInt(selected[0].unique_id)}`);
     }
     setOpenDeleteDialog(false);
     setSelected([]);
@@ -145,7 +150,7 @@ const PatientTable = () => {
                 </Button>
               )),
               callback: (selected) => {
-                navigate(`form/${extractID(selected[0].id)}`);
+                navigate(`form/${selected[0].unique_id}`);
               },
             },
             {
@@ -161,7 +166,7 @@ const PatientTable = () => {
                 </Button>
               )),
               callback: (selected) => {
-                navigate(`details/${extractID(selected[0].id)}`);
+                navigate(`details/${selected[0].unique_id}`);
               },
             },
             {

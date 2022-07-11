@@ -21,7 +21,6 @@ import { useAxios } from "../hooks";
 import SettingsOverscanIcon from "@mui/icons-material/SettingsOverscan";
 import { useNavigate } from "react-router-dom";
 import LetterHead from "./LetterHead";
-import { generateID } from "../utils/generateID";
 import capitalize from "../utils/capitalize";
 import padZero from "../utils/padZero";
 
@@ -151,14 +150,7 @@ const LabResultPreview = (
             ) : ( */}
               <DetailsRow
                 name="Patient ID"
-                value={
-                  labReport?.patient?.id
-                    ? generateID(
-                        labReport?.patient?.id,
-                        labReport?.patient?.created_time
-                      )
-                    : ""
-                }
+                value={labReport?.patient?.patient_id}
                 padding="0px"
                 marginV="2px"
               />
@@ -191,7 +183,7 @@ const LabResultPreview = (
             <Grid item xs={isPrintMode ? 4 : 12} sm={4}>
               <DetailsRow
                 name="Sample ID"
-                value={padZero(labReport?.sample_id)}
+                value={labReport?.sample_id && padZero(labReport?.sample_id)}
                 padding="0px"
                 marginV="2px"
               />
