@@ -7,6 +7,7 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
+import { MobileDatePicker } from "@mui/x-date-pickers";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import BackButton from "../../components/BackButton";
@@ -19,6 +20,7 @@ const PatientForm = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [details, setDetails] = useState({
+    patient_id: "",
     name: "",
     age: "",
     contact_details: "",
@@ -29,6 +31,14 @@ const PatientForm = () => {
 
   const handleChange = (e) => {
     setDetails({ ...details, [e.target.name]: e.target.value });
+  };
+
+  const onDatePicked = (e) => {
+    const date_obj = new Date(e);
+    const v = `${date_obj.getFullYear()}-${
+      date_obj.getMonth() + 1
+    }-${date_obj.getDate()}`;
+    setDetails({ ...details, date_of_birth: v });
   };
 
   const getData = async () => {
@@ -55,6 +65,7 @@ const PatientForm = () => {
   const update = async () => {
     setIsLoading(true);
     const res = await api.put(`/api/patients/${parseInt(id)}`, {
+      patient_id: details.patient_id,
       name: details.name,
       age: details.age,
       contact_details: details.contact_details,
@@ -90,6 +101,25 @@ const PatientForm = () => {
       </Toolbar>
       <Divider />
       <Box sx={{ flexDirection: "column", padding: "10px" }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          <Box sx={{ width: "30%" }}>
+            <Typography variant="p">ID</Typography>
+          </Box>
+          <TextField
+            size="small"
+            sx={{ width: "70%" }}
+            margin="dense"
+            value={details?.patient_id || ""}
+            name="patient_id"
+            onChange={handleChange}
+          />
+        </Box>
         <Box
           sx={{
             display: "flex",
@@ -183,7 +213,22 @@ const PatientForm = () => {
           <Box sx={{ width: "30%" }}>
             <Typography variant="p">Date Of Birth</Typography>
           </Box>
-          <TextField
+
+          <MobileDatePicker
+            inputFormat="yyyy-MM-dd"
+            value={details?.date_of_birth}
+            onChange={onDatePicked}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                sx={{ width: "70%" }}
+                size="small"
+                margin="dense"
+              />
+            )}
+          />
+
+          {/* <TextField
             size="small"
             sx={{ width: "70%" }}
             margin="dense"
@@ -191,7 +236,7 @@ const PatientForm = () => {
             value={details?.date_of_birth || ""}
             name="date_of_birth"
             onChange={handleChange}
-          />
+          /> */}
         </Box>
         <Box
           sx={{

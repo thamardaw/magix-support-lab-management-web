@@ -11,7 +11,7 @@ const Footer = () => {
         sx={{ flexGrow: 1 }}
         textAlign="center"
       >
-        Developed By Magix Support © 2022
+        Genesis Project - Software for Hospitals © 2022
       </Typography>
     </Toolbar>
   );
