@@ -323,8 +323,8 @@ const LabResultPreview = (
                               <TableCell>
                                 {(() => {
                                   if (lr?.lower_limit || lr?.upper_limit) {
-                                    return `${lr?.lower_limit || ""} - ${
-                                      lr?.upper_limit || ""
+                                    return `${lr?.lower_limit || "0"} - ${
+                                      lr?.upper_limit || "0"
                                     }`;
                                   }
                                 })()}
