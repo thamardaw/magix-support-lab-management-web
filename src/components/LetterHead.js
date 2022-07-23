@@ -6,7 +6,7 @@ import PhoneIcon from "@mui/icons-material/Phone";
 import HomeIcon from "@mui/icons-material/Home";
 // import DraftsIcon from "@mui/icons-material/Drafts";
 
-const LetterHead = ({ isPreview, isPrintMode }) => {
+const KTM = ({ isPreview, isPrintMode }) => {
   return (
     <Box sx={{ width: "100%" }}>
       <Box
@@ -29,7 +29,7 @@ const LetterHead = ({ isPreview, isPrintMode }) => {
             flex: 1,
           }}
         >
-          <Box width="150px" height="160px">
+          <Box width="150px" height="150px">
             <Logo width="100%" height="100%" />
           </Box>
           <Box display="flex" flexDirection="Column" justifyContent="center">
@@ -134,6 +134,71 @@ const LetterHead = ({ isPreview, isPrintMode }) => {
       ></Box>
     </Box>
   );
+};
+
+const ATD = ({ isPreview, isPrintMode }) => {
+  return (
+    <Box sx={{ width: "100%", marginBottom: "8px" }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexDirection: isPrintMode
+            ? "row"
+            : {
+                xs: "column",
+                sm: "column",
+                md: "row",
+              },
+        }}
+      >
+        <Box width="100px" height="100px">
+          <Logo width="100%" height="100%" />
+        </Box>
+        <Box width="8px" />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            width: "70%",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Typography
+            textAlign="center"
+            fontSize={isPreview ? "0.95rem" : "1.2rem"}
+            color="#DA1F2F"
+            fontWeight="bold"
+          >
+            {constants.name} {constants.hospital_desc}
+          </Typography>
+          <Typography
+            textAlign="center"
+            fontSize={isPreview ? "0.8rem" : "0.9rem"}
+            fontWeight="bold"
+          >
+            {constants.hospital_address}
+          </Typography>
+          <Typography
+            textAlign="center"
+            fontSize={isPreview ? "0.8rem" : "0.9rem"}
+            fontWeight="bold"
+          >
+            Tel : {constants.hospital_phones}
+          </Typography>
+        </Box>
+      </Box>
+    </Box>
+  );
+};
+
+const LetterHead = ({ isPreview, isPrintMode }) => {
+  if (constants.hospital_logo === "/logos/ktm_logo.png")
+    return <KTM isPreview={isPreview} isPrintMode={isPrintMode} />;
+  if (constants.hospital_logo === "/logos/atd_logo.png")
+    return <ATD isPreview={isPreview} isPrintMode={isPrintMode} />;
 };
 
 export default React.memo(LetterHead);

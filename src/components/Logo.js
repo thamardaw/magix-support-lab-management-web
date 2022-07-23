@@ -4,7 +4,7 @@ const Logo = ({ width, height }) => {
   return (
     <img
       src={constants.hospital_logo}
-      alt={constants.hospital_name}
+      alt={constants.name}
       width={width}
       height={height}
     />
