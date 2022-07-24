@@ -6,7 +6,7 @@ import { useAxios } from "../../hooks";
 
 const headCells = [
   {
-    id: "unique_id",
+    id: "id",
     numeric: false,
     disablePadding: true,
     label: "Unique ID",
@@ -83,7 +83,7 @@ const PatientTable = () => {
           hour12: true,
         })}`;
         return {
-          unique_id: row.id,
+          id: row.id,
           patient_id: row.patient_id,
           name: row.name,
           age: row.age,
