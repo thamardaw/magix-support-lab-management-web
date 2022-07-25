@@ -104,7 +104,7 @@ const PatientTable = () => {
     if (selected.length === 0) {
       return;
     } else if (selected.length === 1) {
-      await api.delete(`/api/patients/${parseInt(selected[0].unique_id)}`);
+      await api.delete(`/api/patients/${parseInt(selected[0].id)}`);
     }
     setOpenDeleteDialog(false);
     setSelected([]);
@@ -150,7 +150,7 @@ const PatientTable = () => {
                 </Button>
               )),
               callback: (selected) => {
-                navigate(`form/${selected[0].unique_id}`);
+                navigate(`form/${selected[0].id}`);
               },
             },
             {
@@ -166,7 +166,7 @@ const PatientTable = () => {
                 </Button>
               )),
               callback: (selected) => {
-                navigate(`details/${selected[0].unique_id}`);
+                navigate(`details/${selected[0].id}`);
               },
             },
             {
