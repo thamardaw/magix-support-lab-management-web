@@ -25,7 +25,7 @@ jobs:
           context: .
           push: true
           build-args: |
-            BASE_URL=http://localhost:8001
+            BASE_URL=http://192.168.1.2:8001
             THEME=
             TITLE=Kan Taw Mon
             TITLE_BUR=ကန်တော်မွန်
@@ -40,3 +40,25 @@ jobs:
             EMAILS=kantawmon.clinic@gmail.com
             FB=https://www.facebook.com/KanTawMonSpecialistClinic/
           tags: jasoniv/kdm-lab:latest
+
+      - name: Build and push docker image aye thaw dar
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        with:
+          context: .
+          push: true
+          build-args: |
+            BASE_URL=http://127.0.0.1:8001
+            THEME=
+            TITLE=Aye Thaw Dar
+            TITLE_BUR=
+            TITLE_SHORT=ATD
+            LOGO=/logos/atd_logo.png
+            DESC=Specialist Clinic and Diagnostic Center
+            DESC_BUR=အထူးကုဆေးခန်း နှင့် အဆင့်မြင့်ရောဂါရှာဖွေရေးစင်တာ
+            PHONES=09-953332300
+            PHONES_BUR=၀၉-၉၅၃၃၃၂၃၀၀
+            ADDRESS=Building (1), Room (H-1), Mahar Myaing Housing, U Wisara Street, North Dagon Township, Yangon
+            ADDRESS_BUR=
+            EMAILS=
+            FB=
+          tags: jasoniv/atd-lab:latest
