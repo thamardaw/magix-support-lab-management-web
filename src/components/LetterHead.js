@@ -194,11 +194,94 @@ const ATD = ({ isPreview, isPrintMode }) => {
   );
 };
 
+const GB = ({ isPreview, isPrintMode }) => {
+  return (
+    <Box sx={{ width: "100%" }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexDirection: isPrintMode
+            ? "row"
+            : {
+                xs: "column",
+                sm: "column",
+                md: "row",
+              },
+        }}
+      >
+        <Box width="90px" height="90px">
+          <Logo width="100%" height="100%" />
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            width: { sm: "100%", md: "60%" },
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Typography
+            textAlign="center"
+            fontSize={isPreview ? "0.95rem" : "1.2rem"}
+            fontWeight={600}
+          >
+            {constants.name_bur} {constants.hospital_desc_bur}
+          </Typography>
+          <Typography
+            textAlign="center"
+            fontSize={isPreview ? "0.8rem" : "0.9rem"}
+            fontWeight={600}
+          >
+            {constants.hospital_address_bur}
+          </Typography>
+          <Typography
+            textAlign="center"
+            fontSize={isPreview ? "0.8rem" : "0.9rem"}
+            fontWeight="bold"
+          >
+            {constants.hospital_phones}
+          </Typography>
+          <Typography
+            textAlign="center"
+            fontSize={isPreview ? "0.8rem" : "0.9rem"}
+            fontWeight={600}
+          >
+            "ရွှင်လန်း ကျန်းမာ အားထားရာ ကမ္ဘာ"
+          </Typography>
+        </Box>
+        <Box
+          width="90px"
+          height="90px"
+          sx={{
+            display: isPrintMode
+              ? "block"
+              : { xs: "none", sm: "none", md: "block" },
+          }}
+        >
+          <Logo width="100%" height="100%" />
+        </Box>
+      </Box>
+      <Box
+        sx={{
+          height: "2px",
+          backgroundColor: "black",
+          margin: "16px 100px 16px 100px",
+        }}
+      ></Box>
+    </Box>
+  );
+};
+
 const LetterHead = ({ isPreview, isPrintMode }) => {
   if (constants.hospital_logo === "/logos/ktm_logo.png")
     return <KTM isPreview={isPreview} isPrintMode={isPrintMode} />;
   if (constants.hospital_logo === "/logos/atd_logo.png")
     return <ATD isPreview={isPreview} isPrintMode={isPrintMode} />;
+  if (constants.hospital_logo === "/logos/gb_logo.jpg")
+    return <GB isPreview={isPreview} isPrintMode={isPrintMode} />;
 };
 
 export default React.memo(LetterHead);
