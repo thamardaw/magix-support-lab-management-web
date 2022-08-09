@@ -10,7 +10,7 @@
   REACT_APP_TITLE_SHORT = "KTM"
 
 [context.branch-deploy.environment]
-  REACT_APP_BASE_URL = "https://magix-support-lab-management.herokuapp.com"
+  REACT_APP_BASE_URL = "https://magix-support-lab-staging.herokuapp.com"
   REACT_APP_ADDRESS = "No.3 A, Kan Taw Mon Housing, Lay Daung Kan Road, Thingangyun township (Near May Ka Housing)"
   REACT_APP_DESC = "Specialist Clinic and Diagnostic Center"
   REACT_APP_EMAILS = "kantawmon.clinic@gmail.com"
